@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String   @default("")
+  message   String
+  createdAt DateTime @default(now())
+}
+
+model PartnerRequest {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String   @default("")
+  website   String   @default("")
+  message   String   @default("")
+  createdAt DateTime @default(now())
+}
+
+model Order {
+  id            String   @id @default(cuid())
+  clerkUserId   String?
+  email         String
+  name          String
+  product       String   @default("libro")
+  amount        Int      @default(0)
+  status        String   @default("pending")
+  paymentId     String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Subscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String   @default("")
+  createdAt DateTime @default(now())
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  excerpt   String   @default("")
+  content   String
+  author    String   @default("Alma Serena")
+  published Boolean  @default(false)
+  imageUrl  String   @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AdminLog {
+  id        String   @id @default(cuid())
+  userId    String
+  email     String   @default("")
+  action    String
+  details   String   @default("")
+  ip        String   @default("")
+  createdAt DateTime @default(now())
+}
