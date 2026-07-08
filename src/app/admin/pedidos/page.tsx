@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db";
+import { StatusSelect } from "@/components/StatusSelect";
 import { DeleteButton } from "@/components/DeleteButton";
 
 export default async function AdminPedidosPage() {
@@ -29,7 +30,7 @@ export default async function AdminPedidosPage() {
                   <td className="p-4 text-charcoal/50">{o.email}</td>
                   <td className="p-4 text-charcoal">${(o.amount / 100).toFixed(2)}</td>
                   <td className="p-4">
-                    <span className={`text-xs px-2 py-0.5 rounded-full ${o.status === "completed" ? "bg-green-100 text-green-700" : "bg-amber-100 text-amber-700"}`}>{o.status}</span>
+                    <StatusSelect orderId={o.id} current={o.status} />
                   </td>
                   <td className="p-4 text-charcoal/40">{new Date(o.createdAt).toLocaleDateString()}</td>
                   <td className="p-4">
