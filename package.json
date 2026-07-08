@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "postinstall": "prisma generate",
-    "vercel-build": "prisma db push --accept-data-loss && next build",
     "build": "next build",
+    "db:sync": "prisma db push --accept-data-loss",
     "start": "next start",
     "lint": "eslint"
   },
