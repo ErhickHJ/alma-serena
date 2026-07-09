@@ -1,9 +1,13 @@
+// Página de tienda — Catálogo de productos desde la DB
+// Migrada de productos hardcodeados a Prisma (model Product)
+
 import Image from "next/image";
 import SectionTitle from "@/components/SectionTitle";
 import DecorativeDivider from "@/components/DecorativeDivider";
 import AddToCartButton from "@/components/AddToCartButton";
 import { prisma } from "@/lib/db";
 
+// Categorías de productos (agrupación visual en la tienda)
 const CATEGORIES = [
   { key: "Velas y Aromaterapia", desc: "Crea espacios de paz con aromas que calman el alma." },
   { key: "Diarios y Papelería", desc: "Herramientas para plasmar tus pensamientos y gratitud." },

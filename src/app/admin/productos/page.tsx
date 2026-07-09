@@ -1,3 +1,6 @@
+// Admin — CRUD de productos
+// Lista paginada con enlace a formulario de edición/creación
+
 import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { DeleteButton } from "@/components/DeleteButton";

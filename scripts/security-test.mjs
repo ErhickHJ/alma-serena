@@ -1,3 +1,7 @@
+// Security test suite — 11 pruebas contra la API en vivo
+// Evalúa rate limiting, validación, auth, y headers de seguridad
+// Uso: node scripts/security-test.mjs (o contra producción: BASE_URL=https://... node scripts/security-test.mjs)
+
 const BASE = process.env.BASE_URL || "http://localhost:3000";
 
 let passed = 0;

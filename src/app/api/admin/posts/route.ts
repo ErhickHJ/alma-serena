@@ -1,9 +1,13 @@
+// Admin API — CRUD de posts del blog (POST crear, PUT actualizar)
+// Rate-limited, solo admin, audita cada operación
+
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
 import { isAdmin } from "@/lib/admin";
 import { logAdminAction } from "@/lib/audit";
 import { rateLimit } from "@/lib/rate-limit";
 
+// Helper compartido para verificar admin
 async function checkAdmin(session: { userId: string | null }) {
   if (!session.userId) return { error: "No autorizado", status: 401 };
   const user = await (await clerkClient()).users.getUser(session.userId);

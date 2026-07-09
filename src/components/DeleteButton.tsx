@@ -1,6 +1,8 @@
+// Botón de eliminación genérico (client component)
+// Llama a /api/admin/delete con type e id, luego recarga la página
 "use client";
 
-export function DeleteButton({ id, type }: { id: string; type: "order" | "contact" | "subscriber" | "post" }) {
+export function DeleteButton({ id, type }: { id: string; type: "order" | "contact" | "subscriber" | "post" | "product" }) {
   async function handleDelete() {
     if (!confirm("¿Eliminar este elemento?")) return;
     const res = await fetch(`/api/admin/delete?type=${type}&id=${id}`, { method: "DELETE" });

@@ -1,3 +1,8 @@
+// Utilidades de verificación de administradores
+// isAdmin: verifica rol en publicMetadata de Clerk
+// isAdminEmail: compara email (legacy)
+// isAllowedIP: control de IP para la whitelist
+
 export function isAdmin(metadata: { role?: unknown } | null | undefined): boolean {
   return metadata?.role === "admin";
 }

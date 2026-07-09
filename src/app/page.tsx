@@ -1,3 +1,6 @@
+// Página principal — Landing page de Alma Serena
+// Carga productos destacados desde la DB (campo featured: true) para la sección Tienda
+
 import Image from "next/image";
 import SectionTitle from "@/components/SectionTitle";
 import DecorativeDivider from "@/components/DecorativeDivider";
@@ -7,6 +10,7 @@ import Carousel from "@/components/Carousel";
 import { prisma } from "@/lib/db";
 
 export default async function Home() {
+  // Obtiene productos marcados como destacados desde la base de datos
   const featured = await prisma.product.findMany({ where: { featured: true }, orderBy: { name: "asc" } });
 
   return (

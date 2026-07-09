@@ -1,3 +1,7 @@
+// Cliente Prisma singleton con adaptador PostgreSQL
+// Usa @prisma/adapter-pg para la conexión a Supabase
+// Cachea el cliente en globalThis para evitar múltiples instancias en dev (hot reload)
+
 import { PrismaClient } from "@/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 

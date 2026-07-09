@@ -1,3 +1,6 @@
+// Admin — Gestión de pedidos (ordenes)
+// Lista paginada con búsqueda por nombre/email y selector de estado (StatusSelect)
+
 import { prisma } from "@/lib/db";
 import { StatusSelect } from "@/components/StatusSelect";
 import { DeleteButton } from "@/components/DeleteButton";

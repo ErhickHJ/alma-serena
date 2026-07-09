@@ -1,3 +1,5 @@
+// Página de error global — Next.js la muestra cuando un componente del servidor lanza error
+// Es "use client" porque necesita el botón de reset interactivo
 "use client";
 
 export default function Error({ error, reset }: { error: Error; reset: () => void }) {

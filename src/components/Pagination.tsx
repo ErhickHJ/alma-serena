@@ -1,3 +1,5 @@
+// Componente de paginación reutilizable
+// Recibe página actual, total de páginas, basePath y query opcional para búsqueda
 import Link from "next/link";
 
 export function Pagination({ page, totalPages, basePath, query }: { page: number; totalPages: number; basePath: string; query?: string }) {

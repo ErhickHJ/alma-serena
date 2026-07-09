@@ -1,3 +1,4 @@
+// Página 404 personalizada — Next.js la muestra cuando no hay match de ruta
 import Link from "next/link";
 
 export default function NotFound() {

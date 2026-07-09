@@ -1,3 +1,7 @@
+// Admin API — Eliminación genérica (DELETE)
+// Soporta: order, contact, subscriber, post, product
+// Rate-limited, solo admin, audita cada eliminación
+
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
 import { isAdmin } from "@/lib/admin";

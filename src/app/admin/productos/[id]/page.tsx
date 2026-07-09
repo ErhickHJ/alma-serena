@@ -1,3 +1,5 @@
+// Admin — Formulario para editar un producto existente
+// Carga el producto por ID desde la DB, muestra 404 si no existe
 import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 import { ProductForm } from "../save";

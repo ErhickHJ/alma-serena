@@ -1,3 +1,5 @@
+// Selector de estado para pedidos (client component)
+// Workflow: pending → processing → shipped → delivered, o cancelled en cualquier paso
 "use client";
 
 import { useRouter } from "next/navigation";

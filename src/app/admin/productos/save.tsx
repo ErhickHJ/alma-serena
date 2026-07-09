@@ -1,3 +1,5 @@
+// Formulario compartido para crear/editar productos (client component)
+// Si recibe product → edición (PUT), si no → creación (POST)
 "use client";
 
 import { useState } from "react";

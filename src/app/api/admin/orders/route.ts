@@ -1,3 +1,6 @@
+// Admin API — Actualiza el estado de un pedido (PATCH)
+// Rate-limited (30 req/min), solo admin, audita cada cambio
+
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
 import { isAdmin } from "@/lib/admin";

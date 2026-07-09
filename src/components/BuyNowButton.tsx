@@ -1,3 +1,4 @@
+// Botón "Comprar ahora" — agrega item al carrito y redirige a /carrito
 "use client";
 
 import { useCart } from "@/context/CartContext";

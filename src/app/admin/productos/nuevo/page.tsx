@@ -1,3 +1,5 @@
+// Admin — Formulario para crear un nuevo producto
+// Reutiliza el componente ProductForm (save.tsx) sin datos iniciales
 import { ProductForm } from "../save";
 
 export const metadata = { title: "Nuevo producto" };

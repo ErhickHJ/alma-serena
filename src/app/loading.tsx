@@ -1,3 +1,4 @@
+// Loading global — Next.js la muestra mientras el server component de la página se resuelve
 export default function RootLoading() {
   return (
     <section className="py-24 text-center">

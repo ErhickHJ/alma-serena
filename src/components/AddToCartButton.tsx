@@ -1,3 +1,4 @@
+// Botón "Añadir al carrito" — agrega item al contexto CartContext
 "use client";
 
 import { useCart } from "@/context/CartContext";

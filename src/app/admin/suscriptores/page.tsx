@@ -1,3 +1,6 @@
+// Admin — Lista de suscriptores al newsletter
+// Paginada, sin búsqueda (pocos registros esperados)
+
 import { prisma } from "@/lib/db";
 import { DeleteButton } from "@/components/DeleteButton";
 import { Pagination } from "@/components/Pagination";

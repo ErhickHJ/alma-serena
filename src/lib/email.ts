@@ -1,3 +1,6 @@
+// Servicio de emails transaccionales con Resend
+// 4 funciones: confirmación de pedido, notificación de contacto, alerta de seguridad, bienvenida
+
 import { Resend } from "resend";
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;

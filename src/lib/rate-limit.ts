@@ -1,3 +1,7 @@
+// Rate limiting en memoria (Map)
+// Simple: cuenta requests por clave, resetea tras la ventana de tiempo
+// NOTA: Se pierde al reiniciar el servidor (no persistente, suficiente para Vercel)
+
 const store = new Map<string, { count: number; resetAt: number }>();
 
 export function rateLimit(key: string, opts: { limit?: number; windowMs?: number } = {}) {

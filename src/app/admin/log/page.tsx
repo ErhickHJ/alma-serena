@@ -1,3 +1,6 @@
+// Admin — Registro de auditoría (actividad de administradores)
+// Paginación de 50 por página (más que otras listas por ser solo texto)
+
 import { prisma } from "@/lib/db";
 import { Pagination } from "@/components/Pagination";
 

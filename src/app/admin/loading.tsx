@@ -1,3 +1,4 @@
+// Loading state para las páginas admin (Next.js Suspense boundary)
 export default function AdminLoading() {
   return (
     <section className="py-24 text-center">

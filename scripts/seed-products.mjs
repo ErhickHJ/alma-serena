@@ -1,3 +1,7 @@
+// Seed script — Puebla la tabla Product con 16 productos iniciales
+// Ejecutar: npm run db:seed (o node scripts/seed-products.mjs)
+// Solo crea productos que no existan (por nombre)
+
 import { PrismaClient } from "../src/generated/prisma/client/index.js";
 
 const prisma = new PrismaClient();

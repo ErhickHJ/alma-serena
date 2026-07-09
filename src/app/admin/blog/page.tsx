@@ -1,3 +1,6 @@
+// Admin — Lista de artículos del blog
+// Paginada, con enlace a edición/creación y borrado
+
 import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { DeleteButton } from "@/components/DeleteButton";

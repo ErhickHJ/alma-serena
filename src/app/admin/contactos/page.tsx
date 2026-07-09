@@ -1,3 +1,6 @@
+// Admin — Gestión de mensajes de contacto
+// Lista paginada con búsqueda por nombre/email/asunto
+
 import { prisma } from "@/lib/db";
 import { DeleteButton } from "@/components/DeleteButton";
 import { Pagination } from "@/components/Pagination";

@@ -1,3 +1,8 @@
+// Layout del panel admin — Verifica auth + rol admin, muestra navegación lateral
+// Si no está autenticado → mensaje de login
+// Si no es admin → acceso restringido
+// Middleware adicional en proxy.ts filtra por IP
+
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { isAdmin } from "@/lib/admin";
 import Link from "next/link";

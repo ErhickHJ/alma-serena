@@ -1,3 +1,8 @@
+// Middleware global (Clerk + seguridad)
+// 1. Protege /admin con whitelist de IPs
+// 2. Agrega headers de seguridad (CSP, X-Frame-Options, etc.)
+// 3. Clerk auth para todas las rutas protegidas
+
 import { clerkMiddleware } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { isAllowedIP } from "@/lib/admin";

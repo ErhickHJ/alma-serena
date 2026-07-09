@@ -1,3 +1,6 @@
+// Auditoría — Registra cada acción de administradores en la tabla AdminLog
+// El catch silencioso evita que un fallo de logging rompa la operación principal
+
 import { prisma } from "./db";
 
 export async function logAdminAction(opts: {
