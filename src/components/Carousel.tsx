@@ -3,9 +3,8 @@
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import AddToCartButton from "./AddToCartButton";
-import type { Product } from "@/lib/products";
 
-export default function Carousel({ items }: { items: Product[] }) {
+export default function Carousel({ items }: { items: { id: string; name: string; price: number; image: string; emoji: string }[] }) {
   const [current, setCurrent] = useState(0);
   const total = items.length;
 
