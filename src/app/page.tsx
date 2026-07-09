@@ -2,17 +2,19 @@ import Image from "next/image";
 import SectionTitle from "@/components/SectionTitle";
 import DecorativeDivider from "@/components/DecorativeDivider";
 import { images } from "@/lib/images";
-import { products } from "@/lib/products";
 import AddToCartButton from "@/components/AddToCartButton";
 import Carousel from "@/components/Carousel";
+import { prisma } from "@/lib/db";
 
-export default function Home() {
+export default async function Home() {
+  const featured = await prisma.product.findMany({ where: { featured: true }, orderBy: { name: "asc" } });
+
   return (
     <>
       <Hero />
       <AboutBook />
       <CommunityPreview />
-      <AccessoriesPreview />
+      <AccessoriesPreview products={featured} />
       <HomeCommunityCTA />
       <PartnersPreview />
       <Testimonials />
@@ -147,11 +149,7 @@ function CommunityPreview() {
 }
 
 // ============ TIENDA / ACCESORIOS ============
-function AccessoriesPreview() {
-  const preview = products.filter((p) =>
-    ["Vela Aromática - Lavanda", "Aceite Corporal", "Cuaderno de Gratitud", "Cristal de Amatista"].includes(p.name)
-  );
-
+function AccessoriesPreview({ products }: { products: { id: string; name: string; price: number; image: string; emoji: string }[] }) {
   return (
     <section className="py-24 bg-lavender/10">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -164,7 +162,7 @@ function AccessoriesPreview() {
           </p>
         </div>
         <div className="max-w-sm mx-auto sm:max-w-none">
-          <Carousel items={preview} />
+          <Carousel items={products} />
         </div>
         <div className="text-center mt-10">
           <a href="/tienda" className="inline-flex items-center text-sage-dark font-medium text-sm hover:text-sage transition-colors">

@@ -2,10 +2,14 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
 import { isAdmin } from "@/lib/admin";
 import { logAdminAction } from "@/lib/audit";
+import { rateLimit } from "@/lib/rate-limit";
 
 export async function DELETE(req: Request) {
   const session = await auth();
   if (!session.userId) return Response.json({ error: "No autorizado" }, { status: 401 });
+
+  const rl = rateLimit(`admin:${session.userId}`, { limit: 30, windowMs: 60000 });
+  if (!rl.allowed) return Response.json({ error: "Demasiadas solicitudes" }, { status: 429 });
 
   const user = await (await clerkClient()).users.getUser(session.userId);
   if (!isAdmin(user?.publicMetadata as { role?: unknown } | undefined)) {
@@ -31,6 +35,9 @@ export async function DELETE(req: Request) {
         break;
       case "post":
         await prisma.post.delete({ where: { id } });
+        break;
+      case "product":
+        await prisma.product.delete({ where: { id } });
         break;
       default:
         return Response.json({ error: "Tipo inválido" }, { status: 400 });

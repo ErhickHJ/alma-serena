@@ -1,9 +1,8 @@
 "use client";
 
 import { useCart } from "@/context/CartContext";
-import type { Product } from "@/lib/products";
 
-export default function AddToCartButton({ item, label = "Añadir al carrito" }: { item: Product; label?: string }) {
+export default function AddToCartButton({ item, label = "Añadir al carrito" }: { item: { id: string; name: string; price: number; emoji: string }; label?: string }) {
   const { addItem } = useCart();
 
   return (

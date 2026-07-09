@@ -1,12 +1,24 @@
 import { prisma } from "@/lib/db";
 import { DeleteButton } from "@/components/DeleteButton";
+import { Pagination } from "@/components/Pagination";
 
-export default async function AdminSuscriptoresPage() {
-  const subscribers = await prisma.subscriber.findMany({ orderBy: { createdAt: "desc" } });
+const PER_PAGE = 20;
+
+export default async function AdminSuscriptoresPage(props: { searchParams?: Promise<{ page?: string }> }) {
+  const { page: pageStr } = await (props.searchParams ?? Promise.resolve({}));
+  const page = Math.max(1, Number(pageStr) || 1);
+  const [subscribers, total] = await Promise.all([
+    prisma.subscriber.findMany({ orderBy: { createdAt: "desc" }, skip: (page - 1) * PER_PAGE, take: PER_PAGE }),
+    prisma.subscriber.count(),
+  ]);
+  const totalPages = Math.ceil(total / PER_PAGE);
 
   return (
     <>
-      <h1 className="font-serif text-3xl sm:text-4xl text-sage-dark mb-8">Suscriptores</h1>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="font-serif text-3xl sm:text-4xl text-sage-dark">Suscriptores</h1>
+        <span className="text-xs text-charcoal/30">{total} total</span>
+      </div>
       {subscribers.length === 0 ? (
         <p className="text-charcoal/40 text-sm">No hay suscriptores aún.</p>
       ) : (
@@ -33,6 +45,7 @@ export default async function AdminSuscriptoresPage() {
               ))}
             </tbody>
           </table>
+          <Pagination page={page} totalPages={totalPages} basePath="/admin/suscriptores" />
         </div>
       )}
     </>

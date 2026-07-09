@@ -2,12 +2,16 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
 import { isAdmin } from "@/lib/admin";
 import { logAdminAction } from "@/lib/audit";
+import { rateLimit } from "@/lib/rate-limit";
 
 const VALID_STATUSES = ["pending", "processing", "shipped", "delivered", "cancelled"];
 
 export async function PATCH(req: Request) {
   const session = await auth();
   if (!session.userId) return Response.json({ error: "No autorizado" }, { status: 401 });
+
+  const rl = rateLimit(`admin:${session.userId}`, { limit: 30, windowMs: 60000 });
+  if (!rl.allowed) return Response.json({ error: "Demasiadas solicitudes" }, { status: 429 });
 
   const user = await (await clerkClient()).users.getUser(session.userId);
   if (!isAdmin(user?.publicMetadata as { role?: unknown } | undefined)) {

@@ -55,6 +55,20 @@ CREATE TABLE "Post" (
     CONSTRAINT "Post_pkey" PRIMARY KEY ("id")
 );
 
+CREATE TABLE "Product" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "price" DOUBLE PRECISION NOT NULL,
+    "image" TEXT NOT NULL DEFAULT '',
+    "emoji" TEXT NOT NULL DEFAULT '',
+    "category" TEXT NOT NULL DEFAULT '',
+    "desc" TEXT NOT NULL DEFAULT '',
+    "featured" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
+);
+
 CREATE TABLE "AdminLog" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,

@@ -1,15 +1,37 @@
 import { prisma } from "@/lib/db";
 import { StatusSelect } from "@/components/StatusSelect";
 import { DeleteButton } from "@/components/DeleteButton";
+import { Pagination } from "@/components/Pagination";
 
-export default async function AdminPedidosPage() {
-  const orders = await prisma.order.findMany({ orderBy: { createdAt: "desc" } });
+const PER_PAGE = 20;
+
+export default async function AdminPedidosPage(props: { searchParams?: Promise<{ page?: string; q?: string }> }) {
+  const { page: pageStr, q } = await (props.searchParams ?? Promise.resolve({}));
+  const page = Math.max(1, Number(pageStr) || 1);
+
+  const where = q
+    ? { OR: [{ name: { contains: q, mode: "insensitive" } }, { email: { contains: q, mode: "insensitive" } }] }
+    : {};
+
+  const [orders, total] = await Promise.all([
+    prisma.order.findMany({ where, orderBy: { createdAt: "desc" }, skip: (page - 1) * PER_PAGE, take: PER_PAGE }),
+    prisma.order.count({ where }),
+  ]);
+  const totalPages = Math.ceil(total / PER_PAGE);
 
   return (
     <>
-      <h1 className="font-serif text-3xl sm:text-4xl text-sage-dark mb-8">Pedidos</h1>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="font-serif text-3xl sm:text-4xl text-sage-dark">Pedidos</h1>
+        <span className="text-xs text-charcoal/30">{total} total</span>
+      </div>
+
+      <form className="mb-6 max-w-xs">
+        <input type="text" name="q" defaultValue={q || ""} placeholder="Buscar por nombre o email..." className="w-full px-4 py-2 rounded-lg border border-sage/20 bg-warm-white text-sm focus:outline-none focus:border-sage transition-colors" />
+      </form>
+
       {orders.length === 0 ? (
-        <p className="text-charcoal/40 text-sm">No hay pedidos registrados.</p>
+        <p className="text-charcoal/40 text-sm">{q ? "Sin resultados." : "No hay pedidos registrados."}</p>
       ) : (
         <div className="bg-warm-white rounded-xl border border-sage/10 shadow-sm overflow-hidden">
           <table className="w-full text-sm">
@@ -40,6 +62,7 @@ export default async function AdminPedidosPage() {
               ))}
             </tbody>
           </table>
+          <Pagination page={page} totalPages={totalPages} basePath="/admin/pedidos" query={q} />
         </div>
       )}
     </>

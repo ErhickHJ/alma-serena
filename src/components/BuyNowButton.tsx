@@ -2,9 +2,8 @@
 
 import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
-import type { Product } from "@/lib/products";
 
-export default function BuyNowButton({ item, label = "Comprar ahora" }: { item: Product; label?: string }) {
+export default function BuyNowButton({ item, label = "Comprar ahora" }: { item: { id: string; name: string; price: number; emoji: string }; label?: string }) {
   const { addItem } = useCart();
   const router = useRouter();
 
