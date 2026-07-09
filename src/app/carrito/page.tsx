@@ -66,6 +66,7 @@ export default function CartPage() {
                       updateQuantity(item.id, item.quantity - 1);
                     }
                   }}
+                  aria-label="Reducir cantidad"
                   className="w-7 h-7 rounded-full border border-sage/20 text-charcoal/50 hover:border-sage/40 transition-colors text-sm"
                 >
                   -
@@ -75,6 +76,7 @@ export default function CartPage() {
                 </span>
                 <button
                   onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                  aria-label="Aumentar cantidad"
                   className="w-7 h-7 rounded-full border border-sage/20 text-charcoal/50 hover:border-sage/40 transition-colors text-sm"
                 >
                   +
@@ -85,6 +87,7 @@ export default function CartPage() {
               </div>
               <button
                 onClick={() => removeItem(item.id)}
+                aria-label="Eliminar producto"
                 className="text-charcoal/30 hover:text-rose transition-colors"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -36,21 +36,26 @@ export default function Carousel({ items }: { items: { id: string; name: string;
       </div>
       <button
         onClick={prev}
+        aria-label="Producto anterior"
         className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-warm-white/80 border border-sage/20 flex items-center justify-center text-charcoal/60 hover:bg-warm-white hover:text-charcoal transition-all text-sm shadow-sm"
       >
         ‹
       </button>
       <button
         onClick={next}
+        aria-label="Producto siguiente"
         className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-warm-white/80 border border-sage/20 flex items-center justify-center text-charcoal/60 hover:bg-warm-white hover:text-charcoal transition-all text-sm shadow-sm"
       >
         ›
       </button>
-      <div className="flex justify-center gap-2 mt-4">
+      <div className="flex justify-center gap-2 mt-4" role="tablist" aria-label="Seleccionar producto">
         {items.map((_, i) => (
           <button
             key={i}
             onClick={() => setCurrent(i)}
+            role="tab"
+            aria-label={`Producto ${i + 1} de ${total}`}
+            aria-selected={i === current}
             className={`w-2 h-2 rounded-full transition-all duration-500 ${
               i === current ? "bg-sage w-4" : "bg-sage/20"
             }`}

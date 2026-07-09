@@ -9,6 +9,7 @@ export default function CartButton() {
   return (
     <Link
       href="/carrito"
+      aria-label="Carrito de compras"
       className="relative inline-flex items-center text-charcoal/70 hover:text-sage-dark transition-colors"
     >
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

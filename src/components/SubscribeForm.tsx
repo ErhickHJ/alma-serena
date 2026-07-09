@@ -29,6 +29,7 @@ export default function SubscribeForm() {
         onChange={(e) => setEmail(e.target.value)}
         placeholder="tu@email.com"
         required
+        aria-label="Correo electrónico"
         className="flex-1 min-w-0 px-3 py-2 rounded-lg border border-sage/20 bg-warm-white text-xs focus:outline-none focus:border-sage transition-colors"
       />
       <button

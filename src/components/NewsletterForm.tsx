@@ -56,6 +56,7 @@ export default function NewsletterForm() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               maxLength={100}
+              aria-label="Nombre"
               className="w-full px-4 py-3 rounded-full border border-sage/30 bg-warm-white text-sm focus:outline-none focus:border-sage transition-colors"
             />
             <div className="flex flex-col sm:flex-row gap-3">
@@ -65,6 +66,7 @@ export default function NewsletterForm() {
                 placeholder="Tu correo electrónico"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                aria-label="Correo electrónico"
                 className="flex-1 px-4 py-3 rounded-full border border-sage/30 bg-warm-white text-sm focus:outline-none focus:border-sage transition-colors"
               />
               <button

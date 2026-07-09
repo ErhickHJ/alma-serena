@@ -2,6 +2,7 @@ import {ClerkProvider, Show, SignInButton, UserButton} from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { CartProvider } from "@/context/CartContext";
+import { ToastProvider } from "@/context/ToastContext";
 import CartButton from "@/components/CartButton";
 import { AdminLink } from "@/components/AdminLink";
 import SubscribeForm from "@/components/SubscribeForm";
@@ -36,9 +37,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen flex flex-col antialiased">
         <ClerkProvider>
           <CartProvider>
-          <Header />
+            <ToastProvider>
+            <Header />
           <main className="flex-1">{children}</main>
           <Footer />
+            </ToastProvider>
           </CartProvider>
         </ClerkProvider>
       </body>
@@ -100,7 +103,7 @@ function Header() {
 function MobileMenu() {
   return (
     <details className="group">
-      <summary className="list-none cursor-pointer p-2 -mr-2">
+      <summary className="list-none cursor-pointer p-2 -mr-2" aria-label="Abrir menú de navegación">
         <svg className="w-6 h-6 text-charcoal/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
         </svg>
