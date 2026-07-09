@@ -8,7 +8,7 @@ import { Pagination } from "@/components/Pagination";
 const PER_PAGE = 20;
 
 export default async function AdminContactosPage(props: { searchParams?: Promise<{ page?: string; q?: string }> }) {
-  const { page: pageStr, q = "" } = await (props.searchParams ?? Promise.resolve({ q: "" }));
+  const { page: pageStr, q = "" } = await (props.searchParams ?? Promise.resolve({ page: "1", q: "" }));
   const page = Math.max(1, Number(pageStr) || 1);
 
   const where = q
