@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/db";
 
-const BASE = "https://alma-serena-iota.vercel.app";
+const BASE = "https://almaserenaoficial.com";
 
 export default async function sitemap() {
   let blogPages: { url: string; lastModified: Date; changeFrequency: string; priority: number }[] = [];
