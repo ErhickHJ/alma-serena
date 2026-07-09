@@ -5,7 +5,7 @@ import { Pagination } from "@/components/Pagination";
 const PER_PAGE = 20;
 
 export default async function AdminSuscriptoresPage(props: { searchParams?: Promise<{ page?: string }> }) {
-  const { page: pageStr } = await (props.searchParams ?? Promise.resolve({}));
+  const { page: pageStr } = await (props.searchParams ?? Promise.resolve({ page: "1" }));
   const page = Math.max(1, Number(pageStr) || 1);
   const [subscribers, total] = await Promise.all([
     prisma.subscriber.findMany({ orderBy: { createdAt: "desc" }, skip: (page - 1) * PER_PAGE, take: PER_PAGE }),

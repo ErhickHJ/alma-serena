@@ -6,7 +6,7 @@ const PER_PAGE = 50;
 export const metadata = { title: "Registro de actividad" };
 
 export default async function AdminLogPage(props: { searchParams?: Promise<{ page?: string }> }) {
-  const { page: pageStr } = await (props.searchParams ?? Promise.resolve({}));
+  const { page: pageStr } = await (props.searchParams ?? Promise.resolve({ page: "1" }));
   const page = Math.max(1, Number(pageStr) || 1);
   const [logs, total] = await Promise.all([
     prisma.adminLog.findMany({ orderBy: { createdAt: "desc" }, skip: (page - 1) * PER_PAGE, take: PER_PAGE }),

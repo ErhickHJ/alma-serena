@@ -6,7 +6,7 @@ import DecorativeDivider from "@/components/DecorativeDivider";
 export const metadata = { title: "Blog" };
 
 export default async function BlogPage(props: { searchParams?: Promise<{ q?: string }> }) {
-  const { q } = await (props.searchParams ?? Promise.resolve({}));
+  const { q = "" } = await (props.searchParams ?? Promise.resolve({ q: "" }));
   let posts: { id: string; title: string; slug: string; excerpt: string; imageUrl: string; createdAt: Date }[] = [];
   let error: string | null = null;
 

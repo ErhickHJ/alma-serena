@@ -6,7 +6,7 @@ import { Pagination } from "@/components/Pagination";
 const PER_PAGE = 20;
 
 export default async function AdminProductosPage(props: { searchParams?: Promise<{ page?: string }> }) {
-  const { page: pageStr } = await (props.searchParams ?? Promise.resolve({}));
+  const { page: pageStr } = await (props.searchParams ?? Promise.resolve({ page: "1" }));
   const page = Math.max(1, Number(pageStr) || 1);
   const [products, total] = await Promise.all([
     prisma.product.findMany({ orderBy: { category: "asc" }, skip: (page - 1) * PER_PAGE, take: PER_PAGE }),
