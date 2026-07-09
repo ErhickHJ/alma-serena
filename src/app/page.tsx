@@ -7,6 +7,7 @@ import DecorativeDivider from "@/components/DecorativeDivider";
 import { images } from "@/lib/images";
 import AddToCartButton from "@/components/AddToCartButton";
 import Carousel from "@/components/Carousel";
+import NewsletterForm from "@/components/NewsletterForm";
 import { prisma } from "@/lib/db";
 
 export default async function Home() {
@@ -22,7 +23,7 @@ export default async function Home() {
       <HomeCommunityCTA />
       <PartnersPreview />
       <Testimonials />
-      <Newsletter />
+      <NewsletterForm />
     </>
   );
 }
@@ -260,32 +261,4 @@ function Testimonials() {
   );
 }
 
-// ============ NEWSLETTER ============
-function Newsletter() {
-  return (
-    <section className="py-24 bg-gradient-to-b from-sage/5 to-warm-white">
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center">
-        <div className="text-4xl mb-4 text-sage/60">✿</div>
-        <SectionTitle>Recibe serenidad en tu correo</SectionTitle>
-        <DecorativeDivider className="my-6" />
-        <p className="text-charcoal/60 leading-relaxed mb-8">
-          Suscríbete para recibir afirmaciones, consejos de bienestar y
-          contenido exclusivo de Alma Serena.
-        </p>
-        <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-          <input
-            type="email"
-            placeholder="Tu correo electrónico"
-            className="flex-1 px-4 py-3 rounded-full border border-sage/30 bg-warm-white text-sm focus:outline-none focus:border-sage transition-colors"
-          />
-          <button
-            type="submit"
-            className="px-6 py-3 bg-sage text-white rounded-full text-sm font-medium hover:bg-sage-dark transition-colors"
-          >
-            Suscribirme
-          </button>
-        </form>
-      </div>
-    </section>
-  );
-}
+

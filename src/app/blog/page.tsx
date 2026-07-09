@@ -2,32 +2,37 @@ import { prisma } from "@/lib/db";
 import Link from "next/link";
 import SectionTitle from "@/components/SectionTitle";
 import DecorativeDivider from "@/components/DecorativeDivider";
+import { Pagination } from "@/components/Pagination";
 
 export const metadata = { title: "Blog" };
 
-export default async function BlogPage(props: { searchParams?: Promise<{ q?: string }> }) {
-  const { q = "" } = await (props.searchParams ?? Promise.resolve({ q: "" }));
+const PER_PAGE = 9;
+
+export default async function BlogPage(props: { searchParams?: Promise<{ q?: string; page?: string }> }) {
+  const { q = "", page: pageStr } = await (props.searchParams ?? Promise.resolve({ q: "", page: "1" }));
+  const page = Math.max(1, Number(pageStr) || 1);
   let posts: { id: string; title: string; slug: string; excerpt: string; imageUrl: string; createdAt: Date }[] = [];
+  let total = 0;
   let error: string | null = null;
 
+  const where: Record<string, unknown> = { published: true };
+  if (q) {
+    where.OR = [
+      { title: { contains: q, mode: "insensitive" } },
+      { excerpt: { contains: q, mode: "insensitive" } },
+    ];
+  }
+
   try {
-    posts = await prisma.post.findMany({
-      where: {
-        published: true,
-        ...(q
-          ? {
-              OR: [
-                { title: { contains: q, mode: "insensitive" } },
-                { excerpt: { contains: q, mode: "insensitive" } },
-              ],
-            }
-          : {}),
-      },
-      orderBy: { createdAt: "desc" },
-    });
+    [posts, total] = await Promise.all([
+      prisma.post.findMany({ where, orderBy: { createdAt: "desc" }, skip: (page - 1) * PER_PAGE, take: PER_PAGE }),
+      prisma.post.count({ where }),
+    ]);
   } catch (e: any) {
     error = e?.message || "Error al cargar los artículos";
   }
+
+  const totalPages = Math.ceil(total / PER_PAGE);
 
   return (
     <section className="py-16 sm:py-24">
@@ -60,7 +65,7 @@ export default async function BlogPage(props: { searchParams?: Promise<{ q?: str
           <p className="text-center text-charcoal/40 text-sm">{q ? "No se encontraron artículos." : "Próximamente artículos..."}</p>
         ) : (
           <div>
-            {q && <p className="text-sm text-charcoal/40 mb-6 text-center">{posts.length} resultado{posts.length !== 1 ? "s" : ""} para &ldquo;{q}&rdquo;</p>}
+            {q && <p className="text-sm text-charcoal/40 mb-6 text-center">{total} resultado{total !== 1 ? "s" : ""} para &ldquo;{q}&rdquo;</p>}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
               {posts.map((post) => (
                 <Link
@@ -81,6 +86,7 @@ export default async function BlogPage(props: { searchParams?: Promise<{ q?: str
                 </Link>
               ))}
             </div>
+            <Pagination page={page} totalPages={totalPages} basePath="/blog" query={q} />
           </div>
         )}
       </div>
