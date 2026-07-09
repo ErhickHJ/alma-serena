@@ -18,8 +18,8 @@ export default async function BlogPage(props: { searchParams?: Promise<{ q?: str
   const where: Record<string, unknown> = { published: true };
   if (q) {
     where.OR = [
-      { title: { contains: q, mode: "insensitive" } },
-      { excerpt: { contains: q, mode: "insensitive" } },
+      { title: { contains: q, mode: "insensitive" as const } },
+      { excerpt: { contains: q, mode: "insensitive" as const } },
     ];
   }
 

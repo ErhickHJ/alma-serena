@@ -12,9 +12,13 @@ export default async function AdminPedidosPage(props: { searchParams?: Promise<{
   const { page: pageStr, q = "" } = await (props.searchParams ?? Promise.resolve({ page: "1", q: "" }));
   const page = Math.max(1, Number(pageStr) || 1);
 
-  const where = q
-    ? { OR: [{ name: { contains: q, mode: "insensitive" } }, { email: { contains: q, mode: "insensitive" } }] }
-    : {};
+  const where: Record<string, unknown> = {};
+  if (q) {
+    where.OR = [
+      { name: { contains: q, mode: "insensitive" as const } },
+      { email: { contains: q, mode: "insensitive" as const } },
+    ];
+  }
 
   const [orders, total] = await Promise.all([
     prisma.order.findMany({ where, orderBy: { createdAt: "desc" }, skip: (page - 1) * PER_PAGE, take: PER_PAGE }),
