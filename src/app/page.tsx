@@ -11,8 +11,12 @@ import NewsletterForm from "@/components/NewsletterForm";
 import { prisma } from "@/lib/db";
 
 export default async function Home() {
-  // Obtiene productos marcados como destacados desde la base de datos
-  const featured = await prisma.product.findMany({ where: { featured: true }, orderBy: { name: "asc" } });
+  let featured: { id: string; name: string; price: number; image: string; emoji: string }[] = [];
+  try {
+    featured = await prisma.product.findMany({ where: { featured: true }, orderBy: { name: "asc" } });
+  } catch {
+    // DB no disponible — mostrar sin productos destacados
+  }
 
   return (
     <>

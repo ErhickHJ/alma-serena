@@ -16,7 +16,12 @@ const CATEGORIES = [
 ];
 
 export default async function ShopPage() {
-  const products = await prisma.product.findMany({ orderBy: [{ category: "asc" }, { name: "asc" }] });
+  let products: { id: string; name: string; price: number; image: string; emoji: string; category: string; desc: string }[] = [];
+  try {
+    products = await prisma.product.findMany({ orderBy: [{ category: "asc" }, { name: "asc" }] });
+  } catch {
+    // DB no disponible — tienda vacía
+  }
 
   return (
     <>

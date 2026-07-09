@@ -1,19 +1,52 @@
-// Cliente Prisma singleton con adaptador PostgreSQL
-// Usa @prisma/adapter-pg para la conexión a Supabase
-// Cachea el cliente en globalThis para evitar múltiples instancias en dev (hot reload)
-
 import { PrismaClient } from "@/generated/prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
 
-const globalForPrisma = globalThis as unknown as { prisma: PrismaClient | undefined };
+let dbAvailable: boolean | null = null;
+let _client: PrismaClient | null = null;
 
-function createPrismaClient() {
-  const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
-  return new PrismaClient({ adapter });
+async function getClient(): Promise<PrismaClient | null> {
+  if (dbAvailable === false) return null;
+  if (_client) return _client;
+  try {
+    const { PrismaPg } = await import("@prisma/adapter-pg");
+    const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
+    _client = new PrismaClient({ adapter });
+    dbAvailable = true;
+    return _client;
+  } catch {
+    dbAvailable = false;
+    return null;
+  }
 }
 
-export const prisma = globalForPrisma.prisma ?? createPrismaClient();
-
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
+async function exec(prop: string, method: string, args: unknown[]): Promise<unknown> {
+  const client = dbAvailable === false ? null : await getClient();
+  if (!client) {
+    if (prop === "product" && method === "findMany") return [];
+    if (prop === "post" && method === "findMany") return [];
+    if (method === "count") return 0;
+    if (method === "findUnique") return null;
+    if (method === "create" || method === "update") return null;
+    return [];
+  }
+  try {
+    const m = (client as unknown as Record<string, Record<string, (...a: unknown[]) => unknown>>)[prop];
+    if (!m || typeof m[method] !== "function") return [];
+    return await m[method](...args);
+  } catch (e) {
+    dbAvailable = false;
+    console.warn("DB query failed, switching to offline mode:", (e as Error)?.message);
+    return [];
+  }
 }
+
+export const prisma = new Proxy({} as PrismaClient, {
+  get(_, prop: string | symbol) {
+    if (typeof prop !== "string") return undefined;
+    return new Proxy({}, {
+      get(__, method: string | symbol) {
+        if (typeof method !== "string") return undefined;
+        return (...args: unknown[]) => exec(prop, method, args);
+      },
+    });
+  },
+});
