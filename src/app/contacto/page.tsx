@@ -77,6 +77,10 @@ function ContactFormSection() {
                 setLoading(false);
               }
             }} className="space-y-4">
+              <div aria-hidden="true" className="absolute opacity-0 pointer-events-none" style={{ position: "absolute", left: "-9999px" }}>
+                <label htmlFor="_hp">No llenar</label>
+                <input id="_hp" name="_hp" type="text" tabIndex={-1} autoComplete="off" />
+              </div>
               <div>
                 <label htmlFor="name" className="block text-sm text-charcoal/60 mb-1">Nombre *</label>
                 <input

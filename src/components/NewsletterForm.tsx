@@ -15,10 +15,14 @@ export default function NewsletterForm() {
     setStatus("loading");
     setMessage("");
 
+    const form = e.currentTarget as HTMLFormElement;
+    const fd = new FormData(form);
+    const _hp = fd.get("_hp") as string;
+
     const res = await fetch("/api/subscribe", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, name: name.trim() || undefined }),
+      body: JSON.stringify({ email, name: name.trim() || undefined, _hp }),
     });
 
     const data = await res.json();
@@ -50,6 +54,10 @@ export default function NewsletterForm() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col gap-3 max-w-md mx-auto">
+            <div aria-hidden="true" className="absolute opacity-0 pointer-events-none" style={{ position: "absolute", left: "-9999px" }}>
+              <label htmlFor="_hp">No llenar</label>
+              <input id="_hp" name="_hp" type="text" tabIndex={-1} autoComplete="off" onChange={() => {}} />
+            </div>
             <input
               type="text"
               placeholder="Tu nombre (opcional)"
