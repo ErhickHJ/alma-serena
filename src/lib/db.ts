@@ -9,16 +9,21 @@ async function getClient(): Promise<PrismaClient | null> {
   try {
     const { Pool } = await import("pg");
     const url = new URL(process.env.DATABASE_URL!);
+    let host = url.hostname;
+    try {
+      const { resolve4 } = await import("dns/promises");
+      const addrs = await resolve4(host);
+      if (addrs.length) host = addrs[0];
+    } catch { /* fallback to hostname */ }
     const pool = new Pool({
-      host: url.hostname,
+      host,
       port: Number(url.port) || 6543,
       database: url.pathname.slice(1),
       user: url.username,
       password: url.password,
       ssl: { rejectUnauthorized: false },
       connectionTimeoutMillis: 3000,
-      family: 4,
-    } as any as import("pg").PoolConfig);
+    });
     const { PrismaPg } = await import("@prisma/adapter-pg");
     const adapter = new PrismaPg(pool);
     _client = new PrismaClient({ adapter });
