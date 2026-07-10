@@ -90,6 +90,12 @@ export default function NewsletterForm() {
             )}
           </form>
         )}
+        <p className="text-[10px] text-charcoal/30 mt-3 leading-relaxed">
+          Al suscribirte, aceptas nuestro{' '}
+          <a href="/aviso-privacidad" target="_blank" className="underline hover:text-sage-dark">aviso de privacidad</a>{' '}
+          y nuestro{' '}
+          <a href="/disclaimer" target="_blank" className="underline hover:text-sage-dark">aviso legal</a>.
+        </p>
       </div>
     </section>
   );

@@ -54,5 +54,9 @@ export default function SubscribeForm() {
         {loading ? "..." : "Suscribirme"}
       </button>
     </form>
+      <p className="text-[10px] text-charcoal/30 mt-2 leading-relaxed">
+        Al suscribirte, aceptas nuestro{' '}
+        <a href="/aviso-privacidad" target="_blank" className="underline hover:text-sage-dark">aviso de privacidad</a>.
+      </p>
   );
 }

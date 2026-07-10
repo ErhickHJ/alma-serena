@@ -189,6 +189,7 @@ function Footer() {
           <div className="flex gap-4">
             <a href="/aviso-privacidad" className="hover:text-sage-dark transition-colors">Aviso de privacidad</a>
             <a href="/terminos" className="hover:text-sage-dark transition-colors">Términos</a>
+            <a href="/disclaimer" className="hover:text-sage-dark transition-colors">Aviso legal</a>
             <a href="/faq" className="hover:text-sage-dark transition-colors">FAQ</a>
           </div>
         </div>

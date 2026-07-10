@@ -14,6 +14,7 @@ export default function CheckoutPage() {
   const formRef = useRef<HTMLFormElement>(null);
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState(false);
+  const [accepted, setAccepted] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -132,7 +133,15 @@ export default function CheckoutPage() {
                   <span className="font-medium text-charcoal">Total</span>
                   <span className="font-serif text-sage-dark text-xl">${totalPrice.toFixed(2)}</span>
                 </div>
-                <button type="submit" disabled={sending} className="w-full mt-6 px-6 py-3.5 bg-sage text-white rounded-full text-sm font-medium hover:bg-sage-dark transition-colors shadow-sm disabled:opacity-50">
+                <label className="flex items-start gap-2 mt-4 cursor-pointer">
+                  <input type="checkbox" checked={accepted} onChange={(e) => setAccepted(e.target.checked)} className="mt-0.5 shrink-0 accent-sage" />
+                  <span className="text-[11px] text-charcoal/50 leading-relaxed">
+                    Acepto los <a href="/terminos" target="_blank" className="underline hover:text-sage-dark">términos y condiciones</a>, el{' '}
+                    <a href="/aviso-privacidad" target="_blank" className="underline hover:text-sage-dark">aviso de privacidad</a> y el{' '}
+                    <a href="/disclaimer" target="_blank" className="underline hover:text-sage-dark">aviso legal</a> de Alma Serena.
+                  </span>
+                </label>
+                <button type="submit" disabled={sending || !accepted} className="w-full mt-4 px-6 py-3.5 bg-sage text-white rounded-full text-sm font-medium hover:bg-sage-dark transition-colors shadow-sm disabled:opacity-50">
                   {sending ? "Redirigiendo a Stripe..." : "Pagar con Stripe"}
                 </button>
               </div>
