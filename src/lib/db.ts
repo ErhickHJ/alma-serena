@@ -38,6 +38,7 @@ async function exec(prop: string, method: string, args: unknown[]): Promise<unkn
     if (method === "count") return 0;
     if (method === "findUnique") return null;
     if (method === "create" || method === "update") return null;
+    if (method === "aggregate") return { _sum: { amount: 0 }, _count: 0, _avg: {}, _min: {}, _max: {} } as never;
     return [];
   }
   try {
