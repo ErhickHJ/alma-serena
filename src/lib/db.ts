@@ -18,7 +18,7 @@ async function getClient(): Promise<PrismaClient | null> {
       ssl: { rejectUnauthorized: false },
       connectionTimeoutMillis: 3000,
       family: 4,
-    });
+    } as any as import("pg").PoolConfig);
     const { PrismaPg } = await import("@prisma/adapter-pg");
     const adapter = new PrismaPg(pool);
     _client = new PrismaClient({ adapter });
