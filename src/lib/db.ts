@@ -7,8 +7,10 @@ async function getClient(): Promise<PrismaClient | null> {
   if (dbAvailable === false) return null;
   if (_client) return _client;
   try {
+    const url = new URL(process.env.DATABASE_URL!);
+    url.searchParams.set("family", "4");
     const { PrismaPg } = await import("@prisma/adapter-pg");
-    const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
+    const adapter = new PrismaPg({ connectionString: url.toString() });
     _client = new PrismaClient({ adapter });
     dbAvailable = true;
     return _client;
