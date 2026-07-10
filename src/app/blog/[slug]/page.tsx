@@ -165,7 +165,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   if (!post) {
     const fallback = FALLBACK[slug];
     if (!fallback) notFound();
-    post = { ...fallback, author: "Alma Serena" };
+    post = { title: fallback.title, content: fallback.content, createdAt: fallback.date, author: "Alma Serena" };
     relatedPosts = Object.entries(FALLBACK)
       .filter(([s]) => s !== slug)
       .slice(0, 3)
