@@ -1,13 +1,35 @@
 import SectionTitle from "@/components/SectionTitle";
 import DecorativeDivider from "@/components/DecorativeDivider";
 import { site } from "@/lib/site";
+import { prisma } from "@/lib/db";
+import { ForumForm } from "./ForumForm";
 
-export default function CommunityPage() {
+const FALLBACK_POSTS = [
+  { id: "1", author: "Camila R.", text: "Hoy cumplí 30 días con Alma Serena y siento que mi relación conmigo misma ha cambiado profundamente. La gratitud ya no es un ejercicio, es una forma de ver la vida.", tag: "30 días", createdAt: new Date("2026-03-15") },
+  { id: "2", author: "Sofía M.", text: "El reto de desconectarme 30 minutos del mundo digital fue transformador. Descubrí que el silencio no es vacío, es espacio para escucharme.", tag: "Reto semanal", createdAt: new Date("2026-03-28") },
+  { id: "3", author: "Valentina P.", text: "Escribir una carta a mi yo futuro fue el ejercicio más liberador que he hecho. Me prometí seguir eligiéndome, todos los días.", tag: "Reflexión", createdAt: new Date("2026-04-05") },
+  { id: "4", author: "Isabel G.", text: "Cada noche escribo tres cosas bonitas de mi día. Es curioso cómo empiezas a buscar activamente lo bueno. Mi mente ya no se enfoca en lo que falta, sino en lo que abunda.", tag: "Diario de gratitud", createdAt: new Date("2026-04-12") },
+  { id: "5", author: "Mariana L.", text: "Hoy medité 10 minutos sin distracciones. Al principio sentí inquietud, pero luego llegó una paz profunda. Mi mente está aprendiendo a descansar.", tag: "Meditación", createdAt: new Date("2026-04-18") },
+];
+
+async function getForumPosts() {
+  try {
+    const dbPosts = await prisma.forumPost.findMany({ orderBy: { createdAt: "desc" }, take: 50 });
+    if (dbPosts && (dbPosts as any[]).length > 0) return dbPosts as any[];
+  } catch { /* offline */ }
+  return null;
+}
+
+export default async function CommunityPage() {
+  const dbPosts = await getForumPosts();
+  const posts = dbPosts || FALLBACK_POSTS;
+  const offline = !dbPosts;
+
   return (
     <>
       <CommunityHero />
       <CommunityFeatures />
-      <CommunityFeed />
+      <ForumSection posts={posts} offline={offline} />
       <CommunityCTA />
     </>
   );
@@ -68,29 +90,8 @@ function CommunityFeatures() {
   );
 }
 
-// ============ FEED COMUNIDAD ============
-function CommunityFeed() {
-  const posts = [
-    {
-      author: "Camila R.",
-      avatar: "C",
-      text: "Hoy cumplí 30 días con Alma Serena y siento que mi relación conmigo misma ha cambiado profundamente. La gratitud ya no es un ejercicio, es una forma de ver la vida.",
-      tag: "30 días",
-    },
-    {
-      author: "Sofía M.",
-      avatar: "S",
-      text: "El reto de desconectarme 30 minutos del mundo digital fue transformador. Descubrí que el silencio no es vacío, es espacio para escucharme.",
-      tag: "Reto semanal",
-    },
-    {
-      author: "Valentina P.",
-      avatar: "V",
-      text: "Escribir una carta a mi yo futuro fue el ejercicio más liberador que he hecho. Me prometí seguir eligiéndome, todos los días.",
-      tag: "Reflexión",
-    },
-  ];
-
+// ============ FORO COMUNIDAD ============
+function ForumSection({ posts, offline }: { posts: any[]; offline: boolean }) {
   return (
     <section className="py-20 bg-cream/50">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -98,30 +99,30 @@ function CommunityFeed() {
           <SectionTitle>Voces de la comunidad</SectionTitle>
           <DecorativeDivider className="my-6" />
         </div>
-        <div className="space-y-6">
+
+        {offline && (
+          <p className="text-center text-xs text-sage/50 italic mb-8">✿ Mensajes de muestra — inicia sesión para compartir tu voz</p>
+        )}
+
+        <div className="space-y-6 mb-10">
           {posts.map((post) => (
-            <div key={post.author} className="p-6 rounded-xl bg-warm-white border border-sage/10">
+            <div key={post.id} className="p-6 rounded-xl bg-warm-white border border-sage/10">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-sage/20 flex items-center justify-center text-sage-dark font-medium text-sm">
-                  {post.avatar}
+                  {post.author?.charAt(0)?.toUpperCase() || "?"}
                 </div>
                 <div>
                   <div className="font-medium text-sm text-charcoal">{post.author}</div>
-                  <div className="text-xs text-gold">{post.tag}</div>
+                  <div className="text-xs text-gold">{post.tag || "Comunidad"}</div>
                 </div>
+                <div className="ml-auto text-xs text-charcoal/30">{new Date(post.createdAt).toLocaleDateString("es")}</div>
               </div>
               <p className="text-charcoal/60 text-sm leading-relaxed">&ldquo;{post.text}&rdquo;</p>
             </div>
           ))}
         </div>
-        <div className="text-center mt-10">
-          <a
-            href="/login?mode=signup"
-            className="inline-flex items-center px-6 py-3 bg-sage text-white rounded-full text-sm font-medium hover:bg-sage-dark transition-colors shadow-sm"
-          >
-            Quiero unirme
-          </a>
-        </div>
+
+        <ForumForm />
       </div>
     </section>
   );

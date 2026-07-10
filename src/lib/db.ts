@@ -46,8 +46,9 @@ async function exec(prop: string, method: string, args: unknown[]): Promise<unkn
   if (!client) {
     if (prop === "product" && method === "findMany") return [];
     if (prop === "post" && method === "findMany") return [];
+    if (prop === "forumPost" && method === "findMany") return [];
     if (method === "count") return 0;
-    if (method === "findUnique") return null;
+    if (method === "findUnique" || method === "findFirst") return null;
     if (method === "create" || method === "update") return null;
     if (method === "aggregate") return { _sum: { amount: 0 }, _count: 0, _avg: {}, _min: {}, _max: {} } as never;
     return [];

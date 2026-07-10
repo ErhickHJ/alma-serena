@@ -72,6 +72,15 @@ model Product {
   updatedAt DateTime @updatedAt
 }
 
+model ForumPost {
+  id        String   @id @default(cuid())
+  author    String
+  clerkUserId String?
+  text      String
+  tag       String   @default("")
+  createdAt DateTime @default(now())
+}
+
 model AdminLog {
   id        String   @id @default(cuid())
   userId    String
