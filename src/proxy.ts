@@ -25,16 +25,14 @@ export default clerkMiddleware(
   },
   {
     contentSecurityPolicy: {
-      directives: {
-        "script-src": ["'self'", "'unsafe-inline'", "https://*.clerk.accounts.dev", "https://js.stripe.com"],
-        "style-src": ["'self'", "'unsafe-inline'"],
-        "img-src": ["'self'", "data:", "blob:", "https://img.clerk.com", "https://*.clerk.accounts.dev"],
-        "frame-src": ["https://*.clerk.accounts.dev", "https://js.stripe.com"],
-        "connect-src": ["'self'", "https://api.stripe.com", "https://*.clerk.accounts.dev", "https://*.clerk.com"],
-        "font-src": ["'self'"],
-        "base-uri": ["'self'"],
-        "form-action": ["'self'"],
-      },
+      "script-src": ["'self'", "'unsafe-inline'", "https://*.clerk.accounts.dev", "https://js.stripe.com"],
+      "style-src": ["'self'", "'unsafe-inline'"],
+      "img-src": ["'self'", "data:", "blob:", "https://img.clerk.com", "https://*.clerk.accounts.dev"],
+      "frame-src": ["https://*.clerk.accounts.dev", "https://js.stripe.com"],
+      "connect-src": ["'self'", "https://api.stripe.com", "https://*.clerk.accounts.dev", "https://*.clerk.com"],
+      "font-src": ["'self'"],
+      "base-uri": ["'self'"],
+      "form-action": ["'self'"],
     },
   },
 );

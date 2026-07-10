@@ -6,6 +6,7 @@
     "dev": "next dev",
     "postinstall": "prisma generate",
     "build": "next build",
+    "db:seed": "node scripts/seed-products.mjs",
     "db:sync": "prisma db push --accept-data-loss",
     "start": "next start",
     "lint": "eslint src/",

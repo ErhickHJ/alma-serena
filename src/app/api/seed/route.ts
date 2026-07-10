@@ -1,12 +1,8 @@
-// Seed script — Puebla la tabla Product con 16 productos iniciales
-// Ejecutar: npm run db:seed (o node scripts/seed-products.mjs)
-// Solo crea productos que no existan (por nombre)
-
-import { PrismaClient } from "../src/generated/prisma/client/index.js";
+import { NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
+import { prisma } from "@/lib/db";
 
 const IMG = "/images/portada.jpg";
-const prisma = new PrismaClient();
-
 const products = [
   { name: "Vela Aromática - Lavanda", price: 18.00, image: IMG, emoji: "🕯️", category: "Velas y Aromaterapia", desc: "Aroma calmante para tus momentos de meditación.", featured: true },
   { name: "Vela Aromática - Sándalo", price: 18.00, image: IMG, emoji: "🕯️", category: "Velas y Aromaterapia", desc: "Notas amaderadas que invitan a la paz interior.", featured: false },
@@ -26,21 +22,23 @@ const products = [
   { name: "Bálsamo de Templos", price: 12.00, image: IMG, emoji: "🌿", category: "Ritual y Bienestar", desc: "Alivia la tensión con aceites esenciales puros.", featured: false },
 ];
 
-async function main() {
-  console.log("Seeding products...");
-  let count = 0;
-  for (const p of products) {
-    const existing = await prisma.product.findFirst({ where: { name: p.name } });
-    if (!existing) {
-      await prisma.product.create({ data: p });
-      count++;
-    }
+export async function POST() {
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ success: false, error: "No autorizado" }, { status: 401 });
   }
-  console.log(`Created ${count} new products.`);
-  await prisma.$disconnect();
-}
 
-main().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+  try {
+    let created = 0;
+    for (const p of products) {
+      const existing = await prisma.product.findFirst({ where: { name: p.name } });
+      if (!existing) {
+        await prisma.product.create({ data: p });
+        created++;
+      }
+    }
+    return NextResponse.json({ success: true, created });
+  } catch (e: any) {
+    return NextResponse.json({ success: false, error: e?.message }, { status: 500 });
+  }
+}
