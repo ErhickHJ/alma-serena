@@ -81,6 +81,23 @@ model ForumPost {
   createdAt DateTime @default(now())
 }
 
+model Referral {
+  id              String   @id @default(cuid())
+  referrerUserId  String
+  referredUserId  String   @unique
+  createdAt       DateTime @default(now())
+}
+
+model CommunityLeader {
+  id            String   @id @default(cuid())
+  clerkUserId   String   @unique
+  name          String
+  email         String   @default("")
+  referralCount Int      @default(0)
+  level         Int      @default(1)
+  createdAt     DateTime @default(now())
+}
+
 model AdminLog {
   id        String   @id @default(cuid())
   userId    String

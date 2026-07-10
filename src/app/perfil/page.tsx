@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import DecorativeDivider from "@/components/DecorativeDivider";
+import { ReferralSection } from "./ReferralSection";
 
 export const metadata = { title: "Mi perfil" };
 
@@ -42,6 +43,10 @@ export default async function PerfilPage() {
         )}
 
         <div className="mt-12 pt-8 border-t border-sage/10">
+          <ReferralSection />
+        </div>
+
+        <div className="mt-8 pt-8 border-t border-sage/10">
           <Link href="/" className="text-sm text-sage hover:text-sage-dark transition-colors">← Volver al inicio</Link>
         </div>
       </div>
