@@ -1,0 +1,7 @@
+table_name,table_schema
+ContactMessage,public
+PartnerRequest,public
+Order,public
+Subscriber,public
+Post,public
+AdminLog,public
