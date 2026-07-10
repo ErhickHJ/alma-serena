@@ -41,6 +41,7 @@ export default async function AdminPedidosPage(props: { searchParams?: Promise<{
         <p className="text-charcoal/40 text-sm">{q ? "Sin resultados." : "No hay pedidos registrados."}</p>
       ) : (
         <div className="bg-warm-white rounded-xl border border-sage/10 shadow-sm overflow-hidden">
+          <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-sage/10 text-left text-charcoal/50 text-xs uppercase tracking-wider">
@@ -69,6 +70,7 @@ export default async function AdminPedidosPage(props: { searchParams?: Promise<{
               ))}
             </tbody>
           </table>
+          </div>
           <Pagination page={page} totalPages={totalPages} basePath="/admin/pedidos" query={q} />
         </div>
       )}

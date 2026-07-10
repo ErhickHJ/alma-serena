@@ -29,8 +29,8 @@ export default function LoginPage() {
         <div className="bg-warm-white rounded-xl p-8 border border-sage/10 shadow-sm flex justify-center">
           <Suspense fallback={null}>
             <RedirectHandler />
-            <SignIn signUpUrl="/sign-up" />
           </Suspense>
+          <SignIn signUpUrl="/sign-up" />
         </div>
       </div>
     </section>

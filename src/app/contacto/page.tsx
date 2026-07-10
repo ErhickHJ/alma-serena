@@ -38,6 +38,8 @@ function ContactHero() {
 // ============ FORMULARIO CONTACTO ============
 function ContactFormSection() {
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   if (sent) {
     return (
@@ -61,10 +63,19 @@ function ContactFormSection() {
             <h2 className="font-serif text-2xl text-sage-dark mb-4">Envíanos un mensaje</h2>
             <form onSubmit={async (e) => {
               e.preventDefault();
-              const form = e.currentTarget;
-              const data = new URLSearchParams(new FormData(form) as any);
-              await fetch("/api/contact", { method: "POST", body: data, headers: { "Content-Type": "application/x-www-form-urlencoded" } });
-              setSent(true);
+              setLoading(true);
+              setError("");
+              try {
+                const form = e.currentTarget;
+                const data = new URLSearchParams(new FormData(form) as any);
+                const res = await fetch("/api/contact", { method: "POST", body: data, headers: { "Content-Type": "application/x-www-form-urlencoded" } });
+                if (!res.ok) throw new Error("Error al enviar");
+                setSent(true);
+              } catch {
+                setError("No se pudo enviar el mensaje. Intenta de nuevo.");
+              } finally {
+                setLoading(false);
+              }
             }} className="space-y-4">
               <div>
                 <label htmlFor="name" className="block text-sm text-charcoal/60 mb-1">Nombre *</label>
@@ -112,11 +123,13 @@ function ContactFormSection() {
                   className="w-full px-4 py-3 rounded-lg border border-sage/20 bg-warm-white text-sm focus:outline-none focus:border-sage transition-colors resize-none"
                 />
               </div>
+              {error && <p className="text-rose text-sm">{error}</p>}
               <button
                 type="submit"
-                className="px-6 py-3 bg-sage text-white rounded-full text-sm font-medium hover:bg-sage-dark transition-colors shadow-sm"
+                disabled={loading}
+                className="px-6 py-3 bg-sage text-white rounded-full text-sm font-medium hover:bg-sage-dark transition-colors shadow-sm disabled:opacity-50"
               >
-                Enviar mensaje
+                {loading ? "Enviando..." : "Enviar mensaje"}
               </button>
             </form>
           </div>

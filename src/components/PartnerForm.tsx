@@ -4,6 +4,8 @@ import { useState } from "react";
 
 export default function PartnerForm() {
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   if (sent) {
     return (
@@ -19,10 +21,19 @@ export default function PartnerForm() {
   return (
     <form onSubmit={async (e) => {
       e.preventDefault();
-      const form = e.currentTarget;
-      const data = new URLSearchParams(new FormData(form) as any);
-      await fetch("/api/partners", { method: "POST", body: data, headers: { "Content-Type": "application/x-www-form-urlencoded" } });
-      setSent(true);
+      setLoading(true);
+      setError("");
+      try {
+        const form = e.currentTarget;
+        const data = new URLSearchParams(new FormData(form) as any);
+        const res = await fetch("/api/partners", { method: "POST", body: data, headers: { "Content-Type": "application/x-www-form-urlencoded" } });
+        if (!res.ok) throw new Error("Error al enviar");
+        setSent(true);
+      } catch {
+        setError("No se pudo enviar. Intenta de nuevo.");
+      } finally {
+        setLoading(false);
+      }
     }} className="max-w-md mx-auto text-left space-y-4">
       <div>
         <label htmlFor="business" className="block text-sm text-charcoal/60 mb-1">Nombre del negocio *</label>
@@ -44,8 +55,9 @@ export default function PartnerForm() {
         <label htmlFor="message" className="block text-sm text-charcoal/60 mb-1">Mensaje (opcional)</label>
         <textarea id="message" name="message" rows={3} className="w-full px-4 py-2.5 rounded-lg border border-sage/20 bg-warm-white text-sm focus:outline-none focus:border-sage transition-colors resize-none" />
       </div>
-      <button type="submit" className="w-full py-2.5 bg-sage text-white rounded-full text-sm font-medium hover:bg-sage-dark transition-colors shadow-sm">
-        Enviar solicitud
+      {error && <p className="text-rose text-sm text-center">{error}</p>}
+      <button type="submit" disabled={loading} className="w-full py-2.5 bg-sage text-white rounded-full text-sm font-medium hover:bg-sage-dark transition-colors shadow-sm disabled:opacity-50">
+        {loading ? "Enviando..." : "Enviar solicitud"}
       </button>
     </form>
   );

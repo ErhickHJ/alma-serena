@@ -1,6 +1,3 @@
-// Admin — CRUD de productos
-// Lista paginada con enlace a formulario de edición/creación
-
 import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { DeleteButton } from "@/components/DeleteButton";
@@ -8,12 +5,15 @@ import { Pagination } from "@/components/Pagination";
 
 const PER_PAGE = 20;
 
-export default async function AdminProductosPage(props: { searchParams?: Promise<{ page?: string }> }) {
-  const { page: pageStr } = await (props.searchParams ?? Promise.resolve({ page: "1" }));
+export default async function AdminProductosPage(props: { searchParams?: Promise<{ page?: string; q?: string; cat?: string }> }) {
+  const { page: pageStr, q = "", cat = "" } = await (props.searchParams ?? Promise.resolve({ page: "1", q: "", cat: "" }));
   const page = Math.max(1, Number(pageStr) || 1);
+  const where: Record<string, unknown> = {};
+  if (q) where.name = { contains: q, mode: "insensitive" as const };
+  if (cat) where.category = cat;
   const [products, total] = await Promise.all([
-    prisma.product.findMany({ orderBy: { category: "asc" }, skip: (page - 1) * PER_PAGE, take: PER_PAGE }),
-    prisma.product.count(),
+    prisma.product.findMany({ where, orderBy: { category: "asc" }, skip: (page - 1) * PER_PAGE, take: PER_PAGE }),
+    prisma.product.count({ where }),
   ]);
   const totalPages = Math.ceil(total / PER_PAGE);
 
@@ -23,38 +23,53 @@ export default async function AdminProductosPage(props: { searchParams?: Promise
         <h1 className="font-serif text-3xl sm:text-4xl text-sage-dark">Productos</h1>
         <Link href="/admin/productos/nuevo" className="px-4 py-2 bg-sage text-white rounded-lg text-sm font-medium hover:bg-sage-dark transition-colors">+ Nuevo producto</Link>
       </div>
+
+      <form className="flex gap-2 mb-6">
+        <input type="text" name="q" defaultValue={q || ""} placeholder="Buscar por nombre..." aria-label="Buscar producto" className="flex-1 max-w-xs px-4 py-2 rounded-lg border border-sage/20 bg-warm-white text-sm focus:outline-none focus:border-sage transition-colors" />
+        <select name="cat" defaultValue={cat || ""} aria-label="Filtrar por categoría" className="px-4 py-2 rounded-lg border border-sage/20 bg-warm-white text-sm focus:outline-none focus:border-sage transition-colors">
+          <option value="">Todas</option>
+          <option value="libros">Libros</option>
+          <option value="diarios">Diarios</option>
+          <option value="velas">Velas</option>
+          <option value="accesorios">Accesorios</option>
+        </select>
+        <button type="submit" className="px-4 py-2 bg-sage text-white rounded-lg text-sm hover:bg-sage-dark transition-colors">Filtrar</button>
+      </form>
+
       {products.length === 0 ? (
-        <p className="text-charcoal/40 text-sm">No hay productos aún.</p>
+        <p className="text-charcoal/40 text-sm">{q || cat ? "Sin resultados." : "No hay productos aún."}</p>
       ) : (
         <div className="bg-warm-white rounded-xl border border-sage/10 shadow-sm overflow-hidden">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-sage/10 text-left text-charcoal/50 text-xs uppercase tracking-wider">
-                <th className="p-4">Nombre</th>
-                <th className="p-4">Categoría</th>
-                <th className="p-4">Precio</th>
-                <th className="p-4">Destacado</th>
-                <th className="p-4"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map((p) => (
-                <tr key={p.id} className="border-b border-sage/5 hover:bg-sage/5 transition-colors">
-                  <td className="p-4 font-medium text-charcoal">{p.emoji} {p.name}</td>
-                  <td className="p-4 text-charcoal/50">{p.category}</td>
-                  <td className="p-4 text-charcoal">${p.price.toFixed(2)}</td>
-                  <td className="p-4">
-                    <span className={`text-xs px-2 py-0.5 rounded-full ${p.featured ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}>{p.featured ? "Sí" : "No"}</span>
-                  </td>
-                  <td className="p-4 flex gap-2">
-                    <Link href={`/admin/productos/${p.id}`} className="text-xs text-sage hover:text-sage-dark transition-colors">Editar</Link>
-                    <DeleteButton id={p.id} type="product" />
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-sage/10 text-left text-charcoal/50 text-xs uppercase tracking-wider">
+                  <th className="p-4">Nombre</th>
+                  <th className="p-4">Categoría</th>
+                  <th className="p-4">Precio</th>
+                  <th className="p-4">Destacado</th>
+                  <th className="p-4"></th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          <Pagination page={page} totalPages={totalPages} basePath="/admin/productos" />
+              </thead>
+              <tbody>
+                {products.map((p) => (
+                  <tr key={p.id} className="border-b border-sage/5 hover:bg-sage/5 transition-colors">
+                    <td className="p-4 font-medium text-charcoal whitespace-nowrap">{p.emoji} {p.name}</td>
+                    <td className="p-4 text-charcoal/50 whitespace-nowrap">{p.category}</td>
+                    <td className="p-4 text-charcoal whitespace-nowrap">${p.price.toFixed(2)}</td>
+                    <td className="p-4 whitespace-nowrap">
+                      <span className={`text-xs px-2 py-0.5 rounded-full ${p.featured ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}>{p.featured ? "Sí" : "No"}</span>
+                    </td>
+                    <td className="p-4 flex gap-2 whitespace-nowrap">
+                      <Link href={`/admin/productos/${p.id}`} className="text-xs text-sage hover:text-sage-dark transition-colors">Editar</Link>
+                      <DeleteButton id={p.id} type="product" />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <Pagination page={page} totalPages={totalPages} basePath="/admin/productos" query={q} />
         </div>
       )}
     </>

@@ -41,6 +41,7 @@ export default async function AdminContactosPage(props: { searchParams?: Promise
         <p className="text-charcoal/40 text-sm">{q ? "Sin resultados." : "No hay mensajes aún."}</p>
       ) : (
         <div className="bg-warm-white rounded-xl border border-sage/10 shadow-sm overflow-hidden">
+          <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-sage/10 text-left text-charcoal/50 text-xs uppercase tracking-wider">
@@ -55,18 +56,19 @@ export default async function AdminContactosPage(props: { searchParams?: Promise
             <tbody>
               {messages.map((m) => (
                 <tr key={m.id} className="border-b border-sage/5 hover:bg-sage/5 transition-colors">
-                  <td className="p-4 font-medium text-charcoal">{m.name}</td>
-                  <td className="p-4 text-charcoal/50">{m.email}</td>
+                  <td className="p-4 font-medium text-charcoal whitespace-nowrap">{m.name}</td>
+                  <td className="p-4 text-charcoal/50 whitespace-nowrap">{m.email}</td>
                   <td className="p-4 text-charcoal/70">{m.subject || "—"}</td>
                   <td className="p-4 text-charcoal/50 max-w-xs truncate">{m.message}</td>
                   <td className="p-4 text-charcoal/40 whitespace-nowrap">{new Date(m.createdAt).toLocaleDateString()}</td>
-                  <td className="p-4">
+                  <td className="p-4 whitespace-nowrap">
                     <DeleteButton id={m.id} type="contact" />
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          </div>
           <Pagination page={page} totalPages={totalPages} basePath="/admin/contactos" query={q} />
         </div>
       )}

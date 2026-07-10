@@ -7,13 +7,17 @@ async function getClient(): Promise<PrismaClient | null> {
   if (dbAvailable === false) return null;
   if (_client) return _client;
   try {
+    const { Pool } = await import("pg");
     const { PrismaPg } = await import("@prisma/adapter-pg");
-    const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
+    const pool = new Pool({ connectionString: process.env.DATABASE_URL!, connectionTimeoutMillis: 3000 });
+    const adapter = new PrismaPg(pool);
     _client = new PrismaClient({ adapter });
+    await _client.$connect();
     dbAvailable = true;
     return _client;
   } catch {
     dbAvailable = false;
+    _client = null;
     return null;
   }
 }
