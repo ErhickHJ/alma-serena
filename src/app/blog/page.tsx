@@ -8,12 +8,21 @@ export const metadata = { title: "Blog" };
 
 const PER_PAGE = 9;
 
+const FALLBACK_POSTS = [
+  { id: "1", title: "El poder de la gratitud en tu vida diaria", slug: "poder-de-la-gratitud", excerpt: "Descubre cómo practicar la gratitud puede transformar tu perspectiva y traer más paz a tu día a día.", imageUrl: "", createdAt: new Date("2026-01-15") },
+  { id: "2", title: "5 rituales matutinos para empezar el día con calma", slug: "5-rituales-matutinos-calma", excerpt: "Pequeñas acciones que puedes incorporar cada mañana para cultivar serenidad y bienestar.", imageUrl: "", createdAt: new Date("2026-02-01") },
+  { id: "3", title: "Cómo crear un espacio de paz en tu hogar", slug: "espacio-de-paz-en-casa", excerpt: "Consejos sencillos para transformar cualquier rincón de tu casa en un refugio de tranquilidad.", imageUrl: "", createdAt: new Date("2026-02-20") },
+  { id: "4", title: "La ciencia detrás de la meditación", slug: "ciencia-detras-meditacion", excerpt: "Qué dice la investigación sobre los beneficios de la meditación para tu mente y tu cuerpo.", imageUrl: "", createdAt: new Date("2026-03-10") },
+  { id: "5", title: "Aceptar lo que no podemos controlar", slug: "aceptar-lo-que-no-podemos-controlar", excerpt: "Una reflexión sobre el arte de soltar y encontrar paz en medio de la incertidumbre.", imageUrl: "", createdAt: new Date("2026-03-28") },
+  { id: "6", title: "Diario de gratitud: cómo empezar y mantener el hábito", slug: "diario-de-gratitud-como-empezar", excerpt: "Guía práctica para crear y mantener un diario de gratitud que transforme tu mirada.", imageUrl: "", createdAt: new Date("2026-04-15") },
+];
+
 export default async function BlogPage(props: { searchParams?: Promise<{ q?: string; page?: string }> }) {
   const { q = "", page: pageStr } = await (props.searchParams ?? Promise.resolve({ q: "", page: "1" }));
   const page = Math.max(1, Number(pageStr) || 1);
-  let posts: { id: string; title: string; slug: string; excerpt: string; imageUrl: string; createdAt: Date }[] = [];
+  let posts: typeof FALLBACK_POSTS = [];
   let total = 0;
-  let error: string | null = null;
+  let offline = false;
 
   const where: Record<string, unknown> = { published: true };
   if (q) {
@@ -24,15 +33,22 @@ export default async function BlogPage(props: { searchParams?: Promise<{ q?: str
   }
 
   try {
-    [posts, total] = await Promise.all([
+    const [dbPosts, dbTotal] = await Promise.all([
       prisma.post.findMany({ where, orderBy: { createdAt: "desc" }, skip: (page - 1) * PER_PAGE, take: PER_PAGE }),
       prisma.post.count({ where }),
     ]);
-  } catch (e: any) {
-    error = e?.message || "Error al cargar los artículos";
+    posts = dbPosts as typeof FALLBACK_POSTS;
+    total = dbTotal;
+  } catch {
+    offline = true;
+    posts = q
+      ? FALLBACK_POSTS.filter(p => p.title.toLowerCase().includes(q.toLowerCase()) || p.excerpt.toLowerCase().includes(q.toLowerCase()))
+      : FALLBACK_POSTS;
+    total = posts.length;
   }
 
   const totalPages = Math.ceil(total / PER_PAGE);
+  const displayedPosts = page > 1 || total > PER_PAGE ? posts.slice(0, PER_PAGE) : posts;
 
   return (
     <section className="py-16 sm:py-24">
@@ -55,29 +71,31 @@ export default async function BlogPage(props: { searchParams?: Promise<{ q?: str
           </div>
         </form>
 
+        <div className="text-center max-w-lg mx-auto mb-8">
+          <p className="text-sm text-sage-dark/60 italic leading-relaxed">"La gratitud no solo es la más grande de las virtudes, sino la madre de todas las demás."</p>
+          <p className="text-xs text-charcoal/40 mt-2">— Cicerón</p>
+        </div>
+
         <DecorativeDivider className="mb-12" />
 
-        {error ? (
-          <div className="text-center">
-            <p className="text-charcoal/40 text-sm">{error}</p>
+        {offline && (
+          <div className="text-center mb-8">
+            <p className="text-xs text-sage/50 italic">✿ Artículos de muestra — inicia sesión como admin para escribir y publicar</p>
           </div>
-        ) : posts.length === 0 ? (
+        )}
+
+        {posts.length === 0 ? (
           <p className="text-center text-charcoal/40 text-sm">{q ? "No se encontraron artículos." : "Próximamente artículos..."}</p>
         ) : (
           <div>
             {q && <p className="text-sm text-charcoal/40 mb-6 text-center">{total} resultado{total !== 1 ? "s" : ""} para &ldquo;{q}&rdquo;</p>}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-              {posts.map((post) => (
+              {displayedPosts.map((post) => (
                 <Link
                   key={post.id}
                   href={`/blog/${post.slug}`}
                   className="group block bg-warm-white rounded-xl border border-sage/10 shadow-sm hover:shadow-md transition-shadow overflow-hidden"
                 >
-                  {post.imageUrl && (
-                    <div className="aspect-[16/9] bg-sage/10 overflow-hidden">
-                      <img src={post.imageUrl} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                    </div>
-                  )}
                   <div className="p-5">
                     <p className="text-xs text-sage/60 mb-2">{new Date(post.createdAt).toLocaleDateString("es")}</p>
                     <h2 className="font-serif text-lg text-sage-dark group-hover:text-sage transition-colors mb-2">{post.title}</h2>
@@ -89,6 +107,22 @@ export default async function BlogPage(props: { searchParams?: Promise<{ q?: str
             <Pagination page={page} totalPages={totalPages} basePath="/blog" query={q} />
           </div>
         )}
+
+        <DecorativeDivider className="my-16" />
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+          <div className="p-4">
+            <p className="text-2xl mb-2">✿</p>
+            <p className="text-xs text-charcoal/50 italic">"La gratitud convierte lo que tenemos en suficiente."</p>
+          </div>
+          <div className="p-4">
+            <p className="text-2xl mb-2">☽</p>
+            <p className="text-xs text-charcoal/50 italic">"En medio del movimiento, encuentra tu calma."</p>
+          </div>
+          <div className="p-4">
+            <p className="text-2xl mb-2">✦</p>
+            <p className="text-xs text-charcoal/50 italic">"Pequeñas pausas, grandes transformaciones."</p>
+          </div>
+        </div>
       </div>
     </section>
   );
