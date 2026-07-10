@@ -28,11 +28,12 @@ export default async function AdminLogPage(props: { searchParams?: Promise<{ pag
         <span className="text-xs text-charcoal/30">{total} registros</span>
       </div>
 
-      <form className="mb-6">
-        <select name="action" defaultValue={actionFilter || ""} onChange={(e) => e.currentTarget.form?.requestSubmit()} aria-label="Filtrar por acción" className="px-4 py-2 rounded-lg border border-sage/20 bg-warm-white text-sm focus:outline-none focus:border-sage transition-colors">
+      <form className="mb-6 flex gap-2">
+        <select name="action" defaultValue={actionFilter || ""} aria-label="Filtrar por acción" className="px-4 py-2 rounded-lg border border-sage/20 bg-warm-white text-sm focus:outline-none focus:border-sage transition-colors">
           <option value="">Todas las acciones</option>
           {actionTypes.map((a) => <option key={a} value={a}>{a}</option>)}
         </select>
+        <button type="submit" className="px-4 py-2 bg-sage text-white rounded-lg text-sm font-medium hover:bg-sage-dark transition-colors">Filtrar</button>
       </form>
 
       {logs.length === 0 ? (
