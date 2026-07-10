@@ -10,12 +10,20 @@ import Carousel from "@/components/Carousel";
 import NewsletterForm from "@/components/NewsletterForm";
 import { prisma } from "@/lib/db";
 
+const FALLBACK_FEATURED = [
+  { id: "fb-1", name: "Vela Aromática - Lavanda", price: 18.00, image: "/images/portada.jpg", emoji: "🕯️" },
+  { id: "fb-2", name: "Cuaderno de Gratitud", price: 12.00, image: "/images/portada.jpg", emoji: "📓" },
+  { id: "fb-3", name: "Cristal de Amatista", price: 22.00, image: "/images/portada.jpg", emoji: "💜" },
+  { id: "fb-4", name: "Kit de Té Relajante", price: 15.00, image: "/images/portada.jpg", emoji: "🍵" },
+];
+
 export default async function Home() {
-  let featured: { id: string; name: string; price: number; image: string; emoji: string }[] = [];
+  let featured = FALLBACK_FEATURED;
   try {
-    featured = await prisma.product.findMany({ where: { featured: true }, orderBy: { name: "asc" } });
+    const dbFeatured = await prisma.product.findMany({ where: { featured: true }, orderBy: { name: "asc" } });
+    if (dbFeatured.length > 0) featured = dbFeatured;
   } catch {
-    // DB no disponible — mostrar sin productos destacados
+    // DB offline — usando fallback local
   }
 
   return (
