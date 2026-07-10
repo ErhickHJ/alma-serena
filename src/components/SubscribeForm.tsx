@@ -13,6 +13,7 @@ export default function SubscribeForm() {
   }
 
   return (
+    <>
     <form
       onSubmit={async (e) => {
         e.preventDefault();
@@ -58,5 +59,6 @@ export default function SubscribeForm() {
         Al suscribirte, aceptas nuestro{' '}
         <a href="/aviso-privacidad" target="_blank" className="underline hover:text-sage-dark">aviso de privacidad</a>.
       </p>
+    </>
   );
 }
