@@ -1,11 +1,9 @@
 import { PrismaClient } from "@/generated/prisma/client";
 
-let dbAvailable: boolean | null = null;
+let _dbAvailable: boolean | null | Promise<PrismaClient | null> = null;
 let _client: PrismaClient | null = null;
 
-async function getClient(): Promise<PrismaClient | null> {
-  if (dbAvailable === false) return null;
-  if (_client) return _client;
+async function initClient(): Promise<PrismaClient | null> {
   try {
     const { Pool } = await import("pg");
     const url = new URL(process.env.DATABASE_URL!);
@@ -27,16 +25,24 @@ async function getClient(): Promise<PrismaClient | null> {
     const { PrismaPg } = await import("@prisma/adapter-pg");
     const adapter = new PrismaPg(pool);
     _client = new PrismaClient({ adapter });
-    dbAvailable = true;
+    _dbAvailable = true;
     return _client;
   } catch {
-    dbAvailable = false;
+    _dbAvailable = false;
     return null;
   }
 }
 
+function getClient(): Promise<PrismaClient | null> {
+  if (_dbAvailable === false) return Promise.resolve(null);
+  if (_client) return Promise.resolve(_client);
+  if (_dbAvailable instanceof Promise) return _dbAvailable;
+  _dbAvailable = initClient();
+  return _dbAvailable;
+}
+
 async function exec(prop: string, method: string, args: unknown[]): Promise<unknown> {
-  const client = dbAvailable === false ? null : await getClient();
+  const client = _dbAvailable === false ? null : await getClient();
   if (!client) {
     if (prop === "product" && method === "findMany") return [];
     if (prop === "post" && method === "findMany") return [];
@@ -51,7 +57,7 @@ async function exec(prop: string, method: string, args: unknown[]): Promise<unkn
     if (!m || typeof m[method] !== "function") return [];
     return await m[method](...args);
   } catch (e) {
-    dbAvailable = false;
+    _dbAvailable = false;
     console.warn("DB query failed, switching to offline mode:", (e as Error)?.message);
     return [];
   }
