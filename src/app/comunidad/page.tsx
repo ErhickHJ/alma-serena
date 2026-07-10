@@ -115,7 +115,10 @@ function ForumSection({ posts, offline }: { posts: any[]; offline: boolean }) {
                   <div className="font-medium text-sm text-charcoal">{post.author}</div>
                   <div className="text-xs text-gold">{post.tag || "Comunidad"}</div>
                 </div>
-                <div className="ml-auto text-xs text-charcoal/30">{new Date(post.createdAt).toLocaleDateString("es")}</div>
+                <div className="ml-auto flex items-center gap-2">
+                  <span className="text-xs text-charcoal/30">{new Date(post.createdAt).toLocaleDateString("es")}</span>
+                  {!offline && <ReportButton postId={post.id} />}
+                </div>
               </div>
               <p className="text-charcoal/60 text-sm leading-relaxed">&ldquo;{post.text}&rdquo;</p>
             </div>
@@ -125,6 +128,21 @@ function ForumSection({ posts, offline }: { posts: any[]; offline: boolean }) {
         <ForumForm />
       </div>
     </section>
+  );
+}
+
+function ReportButton({ postId }: { postId: string }) {
+  return (
+    <button
+      onClick={async () => {
+        await fetch("/api/forum/report", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ postId }) });
+        alert("Gracias por tu reporte. Lo revisaremos a la brevedad.");
+      }}
+      className="text-xs text-charcoal/20 hover:text-red-400 transition-colors"
+      title="Reportar este mensaje"
+    >
+      ⚑
+    </button>
   );
 }
 
