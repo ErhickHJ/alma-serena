@@ -22,21 +22,34 @@ const products = [
   { name: "Bálsamo de Templos", price: 12.00, image: IMG, emoji: "🌿", category: "Ritual y Bienestar", desc: "Alivia la tensión con aceites esenciales puros.", featured: false },
 ];
 
+async function seed() {
+  let created = 0;
+  for (const p of products) {
+    const existing = await prisma.product.findFirst({ where: { name: p.name } });
+    if (!existing) {
+      await prisma.product.create({ data: p });
+      created++;
+    }
+  }
+  return created;
+}
+
 export async function POST() {
   const { userId } = await auth();
-  if (!userId) {
-    return NextResponse.json({ success: false, error: "No autorizado" }, { status: 401 });
-  }
-
+  if (!userId) return NextResponse.json({ success: false, error: "No autorizado" }, { status: 401 });
   try {
-    let created = 0;
-    for (const p of products) {
-      const existing = await prisma.product.findFirst({ where: { name: p.name } });
-      if (!existing) {
-        await prisma.product.create({ data: p });
-        created++;
-      }
-    }
+    const created = await seed();
+    return NextResponse.json({ success: true, created });
+  } catch (e: any) {
+    return NextResponse.json({ success: false, error: e?.message }, { status: 500 });
+  }
+}
+
+export async function GET() {
+  const { userId } = await auth();
+  if (!userId) return NextResponse.json({ success: false, error: "No autorizado" }, { status: 401 });
+  try {
+    const created = await seed();
     return NextResponse.json({ success: true, created });
   } catch (e: any) {
     return NextResponse.json({ success: false, error: e?.message }, { status: 500 });
