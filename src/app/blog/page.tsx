@@ -37,8 +37,9 @@ export default async function BlogPage(props: { searchParams?: Promise<{ q?: str
       prisma.post.findMany({ where, orderBy: { createdAt: "desc" }, skip: (page - 1) * PER_PAGE, take: PER_PAGE }),
       prisma.post.count({ where }),
     ]);
-    posts = dbPosts as typeof FALLBACK_POSTS;
-    total = dbTotal;
+    posts = (dbPosts as typeof FALLBACK_POSTS).length > 0 ? (dbPosts as typeof FALLBACK_POSTS) : FALLBACK_POSTS;
+    total = dbPosts.length > 0 ? dbTotal : FALLBACK_POSTS.length;
+    if (dbPosts.length === 0 && dbTotal === 0) offline = true;
   } catch {
     offline = true;
     posts = q
@@ -48,7 +49,6 @@ export default async function BlogPage(props: { searchParams?: Promise<{ q?: str
   }
 
   const totalPages = Math.ceil(total / PER_PAGE);
-  const displayedPosts = page > 1 || total > PER_PAGE ? posts.slice(0, PER_PAGE) : posts;
 
   return (
     <section className="py-16 sm:py-24">
@@ -90,7 +90,7 @@ export default async function BlogPage(props: { searchParams?: Promise<{ q?: str
           <div>
             {q && <p className="text-sm text-charcoal/40 mb-6 text-center">{total} resultado{total !== 1 ? "s" : ""} para &ldquo;{q}&rdquo;</p>}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-              {displayedPosts.map((post) => (
+              {posts.map((post) => (
                 <Link
                   key={post.id}
                   href={`/blog/${post.slug}`}
