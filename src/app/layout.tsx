@@ -3,10 +3,13 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { CartProvider } from "@/context/CartContext";
 import { ToastProvider } from "@/context/ToastContext";
+import { LangProvider } from "@/context/LangContext";
 import CartButton from "@/components/CartButton";
 import { AdminLink } from "@/components/AdminLink";
 import SubscribeForm from "@/components/SubscribeForm";
 import { UserIcon, SocialIcon } from "@/components/Icons";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { AccessibilityToolbar } from "@/components/AccessibilityToolbar";
 import Link from "next/link";
 import { site } from "@/lib/site";
 import "./globals.css";
@@ -35,14 +38,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es" className={`${geistSans.variable} ${geistMono.variable} scroll-smooth`}>
       <body className="min-h-screen flex flex-col antialiased">
+        <a href="#main-content" className="skip-to-content">Ir al contenido principal</a>
         <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
+          <LangProvider>
           <CartProvider>
             <ToastProvider>
             <Header />
-          <main className="flex-1">{children}</main>
+          <main id="main-content" className="flex-1">{children}</main>
           <Footer />
+          <AccessibilityToolbar />
             </ToastProvider>
           </CartProvider>
+          </LangProvider>
         </ClerkProvider>
       </body>
     </html>
@@ -76,6 +83,7 @@ function Header() {
             <UserButton />
           </Show>
           <CartButton />
+          <LanguageSwitcher />
           <AdminLink className="text-xs text-gold/60 hover:text-gold transition-colors font-medium" />
         </div>
         <div className="sm:hidden flex items-center gap-2">
@@ -125,6 +133,7 @@ function MobileMenu() {
                 <a href="/perfil" className="hover:text-sage-dark transition-colors">Mi perfil</a>
               </Show>
               <AdminLink className="text-xs text-gold/60 hover:text-gold transition-colors font-medium" />
+              <LanguageSwitcher />
             </div>
     </details>
   );

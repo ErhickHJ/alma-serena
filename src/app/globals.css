@@ -37,3 +37,58 @@ body {
 .animate-fade-in {
   animation: fade-in 0.25s ease-out;
 }
+
+/* Skip to content */
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  z-index: 100;
+  padding: 8px 16px;
+  background: var(--color-sage-dark);
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  transition: top 0.2s;
+}
+.skip-to-content:focus {
+  top: 0;
+}
+
+/* Focus indicators */
+*:focus-visible {
+  outline: 2px solid var(--color-sage-dark);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* High contrast mode */
+.high-contrast {
+  --color-sage: #4A7A5E;
+  --color-sage-dark: #2D5A3F;
+  --color-sage-light: #6B9E7E;
+  --color-gold: #A67C3A;
+  --color-charcoal: #1A1A1A;
+  --color-warm-white: #FFFFFF;
+  --color-cream: #F5F0EB;
+}
+.high-contrast a,
+.high-contrast button {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.high-contrast img {
+  filter: contrast(1.15);
+}
+
+/* Simplified mode */
+.simplified * {
+  animation: none !important;
+  transition: none !important;
+}
+.simplied img:not([alt]) {
+  filter: blur(8px);
+}
+.simplified .decorative-only {
+  display: none !important;
+}
