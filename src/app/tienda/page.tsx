@@ -5,29 +5,29 @@ import AddToCartButton from "@/components/AddToCartButton";
 import { prisma } from "@/lib/db";
 
 const CATEGORIES = [
-  { key: "Velas y Aromaterapia", desc: "Crea espacios de paz con aromas que calman el alma." },
-  { key: "Diarios y Papelería", desc: "Herramientas para plasmar tus pensamientos y gratitud." },
-  { key: "Cristales y Energía", desc: "Piedras que te acompañan en tu camino de serenidad." },
-  { key: "Ritual y Bienestar", desc: "Todo lo necesario para tus momentos de autocuidado." },
+  { key: "Diarios y Papelería", desc: "Herramientas para plasmar tus pensamientos y cultivar la gratitud." },
+  { key: "Velas y Aromas", desc: "Aromas que inspiran calma, claridad y enfoque." },
+  { key: "Mindfulness y Meditación", desc: "Objetos que acompañan tu práctica de presencia y serenidad." },
+  { key: "Ritual y Bienestar", desc: "Pequeños rituales para nutrir cuerpo y mente." },
 ];
 
 const FALLBACK_PRODUCTS = [
-  { id: "fallback-1", name: "Vela Aromática - Lavanda", price: 18.00, image: "/images/portada.jpg", emoji: "🕯️", category: "Velas y Aromaterapia", desc: "Aroma calmante para tus momentos de meditación." },
-  { id: "fallback-2", name: "Vela Aromática - Sándalo", price: 18.00, image: "/images/portada.jpg", emoji: "🕯️", category: "Velas y Aromaterapia", desc: "Notas amaderadas que invitan a la paz interior." },
-  { id: "fallback-3", name: "Mist de Almohada", price: 14.00, image: "/images/portada.jpg", emoji: "🌙", category: "Velas y Aromaterapia", desc: "Rocío suave con esencia de manzanilla y lavanda." },
-  { id: "fallback-4", name: "Difusor de Aceites", price: 32.00, image: "/images/portada.jpg", emoji: "💨", category: "Velas y Aromaterapia", desc: "Difusor ultrasónico de cerámica artesanal." },
-  { id: "fallback-5", name: "Cuaderno de Gratitud", price: 12.00, image: "/images/portada.jpg", emoji: "📓", category: "Diarios y Papelería", desc: "Pequeño compañero para tus notas de agradecimiento." },
-  { id: "fallback-6", name: "Set de Plumas", price: 8.00, image: "/images/portada.jpg", emoji: "🖊️", category: "Diarios y Papelería", desc: "Tres plumas de tinta suave para escribir con calma." },
-  { id: "fallback-7", name: "Separadores Artesanales", price: 6.00, image: "/images/portada.jpg", emoji: "🔖", category: "Diarios y Papelería", desc: "Set de 4 separadores con diseños de la naturaleza." },
-  { id: "fallback-8", name: "Kit de Journaling", price: 28.00, image: "/images/portada.jpg", emoji: "📦", category: "Diarios y Papelería", desc: "Cuaderno, plumas, washi tape y stickers." },
-  { id: "fallback-9", name: "Cristal de Amatista", price: 22.00, image: "/images/portada.jpg", emoji: "💜", category: "Cristales y Energía", desc: "Piedra de calma y equilibrio espiritual." },
-  { id: "fallback-10", name: "Cuarzo Rosa", price: 18.00, image: "/images/portada.jpg", emoji: "🩷", category: "Cristales y Energía", desc: "Para abrir el corazón al amor propio." },
-  { id: "fallback-11", name: "Selenita", price: 16.00, image: "/images/portada.jpg", emoji: "🤍", category: "Cristales y Energía", desc: "Limpia y purifica la energía del espacio." },
-  { id: "fallback-12", name: "Set de 7 Chakras", price: 35.00, image: "/images/portada.jpg", emoji: "🌈", category: "Cristales y Energía", desc: "Piedras para alinear y equilibrar tu energía." },
-  { id: "fallback-13", name: "Kit de Té Relajante", price: 15.00, image: "/images/portada.jpg", emoji: "🍵", category: "Ritual y Bienestar", desc: "Mezcla de hierbas para momentos de calma." },
-  { id: "fallback-14", name: "Aceite Corporal", price: 24.00, image: "/images/portada.jpg", emoji: "🧴", category: "Ritual y Bienestar", desc: "Hidratante con esencia de ylang-ylang." },
-  { id: "fallback-15", name: "Manta de Meditación", price: 45.00, image: "/images/portada.jpg", emoji: "🧘", category: "Ritual y Bienestar", desc: "Suave y ligera, ideal para tu práctica diaria." },
-  { id: "fallback-16", name: "Bálsamo de Templos", price: 12.00, image: "/images/portada.jpg", emoji: "🌿", category: "Ritual y Bienestar", desc: "Alivia la tensión con aceites esenciales puros." },
+  { id: "fallback-1", name: "El Diario de 90 Días", price: 29.00, image: "/images/portada.jpg", emoji: "📖", category: "Diarios y Papelería", desc: "Tu guía diaria de gratitud y transformación personal." },
+  { id: "fallback-2", name: "Cuaderno de Gratitud", price: 12.00, image: "/images/portada.jpg", emoji: "📓", category: "Diarios y Papelería", desc: "Compañero compacto para tus notas diarias de agradecimiento." },
+  { id: "fallback-3", name: "Set de Plumas", price: 8.00, image: "/images/portada.jpg", emoji: "🖊️", category: "Diarios y Papelería", desc: "Tres plumas de tinta fluida para escribir con calma." },
+  { id: "fallback-4", name: "Separadores Artesanales", price: 6.00, image: "/images/portada.jpg", emoji: "🔖", category: "Diarios y Papelería", desc: "Set de 4 separadores con diseños inspirados en la naturaleza." },
+  { id: "fallback-5", name: "Kit de Journaling", price: 28.00, image: "/images/portada.jpg", emoji: "📦", category: "Diarios y Papelería", desc: "Cuaderno, plumas, washi tape y stickers para tu práctica." },
+  { id: "fallback-6", name: "Funda de Cuero para el Diario", price: 34.00, image: "/images/portada.jpg", emoji: "👜", category: "Diarios y Papelería", desc: "Protege tu diario con estilo — disponible en marrón y negro." },
+  { id: "fallback-7", name: "Vela - Cedro & Salvia", price: 20.00, image: "/images/portada.jpg", emoji: "🕯️", category: "Velas y Aromas", desc: "Aroma amaderado y herbal para espacios de claridad mental." },
+  { id: "fallback-8", name: "Vela - Sándalo & Incienso", price: 20.00, image: "/images/portada.jpg", emoji: "🕯️", category: "Velas y Aromas", desc: "Notas cálidas que invitan a la introspección." },
+  { id: "fallback-9", name: "Difusor de Aceites Esenciales", price: 32.00, image: "/images/portada.jpg", emoji: "💨", category: "Velas y Aromas", desc: "Difusor ultrasónico de cerámica artesanal." },
+  { id: "fallback-10", name: "Palo Santo", price: 10.00, image: "/images/portada.jpg", emoji: "🪵", category: "Velas y Aromas", desc: "Para limpiar la energía del espacio antes de meditar." },
+  { id: "fallback-11", name: "Cojín de Meditación", price: 39.00, image: "/images/portada.jpg", emoji: "🧘", category: "Mindfulness y Meditación", desc: "Soporte firme y cómodo para tu práctica diaria." },
+  { id: "fallback-12", name: "Manta de Meditación", price: 45.00, image: "/images/portada.jpg", emoji: "🧣", category: "Mindfulness y Meditación", desc: "Tejido suave en tonos neutros para acompañar tu quietud." },
+  { id: "fallback-13", name: "Cristal de Amatista", price: 22.00, image: "/images/portada.jpg", emoji: "💜", category: "Mindfulness y Meditación", desc: "Piedra de calma y claridad mental." },
+  { id: "fallback-14", name: "Set de Piedras de Enfoque", price: 30.00, image: "/images/portada.jpg", emoji: "🪨", category: "Mindfulness y Meditación", desc: "Selección de piedras para anclar la atención en el presente." },
+  { id: "fallback-15", name: "Kit de Té Relajante", price: 15.00, image: "/images/portada.jpg", emoji: "🍵", category: "Ritual y Bienestar", desc: "Mezcla de hierbas para pausas de calma durante el día." },
+  { id: "fallback-16", name: "Incienso Natural - Sándalo", price: 8.00, image: "/images/portada.jpg", emoji: "🪔", category: "Ritual y Bienestar", desc: "Varillas de incienso puro para rituales de atención plena." },
 ];
 
 export default async function ShopPage() {
