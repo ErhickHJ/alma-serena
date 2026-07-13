@@ -17,6 +17,7 @@ const FALLBACK_FEATURED = [
   { id: "fb-4", name: "Vela - Cedro & Salvia", price: 20.00, image: "/images/vela cedro y salvia.png", emoji: "🕯️" },
   { id: "fb-5", name: "Funda de Cuero para el Diario", price: 34.00, image: "/images/funda diario.png", emoji: "👜" },
   { id: "fb-6", name: "Vela - Sándalo & Incienso", price: 20.00, image: "/images/vela sandalo e incienso.png", emoji: "🕯️" },
+  { id: "fb-7", name: "Difusor de Aceites Esenciales", price: 32.00, image: "/images/Difusor se aceite.png", emoji: "💨" },
 ];
 
 export default async function Home() {
