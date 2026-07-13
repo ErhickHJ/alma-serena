@@ -66,6 +66,26 @@ export async function notifySecurityAlert(type: string, detail: string) {
   });
 }
 
+export async function sendOrderShipped(to: string, name: string, orderId: string) {
+  if (!resend) return;
+  await resend.emails.send({
+    from,
+    to,
+    subject: "¡Tu pedido ha sido enviado! — Alma Serena",
+    html: `
+      <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
+        <h1 style="color: #6B8D7A; font-family: serif;">✿ Alma Serena</h1>
+        <p>Hola ${name},</p>
+        <p>Tu pedido ya está en camino. Pronto lo recibirás en la dirección que nos proporcionaste.</p>
+        <p style="color: #666;">Referencia: ${orderId}</p>
+        <p>Gracias por ser parte de esta comunidad.</p>
+        <br/>
+        <p style="color: #999; font-size: 0.85em;">✿ Alma Serena — Un diario de 90 días</p>
+      </div>
+    `,
+  });
+}
+
 export async function sendWelcomeSubscriber(to: string, name?: string) {
   if (!resend) return;
   await resend.emails.send({

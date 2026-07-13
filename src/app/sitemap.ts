@@ -26,6 +26,10 @@ export default async function sitemap() {
     { url: `${BASE}/partners`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.5 },
     { url: `${BASE}/contacto`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.5 },
     { url: `${BASE}/carrito`, lastModified: new Date(), changeFrequency: "never" as const, priority: 0.3 },
+    { url: `${BASE}/faq`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.4 },
+    { url: `${BASE}/terminos`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.3 },
+    { url: `${BASE}/aviso-privacidad`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.3 },
+    { url: `${BASE}/disclaimer`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.3 },
   ];
 
   return [...staticPages, ...blogPages];

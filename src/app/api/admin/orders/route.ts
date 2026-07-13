@@ -6,6 +6,7 @@ import { prisma } from "@/lib/db";
 import { isAdmin } from "@/lib/admin";
 import { logAdminAction } from "@/lib/audit";
 import { rateLimit } from "@/lib/rate-limit";
+import { sendOrderShipped } from "@/lib/email";
 
 const VALID_STATUSES = ["pending", "processing", "shipped", "delivered", "cancelled"];
 
@@ -43,6 +44,10 @@ export async function PATCH(req: Request) {
     details: `${order.name} — ${order.email} — $${(order.amount / 100).toFixed(2)}`,
     ip: req.headers.get("x-forwarded-for") || "",
   });
+
+  if (status === "shipped" && order.email && order.email !== "pending@checkout.com") {
+    sendOrderShipped(order.email, order.name || "Cliente", order.id);
+  }
 
   return Response.json(order);
 }
