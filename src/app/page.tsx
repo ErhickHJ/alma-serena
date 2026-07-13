@@ -11,10 +11,11 @@ import NewsletterForm from "@/components/NewsletterForm";
 import { prisma } from "@/lib/db";
 
 const FALLBACK_FEATURED = [
-  { id: "fb-1", name: "El Diario de 90 Días", price: 29.00, image: "/images/portada.jpg", emoji: "📖" },
+  { id: "fb-1", name: "El Diario de 90 Días", price: 29.00, image: "/images/diario 4.png", emoji: "📖" },
   { id: "fb-2", name: "Cuaderno de Gratitud", price: 12.00, image: "/images/portada.jpg", emoji: "📓" },
-  { id: "fb-3", name: "Kit de Journaling", price: 28.00, image: "/images/portada.jpg", emoji: "📦" },
-  { id: "fb-4", name: "Kit de Té Relajante", price: 15.00, image: "/images/portada.jpg", emoji: "🍵" },
+  { id: "fb-3", name: "Set de Plumas", price: 8.00, image: "/images/pluma.png", emoji: "🖊️" },
+  { id: "fb-4", name: "Vela - Cedro & Salvia", price: 20.00, image: "/images/vela cedro y salvia.png", emoji: "🕯️" },
+  { id: "fb-5", name: "Funda de Cuero para el Diario", price: 34.00, image: "/images/funda diario.png", emoji: "👜" },
 ];
 
 export default async function Home() {
