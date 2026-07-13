@@ -56,7 +56,7 @@ export default async function ShopPage() {
                 {catProducts.map((item) => (
                   <div key={item.id} className="group p-5 rounded-xl bg-warm-white border border-sage/10 hover:border-sage/30 transition-all hover:shadow-sm flex flex-col">
                     <div className="relative w-full h-36 rounded-lg overflow-hidden mb-4 bg-sage/5 shrink-0">
-                      <Image src={item.image || "/images/portada.jpg"} alt={item.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <Image src={item.image || "/images/portada.jpg"} alt={item.name} fill className="object-contain group-hover:scale-105 transition-transform duration-500" />
                     </div>
                     <h3 className="font-serif text-lg text-sage-dark mb-1 shrink-0">{item.emoji} {item.name}</h3>
                     <p className="text-xs text-charcoal/50 mb-3 leading-relaxed flex-1">{item.desc}</p>
