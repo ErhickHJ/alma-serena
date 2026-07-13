@@ -25,8 +25,8 @@ export default function Carousel({ items }: { items: { id: string; name: string;
             className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 transition-opacity duration-1000 ease-out"
             style={{ opacity: i === current ? 1 : 0, pointerEvents: i === current ? "auto" : "none" }}
           >
-            <div className="relative w-full max-w-xs h-40 mb-4 rounded-lg overflow-hidden bg-sage/5">
-              <Image src={item.image} alt={item.name} fill className="object-contain" />
+            <div className="relative w-full max-w-xs aspect-square mb-4 rounded-lg overflow-hidden bg-sage/5">
+              <Image src={item.image} alt={item.name} fill className="object-contain p-2" />
             </div>
             <h3 className="font-serif text-lg text-sage-dark mb-1">{item.name}</h3>
             <p className="text-sm text-gold font-medium mb-3">${item.price.toFixed(2)}</p>
