@@ -4,7 +4,7 @@ import { prisma } from "@/lib/db";
 
 const IMG = "/images/portada.jpg";
 const products = [
-  { name: "El Diario de 90 Días", price: 29.00, image: IMG, emoji: "📖", category: "Diarios y Papelería", desc: "Tu guía diaria de gratitud y transformación personal.", featured: true },
+  { name: "El Diario de 90 Días", price: 29.00, image: "/images/diario 4.png", emoji: "📖", category: "Diarios y Papelería", desc: "Tu guía diaria de gratitud y transformación personal.", featured: true },
   { name: "Cuaderno de Gratitud", price: 12.00, image: IMG, emoji: "📓", category: "Diarios y Papelería", desc: "Compañero compacto para tus notas diarias de agradecimiento.", featured: true },
   { name: "Set de Plumas", price: 8.00, image: "/images/pluma.png", emoji: "🖊️", category: "Diarios y Papelería", desc: "Tres plumas de tinta fluida para escribir con calma.", featured: false },
   { name: "Separadores Artesanales", price: 6.00, image: "/images/separadores.png", emoji: "🔖", category: "Diarios y Papelería", desc: "Set de 4 separadores con diseños inspirados en la naturaleza.", featured: false },
