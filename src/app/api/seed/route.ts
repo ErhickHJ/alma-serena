@@ -9,7 +9,7 @@ const products = [
   { name: "Set de Plumas", price: 8.00, image: "/images/pluma.png", emoji: "🖊️", category: "Diarios y Papelería", desc: "Tres plumas de tinta fluida para escribir con calma.", featured: false },
   { name: "Separadores Artesanales", price: 6.00, image: "/images/separadores.png", emoji: "🔖", category: "Diarios y Papelería", desc: "Set de 4 separadores con diseños inspirados en la naturaleza.", featured: false },
   { name: "Kit de Journaling", price: 28.00, image: IMG, emoji: "📦", category: "Diarios y Papelería", desc: "Cuaderno, plumas, washi tape y stickers para tu práctica.", featured: true },
-  { name: "Funda de Cuero para el Diario", price: 34.00, image: IMG, emoji: "👜", category: "Diarios y Papelería", desc: "Protege tu diario con estilo — disponible en marrón y negro.", featured: false },
+  { name: "Funda de Cuero para el Diario", price: 34.00, image: "/images/funda diario.png", emoji: "👜", category: "Diarios y Papelería", desc: "Protege tu diario con estilo — disponible en marrón y negro.", featured: false },
   { name: "Vela - Cedro & Salvia", price: 20.00, image: IMG, emoji: "🕯️", category: "Velas y Aromas", desc: "Aroma amaderado y herbal para espacios de claridad mental.", featured: false },
   { name: "Vela - Sándalo & Incienso", price: 20.00, image: IMG, emoji: "🕯️", category: "Velas y Aromas", desc: "Notas cálidas que invitan a la introspección.", featured: false },
   { name: "Difusor de Aceites Esenciales", price: 32.00, image: IMG, emoji: "💨", category: "Velas y Aromas", desc: "Difusor ultrasónico de cerámica artesanal.", featured: false },
