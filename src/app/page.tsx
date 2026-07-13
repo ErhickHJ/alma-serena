@@ -20,6 +20,7 @@ const FALLBACK_FEATURED = [
   { id: "fb-7", name: "Difusor de Aceites Esenciales", price: 32.00, image: "/images/Difusor se aceite.png", emoji: "💨" },
   { id: "fb-8", name: "Palo Santo", price: 10.00, image: "/images/palo.png", emoji: "🪵" },
   { id: "fb-9", name: "Cojín de Meditación", price: 39.00, image: "/images/cogin.png", emoji: "🧘" },
+  { id: "fb-10", name: "Manta de Meditación", price: 45.00, image: "/images/manta.png", emoji: "🧣" },
 ];
 
 export default async function Home() {
