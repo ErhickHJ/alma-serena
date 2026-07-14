@@ -1,4 +1,5 @@
 import { auth, clerkClient } from "@clerk/nextjs/server";
+import { isAdminEmail } from "@/lib/admin";
 
 async function setAdmin(userId: string) {
   const client = await clerkClient();
@@ -10,9 +11,13 @@ async function setAdmin(userId: string) {
 export async function POST(req: Request) {
   const session = await auth();
   if (!session.userId) return Response.json({ error: "Not authenticated" }, { status: 401 });
+  const client = await clerkClient();
+  const user = await client.users.getUser(session.userId);
+  if (!isAdminEmail(user.emailAddresses?.[0]?.emailAddress)) {
+    return Response.json({ error: "No autorizado. Solo el administrador puede promover usuarios." }, { status: 403 });
+  }
   const { userId } = await req.json();
   if (!userId) return Response.json({ error: "userId required" }, { status: 400 });
-  if (userId !== session.userId) return Response.json({ error: "Solo puedes configurar tu propio usuario" }, { status: 403 });
   await setAdmin(userId);
   return Response.json({ success: true });
 }
