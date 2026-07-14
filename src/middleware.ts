@@ -1,7 +1,6 @@
 import { clerkMiddleware } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { isAllowedIP } from "@/lib/admin";
-import { notifySecurityAlert } from "@/lib/email";
 
 export default clerkMiddleware(
   async (auth, req) => {
@@ -12,7 +11,6 @@ export default clerkMiddleware(
         || req.headers.get("x-real-ip")
         || "127.0.0.1";
       if (!isAllowedIP(ip)) {
-        notifySecurityAlert("IP no autorizada", `Intento de acceso a ${pathname} desde IP: ${ip}`);
         return new NextResponse("Acceso denegado", { status: 403 });
       }
     }
