@@ -26,7 +26,7 @@ const FALLBACK_PRODUCTS = [
   { id: "fallback-12", name: "Manta de Meditación", price: 45.00, image: "/images/manta.png", emoji: "🧣", category: "Mindfulness y Meditación", desc: "Tejido suave en tonos neutros para acompañar tu quietud." },
   { id: "fallback-13", name: "Cristal de Amatista", price: 22.00, image: "/images/Cristal.png", emoji: "💜", category: "Mindfulness y Meditación", desc: "Piedra de calma y claridad mental." },
   { id: "fallback-14", name: "Set de Piedras de Enfoque", price: 30.00, image: "/images/Piedras.png", emoji: "🪨", category: "Mindfulness y Meditación", desc: "Selección de piedras para anclar la atención en el presente." },
-  { id: "fallback-15", name: "Kit de Té Relajante", price: 15.00, image: "/images/portada.jpg", emoji: "🍵", category: "Ritual y Bienestar", desc: "Mezcla de hierbas para pausas de calma durante el día." },
+  { id: "fallback-15", name: "Kit de Té Relajante", price: 15.00, image: "/images/kit te.png", emoji: "🍵", category: "Ritual y Bienestar", desc: "Mezcla de hierbas para pausas de calma durante el día." },
   { id: "fallback-16", name: "Incienso Natural - Sándalo", price: 8.00, image: "/images/portada.jpg", emoji: "🪔", category: "Ritual y Bienestar", desc: "Varillas de incienso puro para rituales de atención plena." },
 ];
 

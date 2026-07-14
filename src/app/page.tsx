@@ -23,6 +23,7 @@ const FALLBACK_FEATURED = [
   { id: "fb-10", name: "Manta de Meditación", price: 45.00, image: "/images/manta.png", emoji: "🧣" },
   { id: "fb-11", name: "Cristal de Amatista", price: 22.00, image: "/images/Cristal.png", emoji: "💜" },
   { id: "fb-12", name: "Set de Piedras de Enfoque", price: 30.00, image: "/images/Piedras.png", emoji: "🪨" },
+  { id: "fb-13", name: "Kit de Té Relajante", price: 15.00, image: "/images/kit te.png", emoji: "🍵" },
 ];
 
 export default async function Home() {
