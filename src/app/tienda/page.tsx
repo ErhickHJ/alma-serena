@@ -55,11 +55,13 @@ export default async function ShopPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {catProducts.map((item) => (
                   <div key={item.id} className="group p-5 rounded-xl bg-warm-white border border-sage/10 hover:border-sage/30 transition-all hover:shadow-sm flex flex-col">
+                    <a href={`/tienda/${encodeURIComponent(item.id)}`} className="block">
                     <div className="relative w-full aspect-square rounded-lg overflow-hidden mb-4 bg-sage/5 shrink-0">
                       <Image src={item.image || "/images/portada.jpg"} alt={item.name} fill className="object-contain p-2 group-hover:scale-105 transition-transform duration-500" />
                     </div>
                     <h3 className="font-serif text-lg text-sage-dark mb-1 shrink-0">{item.emoji} {item.name}</h3>
                     <p className="text-xs text-charcoal/50 mb-3 leading-relaxed flex-1">{item.desc}</p>
+                    </a>
                     <div className="flex items-center justify-between shrink-0">
                       <span className="text-sm text-gold font-medium">${item.price.toFixed(2)}</span>
                     </div>
