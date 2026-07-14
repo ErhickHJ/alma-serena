@@ -13,7 +13,7 @@ const CATEGORIES = [
 
 const FALLBACK_PRODUCTS = [
   { id: "fallback-1", name: "El Diario de 90 Días", price: 29.00, image: "/images/diario 4.png", emoji: "📖", category: "Diarios y Papelería", desc: "Tu guía diaria de gratitud y transformación personal." },
-  { id: "fallback-2", name: "Cuaderno de Gratitud", price: 12.00, image: "/images/portada.jpg", emoji: "📓", category: "Diarios y Papelería", desc: "Compañero compacto para tus notas diarias de agradecimiento." },
+  { id: "fallback-2", name: "Cuaderno de Gratitud", price: 12.00, image: "/images/cuaderno.png", emoji: "📓", category: "Diarios y Papelería", desc: "Compañero compacto para tus notas diarias de agradecimiento." },
   { id: "fallback-3", name: "Set de Plumas", price: 8.00, image: "/images/pluma.png", emoji: "🖊️", category: "Diarios y Papelería", desc: "Tres plumas de tinta fluida para escribir con calma." },
   { id: "fallback-4", name: "Separadores Artesanales", price: 6.00, image: "/images/separadores.png", emoji: "🔖", category: "Diarios y Papelería", desc: "Set de 4 separadores con diseños inspirados en la naturaleza." },
   { id: "fallback-5", name: "Kit de Journaling", price: 28.00, image: "/images/kit.png", emoji: "📦", category: "Diarios y Papelería", desc: "Cuaderno, plumas, washi tape y stickers para tu práctica." },
@@ -27,7 +27,7 @@ const FALLBACK_PRODUCTS = [
   { id: "fallback-13", name: "Cristal de Amatista", price: 22.00, image: "/images/Cristal.png", emoji: "💜", category: "Mindfulness y Meditación", desc: "Piedra de calma y claridad mental." },
   { id: "fallback-14", name: "Set de Piedras de Enfoque", price: 30.00, image: "/images/Piedras.png", emoji: "🪨", category: "Mindfulness y Meditación", desc: "Selección de piedras para anclar la atención en el presente." },
   { id: "fallback-15", name: "Kit de Té Relajante", price: 15.00, image: "/images/kit te.png", emoji: "🍵", category: "Ritual y Bienestar", desc: "Mezcla de hierbas para pausas de calma durante el día." },
-  { id: "fallback-16", name: "Incienso Natural - Sándalo", price: 8.00, image: "/images/portada.jpg", emoji: "🪔", category: "Ritual y Bienestar", desc: "Varillas de incienso puro para rituales de atención plena." },
+  { id: "fallback-16", name: "Incienso Natural - Sándalo", price: 8.00, image: "/images/incienso.png", emoji: "🪔", category: "Ritual y Bienestar", desc: "Varillas de incienso puro para rituales de atención plena." },
 ];
 
 export default async function ShopPage() {

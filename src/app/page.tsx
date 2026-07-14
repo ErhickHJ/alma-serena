@@ -12,7 +12,7 @@ import { prisma } from "@/lib/db";
 
 const FALLBACK_FEATURED = [
   { id: "fb-1", name: "El Diario de 90 Días", price: 29.00, image: "/images/diario 4.png", emoji: "📖" },
-  { id: "fb-2", name: "Cuaderno de Gratitud", price: 12.00, image: "/images/portada.jpg", emoji: "📓" },
+  { id: "fb-2", name: "Cuaderno de Gratitud", price: 12.00, image: "/images/cuaderno.png", emoji: "📓" },
   { id: "fb-3", name: "Set de Plumas", price: 8.00, image: "/images/pluma.png", emoji: "🖊️" },
   { id: "fb-4", name: "Vela - Cedro & Salvia", price: 20.00, image: "/images/vela cedro y salvia.png", emoji: "🕯️" },
   { id: "fb-5", name: "Funda de Cuero para el Diario", price: 34.00, image: "/images/funda diario.png", emoji: "👜" },
@@ -24,6 +24,7 @@ const FALLBACK_FEATURED = [
   { id: "fb-11", name: "Cristal de Amatista", price: 22.00, image: "/images/Cristal.png", emoji: "💜" },
   { id: "fb-12", name: "Set de Piedras de Enfoque", price: 30.00, image: "/images/Piedras.png", emoji: "🪨" },
   { id: "fb-13", name: "Kit de Té Relajante", price: 15.00, image: "/images/kit te.png", emoji: "🍵" },
+  { id: "fb-14", name: "Incienso Natural - Sándalo", price: 8.00, image: "/images/incienso.png", emoji: "🪔" },
 ];
 
 export default async function Home() {
