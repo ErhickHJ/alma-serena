@@ -9,9 +9,14 @@ async function initClient(): Promise<PrismaClient | null> {
     const url = new URL(process.env.DATABASE_URL!);
     let host = url.hostname;
     try {
-      const { resolve4 } = await import("dns/promises");
-      const addrs = await resolve4(host);
-      if (addrs.length) host = addrs[0];
+      const { resolve4, resolve6 } = await import("dns/promises");
+      try {
+        const v4 = await resolve4(host);
+        if (v4.length) host = v4[0];
+      } catch {
+        const v6 = await resolve6(host);
+        if (v6.length) host = v6[0];
+      }
     } catch { /* fallback to hostname */ }
     const pool = new Pool({
       host,
@@ -20,7 +25,7 @@ async function initClient(): Promise<PrismaClient | null> {
       user: url.username,
       password: url.password,
       ssl: { rejectUnauthorized: false },
-      connectionTimeoutMillis: 3000,
+      connectionTimeoutMillis: 8000,
     });
     const { PrismaPg } = await import("@prisma/adapter-pg");
     const adapter = new PrismaPg(pool);
