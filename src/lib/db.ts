@@ -6,24 +6,8 @@ let _client: PrismaClient | null = null;
 async function initClient(): Promise<PrismaClient | null> {
   try {
     const { Pool } = await import("pg");
-    const url = new URL(process.env.DATABASE_URL!);
-    let host = url.hostname;
-    try {
-      const { resolve4, resolve6 } = await import("dns/promises");
-      try {
-        const v4 = await resolve4(host);
-        if (v4.length) host = v4[0];
-      } catch {
-        const v6 = await resolve6(host);
-        if (v6.length) host = v6[0];
-      }
-    } catch { /* fallback to hostname */ }
     const pool = new Pool({
-      host,
-      port: Number(url.port) || 6543,
-      database: url.pathname.slice(1),
-      user: url.username,
-      password: url.password,
+      connectionString: process.env.DATABASE_URL,
       ssl: { rejectUnauthorized: false },
       connectionTimeoutMillis: 8000,
     });

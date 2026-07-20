@@ -16,26 +16,11 @@ export async function GET() {
 
   try {
     const url = new URL(dbUrl);
-    let host = url.hostname;
-    try {
-      const { resolve4, resolve6 } = await import("dns/promises");
-      try {
-        const v4 = await resolve4(host);
-        if (v4.length) host = v4[0];
-      } catch {
-        const v6 = await resolve6(host);
-        if (v6.length) host = v6[0];
-      }
-    } catch { /* keep hostname */ }
-    errors.push(`Resolved host: ${host}`);
+    errors.push(`Hostname: ${url.hostname}`);
 
     const { Pool } = await import("pg");
     const pool = new Pool({
-      host,
-      port: Number(url.port) || 5432,
-      database: url.pathname.slice(1),
-      user: url.username,
-      password: url.password,
+      connectionString: dbUrl,
       ssl: { rejectUnauthorized: false },
       connectionTimeoutMillis: 8000,
     });
