@@ -6,7 +6,7 @@ export const site = {
   social: {
     instagram: { url: "https://www.instagram.com/comunidadalmaserena?igsh=MWF6YXg2YnY2Y2l6dQ==", label: "Instagram", key: "instagram" },
     facebook: { url: "https://www.facebook.com/share/1HFZYDpLRp/", label: "Facebook", key: "facebook" },
-    tiktok: { url: null, label: "TikTok", key: "tiktok" },
+    tiktok: { url: "https://www.tiktok.com/@comunidadalmaserena", label: "TikTok", key: "tiktok" },
     youtube: { url: null, label: "YouTube", key: "youtube" },
     whatsapp: { url: `https://wa.me/13475109619`, label: "WhatsApp", key: "whatsapp" },
   },
