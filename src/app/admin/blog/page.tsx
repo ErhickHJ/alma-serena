@@ -3,6 +3,9 @@ import Link from "next/link";
 import { DeleteButton } from "@/components/DeleteButton";
 import { Pagination } from "@/components/Pagination";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const PER_PAGE = 20;
 
 export default async function AdminBlogPage(props: { searchParams?: Promise<{ page?: string; q?: string; pub?: string }> }) {
