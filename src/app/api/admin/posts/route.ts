@@ -1,4 +1,4 @@
-// Admin API — CRUD de posts del blog (POST crear, PUT actualizar)
+// Admin API — CRUD de posts del blog (GET listar, POST crear, PUT actualizar)
 // Rate-limited, solo admin, audita cada operación
 
 import { auth, clerkClient } from "@clerk/nextjs/server";
@@ -15,6 +15,18 @@ async function checkAdmin(session: { userId: string | null }) {
     return { error: "No autorizado", status: 403 };
   }
   return { user, error: null };
+}
+
+export async function GET() {
+  const session = await auth();
+  const check = await checkAdmin(session);
+  if (check.error) return Response.json({ error: check.error }, { status: check.status! });
+
+  const rl = rateLimit(`admin:${session.userId}`, { limit: 30, windowMs: 60000 });
+  if (!rl.allowed) return Response.json({ error: "Demasiadas solicitudes" }, { status: 429 });
+
+  const posts = await prisma.post.findMany({ orderBy: { createdAt: "desc" } });
+  return Response.json(posts);
 }
 
 export async function POST(req: Request) {
