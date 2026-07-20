@@ -5,17 +5,17 @@ import { useLang } from "@/context/LangContext";
 import { translations } from "@/lib/translations";
 import CartButton from "./CartButton";
 import { AdminLink } from "./AdminLink";
-import { LanguageSwitcher } from "./LanguageSwitcher";
+import LanguageSwitcher from "./LanguageSwitcher";
 import { UserIcon } from "./Icons";
 
 const NAV_LINKS: { href: string; key: keyof typeof translations.es.nav }[] = [
-  { href: "/", key: "inicio" },
-  { href: "/libro", key: "libro" },
-  { href: "/tienda", key: "tienda" },
+  { href: "/", key: "home" },
+  { href: "/libro", key: "book" },
+  { href: "/tienda", key: "shop" },
   { href: "/blog", key: "blog" },
-  { href: "/comunidad", key: "comunidad" },
+  { href: "/comunidad", key: "community" },
   { href: "/partners", key: "partners" },
-  { href: "/contacto", key: "contacto" },
+  { href: "/contacto", key: "contact" },
 ];
 
 export function Header() {
@@ -34,7 +34,7 @@ export function Header() {
           ))}
           <Show when="signed-out">
             <SignInButton mode="modal">
-              <button className="hover:text-sage-dark transition-colors cursor-pointer" title={t.nav.iniciarSesion}>
+              <button className="hover:text-sage-dark transition-colors cursor-pointer" title={t.nav.login}>
                 <UserIcon />
               </button>
             </SignInButton>
@@ -49,7 +49,7 @@ export function Header() {
         <div className="sm:hidden flex items-center gap-2">
           <Show when="signed-out">
             <SignInButton mode="modal">
-              <button className="text-charcoal/70 hover:text-sage-dark transition-colors cursor-pointer" title={t.nav.iniciarSesion}>
+              <button className="text-charcoal/70 hover:text-sage-dark transition-colors cursor-pointer" title={t.nav.login}>
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
@@ -84,7 +84,7 @@ function MobileMenu() {
         ))}
         <Show when="signed-out">
           <SignInButton mode="modal">
-            <button className="hover:text-sage-dark transition-colors cursor-pointer text-sm">{t.nav.iniciarSesion}</button>
+            <button className="hover:text-sage-dark transition-colors cursor-pointer text-sm">{t.nav.login}</button>
           </SignInButton>
         </Show>
       </div>

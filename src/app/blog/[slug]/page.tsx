@@ -3,10 +3,11 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import DecorativeDivider from "@/components/DecorativeDivider";
 
-const FALLBACK: Record<string, { title: string; content: string; date: Date }> = {
+const FALLBACK: Record<string, { title: string; content: string; date: Date; imageUrl: string }> = {
   "poder-de-la-gratitud": {
     title: "El poder de la gratitud en tu vida diaria",
     date: new Date("2026-01-15"),
+    imageUrl: "/images/el porder de la gratitud.png",
     content: `La gratitud es una de las herramientas más poderosas que tenemos para transformar nuestra experiencia de vida. No se trata solo de decir "gracias", sino de cultivar una mirada que reconoce el valor de lo que ya tenemos.
 
 ¿Por qué funciona la gratitud?
@@ -26,6 +27,7 @@ Comienza hoy. Toma un cuaderno, respira hondo y escribe. Tu corazón lo agradece
   "5-rituales-matutinos-calma": {
     title: "5 rituales matutinos para empezar el día con calma",
     date: new Date("2026-02-01"),
+    imageUrl: "/images/5 rituales matutinos.png",
     content: `La manera en que comenzamos el día marca el tono de todo lo que sigue. Aquí tienes cinco rituales simples para cultivar serenidad desde el amanecer.
 
 1. Respirar antes de levantarte
@@ -48,6 +50,7 @@ Pequeños cambios, cuando se repiten cada día, crean una vida más serena.`,
   "espacio-de-paz-en-casa": {
     title: "Cómo crear un espacio de paz en tu hogar",
     date: new Date("2026-02-20"),
+    imageUrl: "/images/espacio de paz.png",
     content: `Nuestro entorno físico afecta directamente nuestro estado mental. Crear un rincón de paz en casa no requiere una reforma ni mucho dinero.
 
 Elige un lugar
@@ -70,6 +73,7 @@ Tu hogar es tu santuario. Cada rincón puede recordarte que mereces paz.`,
   "ciencia-detras-meditacion": {
     title: "La ciencia detrás de la meditación",
     date: new Date("2026-03-10"),
+    imageUrl: "/images/ciencia tras la meditacion.png",
     content: `Durante siglos, la meditación fue considerada una práctica espiritual. Hoy, la ciencia confirma lo que los sabios antiguos ya sabían: meditar transforma el cerebro.
 
 Qué pasa en tu cerebro cuando meditas
@@ -95,6 +99,7 @@ Eso es todo. Bienvenido a la práctica.`,
   "aceptar-lo-que-no-podemos-controlar": {
     title: "Aceptar lo que no podemos controlar",
     date: new Date("2026-03-28"),
+    imageUrl: "/images/aceptar lo que no podemos controlar.png",
     content: `Una de las mayores fuentes de sufrimiento humano es la lucha contra lo que no podemos cambiar. Aceptar no es rendirse. Es elegir dónde poner nuestra energía.
 
 El círculo de control
@@ -119,6 +124,7 @@ La serenidad no es la ausencia de problemas, sino la capacidad de estar en paz c
   "diario-de-gratitud-como-empezar": {
     title: "Diario de gratitud: cómo empezar y mantener el hábito",
     date: new Date("2026-04-15"),
+    imageUrl: "/images/diario como empezar.png",
     content: `Llevar un diario de gratitud es una de las prácticas más transformadoras que puedes adoptar. Aquí te guío paso a paso para que se convierta en un hábito sostenible.
 
 Elige tu cuaderno
@@ -148,7 +154,7 @@ Empieza hoy. No esperes al lunes. No esperes al momento perfecto. Tres líneas. 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
 
-  let post: { title: string; content: string; createdAt: Date; author?: string } | null = null;
+  let post: { title: string; content: string; createdAt: Date; author?: string; imageUrl?: string } | null = null;
   let relatedPosts: { title: string; slug: string; excerpt: string }[] = [];
 
   try {
@@ -177,6 +183,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link href="/blog" className="text-sm text-sage hover:text-sage-dark transition-colors mb-6 inline-block">← Volver al blog</Link>
         <p className="text-xs text-sage/60 mb-3">{new Date(post.createdAt).toLocaleDateString("es")} · {post.author || "Alma Serena"}</p>
+        {"imageUrl" in post && post.imageUrl && (
+          <img src={post.imageUrl} alt={post.title} className="w-full aspect-video object-cover rounded-xl mb-8" />
+        )}
         <h1 className="font-serif text-3xl sm:text-4xl text-sage-dark mb-6">{post.title}</h1>
         <DecorativeDivider className="mb-8" />
         <div className="prose prose-sm max-w-none text-charcoal/70 leading-relaxed whitespace-pre-line">
