@@ -21,7 +21,7 @@ export default function CookieConsent() {
     <div className="fixed bottom-0 left-0 right-0 z-50 bg-warm-white border-t border-sage/20 p-4 shadow-lg">
       <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center gap-4">
         <p className="text-xs text-charcoal/60 flex-1">
-          Usamos cookies necesarias para el funcionamiento del sitio. No usamos cookies de rastreo.
+          Este sitio usa cookies para funcionar y analizar tráfico anónimamente. Al aceptar, ayudas a mejorar la experiencia.
         </p>
         <button onClick={accept} className="px-5 py-2 bg-sage text-white rounded-lg text-sm font-medium hover:bg-sage-dark transition-colors shrink-0">
           Aceptar

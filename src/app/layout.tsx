@@ -8,6 +8,7 @@ import { Header } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
 import { AccessibilityToolbar } from "@/components/AccessibilityToolbar";
 import CookieConsent from "@/components/CookieConsent";
+import Analytics from "@/components/Analytics";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -87,6 +88,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
           <AccessibilityToolbar />
           <CookieConsent />
+          <Analytics />
             </ToastProvider>
           </CartProvider>
           </LangProvider>
