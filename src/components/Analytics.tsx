@@ -1,21 +1,14 @@
 "use client";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
 export default function Analytics() {
   const pathname = usePathname();
-  const [consented, setConsented] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("alma-cookie-consent") === "accepted") {
-      setConsented(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!GA_ID || !consented) return;
+    if (!GA_ID) return;
 
     if (!(window as any).gtag) {
       const script = document.createElement("script");
@@ -28,13 +21,13 @@ export default function Analytics() {
       (window as any).gtag("js", new Date());
       (window as any).gtag("config", GA_ID);
     }
-  }, [consented]);
+  }, []);
 
   useEffect(() => {
-    if ((window as any).gtag && consented) {
+    if ((window as any).gtag) {
       (window as any).gtag("event", "page_view", { page_path: pathname });
     }
-  }, [pathname, consented]);
+  }, [pathname]);
 
   return null;
 }
