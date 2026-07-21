@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 type Props = { content: string; className?: string };
 
 function renderLine(line: string) {
@@ -9,7 +11,7 @@ function renderLine(line: string) {
 
 export default function MarkdownContent({ content, className = "" }: Props) {
   const lines = content.split("\n");
-  const elements: JSX.Element[] = [];
+  const elements: ReactElement[] = [];
   let inList = false;
   let listItems: string[] = [];
 
