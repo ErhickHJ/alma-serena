@@ -1,5 +1,5 @@
 import {ClerkProvider} from "@clerk/nextjs";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { CartProvider } from "@/context/CartContext";
 import { ToastProvider } from "@/context/ToastContext";
@@ -41,6 +41,9 @@ export const metadata: Metadata = {
     canonical: "https://almaserenaoficial.com",
   },
   manifest: "/manifest.json",
+};
+
+export const viewport: Viewport = {
   themeColor: "#8ba888",
 };
 

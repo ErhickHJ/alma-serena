@@ -46,3 +46,6 @@ next-env.d.ts
 /.clerk/
 
 /src/generated/prisma
+
+.github/workflows/keep-db-alive.yml
+scripts/update-posts.mjs
