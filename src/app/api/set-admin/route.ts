@@ -25,6 +25,11 @@ export async function POST(req: Request) {
 export async function GET(request: Request) {
   const session = await auth();
   if (!session.userId) return Response.json({ error: "Not authenticated" }, { status: 401 });
+  const client = await clerkClient();
+  const user = await client.users.getUser(session.userId);
+  if (!isAdminEmail(user.emailAddresses?.[0]?.emailAddress)) {
+    return Response.json({ error: "No autorizado" }, { status: 403 });
+  }
   await setAdmin(session.userId);
   const origin = new URL(request.url).origin;
   return Response.redirect(`${origin}/admin/estadisticas`);

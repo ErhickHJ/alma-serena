@@ -1,6 +1,7 @@
 "use client";
 
 import { Show, SignInButton, UserButton } from "@clerk/nextjs";
+import { usePathname } from "next/navigation";
 import { useLang } from "@/context/LangContext";
 import { translations } from "@/lib/translations";
 import CartButton from "./CartButton";
@@ -21,6 +22,12 @@ const NAV_LINKS: { href: string; key: keyof typeof translations.es.nav }[] = [
 export function Header() {
   const { lang } = useLang();
   const t = translations[lang];
+  const pathname = usePathname();
+
+  function isActive(href: string) {
+    if (href === "/") return pathname === "/";
+    return pathname.startsWith(href);
+  }
 
   return (
     <header className="sticky top-0 z-50 bg-warm-white/95 backdrop-blur-sm border-b border-sage-light/30">
@@ -30,7 +37,7 @@ export function Header() {
         </a>
         <div className="hidden sm:flex items-center gap-8 text-sm font-medium text-charcoal/70">
           {NAV_LINKS.map(({ href, key }) => (
-            <a key={href} href={href} className="hover:text-sage-dark transition-colors">{t.nav[key]}</a>
+            <a key={href} href={href} className="hover:text-sage-dark transition-colors" aria-current={isActive(href) ? "page" : undefined}>{t.nav[key]}</a>
           ))}
           <Show when="signed-out">
             <SignInButton mode="modal">
@@ -70,6 +77,12 @@ export function Header() {
 function MobileMenu() {
   const { lang } = useLang();
   const t = translations[lang];
+  const pathname = usePathname();
+
+  function isActive(href: string) {
+    if (href === "/") return pathname === "/";
+    return pathname.startsWith(href);
+  }
 
   return (
     <details className="group">
@@ -80,7 +93,7 @@ function MobileMenu() {
       </summary>
       <div className="absolute top-full left-0 right-0 bg-warm-white border-b border-sage-light/30 p-4 flex flex-col gap-3 text-sm font-medium text-charcoal/70 shadow-lg">
         {NAV_LINKS.map(({ href, key }) => (
-          <a key={href} href={href} className="hover:text-sage-dark transition-colors">{t.nav[key]}</a>
+          <a key={href} href={href} className="hover:text-sage-dark transition-colors" aria-current={isActive(href) ? "page" : undefined}>{t.nav[key]}</a>
         ))}
         <Show when="signed-out">
           <SignInButton mode="modal">

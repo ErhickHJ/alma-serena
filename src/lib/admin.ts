@@ -10,7 +10,8 @@ export function isAdmin(metadata: { role?: unknown } | null | undefined): boolea
 export function isAdminEmail(email: string | null | undefined): boolean {
   const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "";
   if (!email || !ADMIN_EMAIL) return false;
-  return email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+  const admins = ADMIN_EMAIL.split(",").map(s => s.trim().toLowerCase());
+  return admins.includes(email.toLowerCase());
 }
 
 export function isAllowedIP(ip: string | null): boolean {

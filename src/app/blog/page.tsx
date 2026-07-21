@@ -1,10 +1,15 @@
 import { prisma } from "@/lib/db";
 import Link from "next/link";
+import Image from "next/image";
 import SectionTitle from "@/components/SectionTitle";
 import DecorativeDivider from "@/components/DecorativeDivider";
 import { Pagination } from "@/components/Pagination";
 
-export const metadata = { title: "Blog" };
+export const metadata = {
+  title: "Blog",
+  alternates: { canonical: "https://almaserenaoficial.com/blog" },
+  other: { "atom:link": "https://almaserenaoficial.com/feed.xml" },
+};
 
 const PER_PAGE = 9;
 
@@ -96,7 +101,7 @@ export default async function BlogPage(props: { searchParams?: Promise<{ q?: str
                   href={`/blog/${post.slug}`}
                   className="group block bg-warm-white rounded-xl border border-sage/10 shadow-sm hover:shadow-md transition-shadow overflow-hidden"
                 >
-                  {post.imageUrl && <img src={post.imageUrl} alt={post.title} className="w-full aspect-video object-cover" />}
+                  {post.imageUrl && <Image src={post.imageUrl} alt={post.title} width={640} height={360} className="w-full aspect-video object-cover" />}
                   <div className="p-5">
                     <p className="text-xs text-sage/60 mb-2">{new Date(post.createdAt).toLocaleDateString("es")}</p>
                     <h2 className="font-serif text-lg text-sage-dark group-hover:text-sage transition-colors mb-2">{post.title}</h2>

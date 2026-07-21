@@ -1,7 +1,9 @@
 import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import DecorativeDivider from "@/components/DecorativeDivider";
+import MarkdownContent from "@/components/MarkdownContent";
 
 const FALLBACK: Record<string, { title: string; content: string; date: Date; imageUrl: string }> = {
   "poder-de-la-gratitud": {
@@ -184,13 +186,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         <Link href="/blog" className="text-sm text-sage hover:text-sage-dark transition-colors mb-6 inline-block">← Volver al blog</Link>
         <p className="text-xs text-sage/60 mb-3">{new Date(post.createdAt).toLocaleDateString("es")} · {post.author || "Alma Serena"}</p>
         {"imageUrl" in post && post.imageUrl && (
-          <img src={post.imageUrl} alt={post.title} className="w-full aspect-video object-cover rounded-xl mb-8" />
+          <Image src={post.imageUrl} alt={post.title} width={960} height={540} className="w-full aspect-video object-cover rounded-xl mb-8" />
         )}
         <h1 className="font-serif text-3xl sm:text-4xl text-sage-dark mb-6">{post.title}</h1>
         <DecorativeDivider className="mb-8" />
-        <div className="prose prose-sm max-w-none text-charcoal/70 leading-relaxed whitespace-pre-line">
-          {post.content}
-        </div>
+        <MarkdownContent content={post.content} />
 
         {relatedPosts.length > 0 && (
           <>

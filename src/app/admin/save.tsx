@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useToast } from "@/context/ToastContext";
 
 type Product = {
   id: string;
@@ -27,6 +28,7 @@ type Post = {
 
 export function ProductForm({ product }: { product?: Product }) {
   const router = useRouter();
+  const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -50,10 +52,11 @@ export function ProductForm({ product }: { product?: Product }) {
       body: JSON.stringify(data),
     });
     if (!res.ok) {
-      alert("Error al guardar");
+      showToast("Error al guardar", "error");
       setLoading(false);
       return;
     }
+    showToast(product ? "Producto actualizado" : "Producto creado", "success");
     router.push("/admin/productos");
     router.refresh();
   }
@@ -110,6 +113,7 @@ export function ProductForm({ product }: { product?: Product }) {
 
 export function PostForm({ post }: { post?: Post }) {
   const router = useRouter();
+  const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -133,10 +137,11 @@ export function PostForm({ post }: { post?: Post }) {
       body: JSON.stringify(data),
     });
     if (!res.ok) {
-      alert("Error al guardar");
+      showToast("Error al guardar", "error");
       setLoading(false);
       return;
     }
+    showToast(post ? "Artículo actualizado" : "Artículo creado", "success");
     router.push("/admin/blog");
     router.refresh();
   }

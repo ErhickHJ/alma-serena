@@ -1,6 +1,15 @@
 import { NextResponse } from "next/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
+import { isAdmin } from "@/lib/admin";
 
 export async function GET() {
+  const session = await auth();
+  if (!session.userId) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+  const user = await (await clerkClient()).users.getUser(session.userId);
+  if (!isAdmin(user?.publicMetadata as { role?: unknown } | undefined)) {
+    return NextResponse.json({ error: "No autorizado" }, { status: 403 });
+  }
+
   const errors: string[] = [];
   const dbUrl = process.env.DATABASE_URL || "";
   errors.push(`DATABASE_URL exists: ${!!dbUrl}, length: ${dbUrl.length}`);

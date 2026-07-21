@@ -4,6 +4,7 @@ import { site } from "@/lib/site";
 import { prisma } from "@/lib/db";
 import { ForumForm } from "./ForumForm";
 import { LeadersSection } from "./LeadersSection";
+import { AdminDeleteButton } from "@/components/AdminDeleteButton";
 
 const FALLBACK_POSTS = [
   { id: "1", author: "Camila R.", text: "Hoy cumplí 30 días con Alma Serena y siento que mi relación conmigo misma ha cambiado profundamente. La gratitud ya no es un ejercicio, es una forma de ver la vida.", tag: "30 días", createdAt: new Date("2026-03-15") },
@@ -120,6 +121,7 @@ function ForumSection({ posts, offline }: { posts: any[]; offline: boolean }) {
                 <div className="ml-auto flex items-center gap-2">
                   <span className="text-xs text-charcoal/30">{new Date(post.createdAt).toLocaleDateString("es")}</span>
                   {!offline && <ReportButton postId={post.id} />}
+                  {!offline && <AdminDeleteButton postId={post.id} />}
                 </div>
               </div>
               <p className="text-charcoal/60 text-sm leading-relaxed">&ldquo;{post.text}&rdquo;</p>
