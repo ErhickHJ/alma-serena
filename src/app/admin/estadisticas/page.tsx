@@ -15,6 +15,9 @@ export default async function AdminStatsPage() {
     postTotal,
     postPublished,
     pendingOrders,
+    partnerProductCount,
+    partnerOrderCount,
+    partnerRevenue,
   ] = await Promise.all([
     prisma.order.count(),
     prisma.order.aggregate({ _sum: { amount: true } }),
@@ -24,6 +27,9 @@ export default async function AdminStatsPage() {
     prisma.post.count(),
     prisma.post.count({ where: { published: true } }),
     prisma.order.count({ where: { status: "pending" } }),
+    prisma.partnerProduct.count(),
+    prisma.order.count({ where: { type: "partner" } }),
+    prisma.order.aggregate({ _sum: { amount: true }, where: { type: "partner" } }),
   ]);
 
   const cards = [
@@ -31,6 +37,9 @@ export default async function AdminStatsPage() {
     { label: "Pedidos", value: orderCount, icon: "📦" },
     { label: "Pendientes", value: pendingOrders, icon: "⏳" },
     { label: "Productos", value: productCount, icon: "🛍️" },
+    { label: "Productos partners", value: partnerProductCount, icon: "🤝" },
+    { label: "Ventas partners", value: partnerOrderCount, icon: "🏪" },
+    { label: "Ingresos partners", value: `$${((partnerRevenue._sum.amount || 0) / 100).toFixed(2)}`, icon: "💵" },
     { label: "Suscriptores", value: subscriberCount, icon: "✉️" },
     { label: "Mensajes", value: contactCount, icon: "💬" },
     { label: "Posts totales", value: postTotal, icon: "📝" },

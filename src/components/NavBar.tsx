@@ -13,6 +13,7 @@ const NAV_LINKS: { href: string; key: keyof typeof translations.es.nav }[] = [
   { href: "/", key: "home" },
   { href: "/libro", key: "book" },
   { href: "/tienda", key: "shop" },
+  { href: "/ventas-diversas", key: "diverseSales" },
   { href: "/blog", key: "blog" },
   { href: "/comunidad", key: "community" },
   { href: "/partners", key: "partners" },

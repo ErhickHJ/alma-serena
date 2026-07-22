@@ -43,6 +43,9 @@ export async function DELETE(req: Request) {
       case "product":
         await prisma.product.delete({ where: { id } });
         break;
+      case "partnerProduct":
+        await prisma.partnerProduct.delete({ where: { id } });
+        break;
       default:
         return Response.json({ error: "Tipo inválido" }, { status: 400 });
     }

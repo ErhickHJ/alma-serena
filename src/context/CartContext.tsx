@@ -8,6 +8,10 @@ export type CartItem = {
   price: number;
   quantity: number;
   emoji: string;
+  type?: "store" | "partner";
+  partnerName?: string;
+  partnerContact?: string;
+  commission?: number;
 };
 
 type CartAction =

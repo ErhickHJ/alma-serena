@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export function DeleteButton({ id, type }: { id: string; type: "order" | "contact" | "subscriber" | "post" | "product" }) {
+export function DeleteButton({ id, type }: { id: string; type: "order" | "contact" | "subscriber" | "post" | "product" | "partnerProduct" }) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
 

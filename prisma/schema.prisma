@@ -35,6 +35,10 @@ model Order {
   amount        Int      @default(0)
   status        String   @default("pending")
   paymentId     String?
+  type          String   @default("store")
+  partnerName   String   @default("")
+  partnerContact String  @default("")
+  commission    Int      @default(0)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
@@ -106,4 +110,20 @@ model AdminLog {
   details   String   @default("")
   ip        String   @default("")
   createdAt DateTime @default(now())
+}
+
+model PartnerProduct {
+  id             String   @id @default(cuid())
+  name           String
+  price          Int      @default(0)
+  image          String   @default("")
+  description    String   @default("")
+  category       String   @default("")
+  partnerName    String
+  partnerContact String   @default("")
+  commission     Int      @default(500)
+  stock          Int      @default(0)
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }

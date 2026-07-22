@@ -25,6 +25,24 @@ export async function POST(req: Request) {
     shipping_address_collection: { allowed_countries: ["US", "MX", "ES", "AR", "CO", "CL", "PE"] },
   });
 
+  // Check if any items are partner products
+  const hasPartnerItems = items.some((item: any) => item.type === "partner");
+  let partnerName = "";
+  let partnerContact = "";
+  let totalCommission = 0;
+
+  if (hasPartnerItems) {
+    // Get partner info from first partner item (simplified - in production you'd handle multiple partners)
+    const partnerItem = items.find((item: any) => item.type === "partner");
+    if (partnerItem) {
+      partnerName = partnerItem.partnerName || "";
+      partnerContact = partnerItem.partnerContact || "";
+      totalCommission = items
+        .filter((item: any) => item.type === "partner")
+        .reduce((sum: number, item: any) => sum + (item.commission || 0) * item.quantity, 0);
+    }
+  }
+
   await prisma.order.create({
     data: {
       email: "pending@checkout.com",
@@ -33,6 +51,10 @@ export async function POST(req: Request) {
       status: "pending",
       paymentId: session.id,
       clerkUserId,
+      type: hasPartnerItems ? "partner" : "store",
+      partnerName,
+      partnerContact,
+      commission: Math.round(totalCommission * 100),
     },
   });
 

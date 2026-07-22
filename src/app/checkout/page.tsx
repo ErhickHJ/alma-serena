@@ -34,7 +34,15 @@ export default function CheckoutPage() {
     const res = await fetch("/api/create-checkout", {
       method: "POST",
       body: JSON.stringify({
-        items: items.map((i) => ({ name: i.name, price: i.price, quantity: i.quantity })),
+        items: items.map((i) => ({
+          name: i.name,
+          price: i.price,
+          quantity: i.quantity,
+          type: i.type,
+          partnerName: i.partnerName,
+          partnerContact: i.partnerContact,
+          commission: i.commission,
+        })),
         clerkUserId: user?.id,
         successUrl: `${window.location.origin}/checkout?success=true`,
         cancelUrl: `${window.location.origin}/checkout?cancelled=true`,

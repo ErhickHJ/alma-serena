@@ -1,17 +1,30 @@
-import { prisma } from "@/lib/db";
+import { NextResponse } from "next/server";
 
 const BASE = "https://almaserenaoficial.com";
 
 export async function GET() {
-  let posts: { title: string; slug: string; excerpt: string; createdAt: Date; author: string }[] = [];
+  let posts: { title: string; slug: string; excerpt: string; createdat: string; author: string }[] = [];
 
   try {
-    posts = await prisma.post.findMany({
-      where: { published: true },
-      select: { title: true, slug: true, excerpt: true, createdAt: true, author: true },
-      orderBy: { createdAt: "desc" },
-      take: 20,
+    const { Pool } = await import("pg");
+    const pool = new Pool({
+      connectionString: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false },
+      connectionTimeoutMillis: 8000,
     });
+    const client = await pool.connect();
+    const res = await client.query(
+      'SELECT title, slug, excerpt, "createdAt", author FROM "Post" WHERE "published" = true ORDER BY "createdAt" DESC LIMIT 20'
+    );
+    posts = res.rows.map((r) => ({
+      title: r.title,
+      slug: r.slug,
+      excerpt: r.excerpt || "",
+      createdat: new Date(r.createdAt).toUTCString(),
+      author: r.author || "Alma Serena",
+    }));
+    client.release();
+    await pool.end();
   } catch {
     // offline
   }
@@ -24,7 +37,7 @@ export async function GET() {
       <guid>${BASE}/blog/${p.slug}</guid>
       <description><![CDATA[${p.excerpt}]]></description>
       <author>${p.author}</author>
-      <pubDate>${new Date(p.createdAt).toUTCString()}</pubDate>
+      <pubDate>${p.createdat}</pubDate>
     </item>`
     )
     .join("\n");
@@ -41,7 +54,7 @@ ${items}
   </channel>
 </rss>`;
 
-  return new Response(xml, {
+  return new NextResponse(xml, {
     headers: { "Content-Type": "application/xml; charset=utf-8" },
   });
 }
