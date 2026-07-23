@@ -5,6 +5,7 @@ import AddToCartButton from "@/components/AddToCartButton";
 import SectionTitle from "@/components/SectionTitle";
 import DecorativeDivider from "@/components/DecorativeDivider";
 import ProductSchema from "@/components/ProductSchema";
+import Reviews from "@/components/Reviews";
 
 const FALLBACK_PRODUCTS = [
   { id: "fallback-1", name: "El Diario de 90 Días", price: 29.00, image: "/images/diario 4.png", emoji: "📖", category: "Diarios y Papelería", desc: "Tu guía diaria de gratitud y transformación personal." },
@@ -69,6 +70,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             <AddToCartButton item={{ id: product.id, name: `${product.emoji} ${product.name}`, price: product.price, emoji: product.emoji }} />
           </div>
         </div>
+        <Reviews productId={product.id} />
       </div>
     </div>
   );
