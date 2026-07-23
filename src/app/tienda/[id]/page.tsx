@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import AddToCartButton from "@/components/AddToCartButton";
 import SectionTitle from "@/components/SectionTitle";
 import DecorativeDivider from "@/components/DecorativeDivider";
+import ProductSchema from "@/components/ProductSchema";
 
 const FALLBACK_PRODUCTS = [
   { id: "fallback-1", name: "El Diario de 90 Días", price: 29.00, image: "/images/diario 4.png", emoji: "📖", category: "Diarios y Papelería", desc: "Tu guía diaria de gratitud y transformación personal." },
@@ -51,6 +52,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-cream/30 to-warm-white">
+      <ProductSchema product={{ name: product.name, price: product.price, image: product.image, desc: product.desc, id: product.id, category: product.category }} />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <a href="/tienda" className="text-sm text-sage-dark hover:text-sage transition-colors mb-6 inline-block">&larr; Volver a la tienda</a>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">

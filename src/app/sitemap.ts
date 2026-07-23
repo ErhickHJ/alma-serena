@@ -1,48 +1,43 @@
-import { NextResponse } from "next/server";
+import { MetadataRoute } from "next";
+import { BASE_URL } from "@/lib/site";
+import { prisma } from "@/lib/db";
 
-const BASE = "https://almaserenaoficial.com";
+const FALLBACK_SLUGS = [
+  "el-diario-de-90-dias",
+  "kit-de-journaling",
+  "el-poder-de-lo-simple",
+  "comunidad-alma-serena",
+  "tiktok-alma-serena",
+  "primer-encuentro-comunidad",
+];
 
-export default async function sitemap() {
-  let blogPages: { url: string; lastModified: Date; changeFrequency: string; priority: number }[] = [];
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const posts = await prisma.post.findMany({ select: { slug: true, updatedAt: true } }).catch(() => []);
+  const products = await prisma.product.findMany({ select: { id: true } }).catch(() => []);
 
-  try {
-    const { Pool } = await import("pg");
-    const pool = new Pool({
-      connectionString: process.env.DATABASE_URL,
-      ssl: { rejectUnauthorized: false },
-      connectionTimeoutMillis: 8000,
-    });
-    const client = await pool.connect();
-    const res = await client.query(
-      'SELECT slug, "updatedAt" FROM "Post" WHERE "published" = true'
-    );
-    blogPages = res.rows.map((r) => ({
-      url: `${BASE}/blog/${r.slug}`,
-      lastModified: new Date(r.updatedAt),
-      changeFrequency: "monthly" as const,
-      priority: 0.6,
-    }));
-    client.release();
-    await pool.end();
-  } catch {
-    // DB not reachable — return only static pages
-  }
+  const blogPages = (posts.length > 0 ? posts : FALLBACK_SLUGS.map((s) => ({ slug: s, updatedAt: new Date() }))).map((p) => ({
+    url: `${BASE_URL}/blog/${p.slug}`,
+    lastModified: p.updatedAt,
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+  }));
 
-  const staticPages = [
-    { url: BASE, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 1 },
-    { url: `${BASE}/libro`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.9 },
-    { url: `${BASE}/tienda`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.8 },
-    { url: `${BASE}/blog`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.7 },
-    { url: `${BASE}/comunidad`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
-    { url: `${BASE}/ventas-diversas`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.7 },
-    { url: `${BASE}/partners`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.5 },
-    { url: `${BASE}/contacto`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.5 },
-    { url: `${BASE}/carrito`, lastModified: new Date(), changeFrequency: "never" as const, priority: 0.3 },
-    { url: `${BASE}/faq`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.4 },
-    { url: `${BASE}/terminos`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.3 },
-    { url: `${BASE}/aviso-privacidad`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.3 },
-    { url: `${BASE}/disclaimer`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.3 },
+  const productPages = products.map((p) => ({
+    url: `${BASE_URL}/tienda/${p.id}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.8,
+  }));
+
+  return [
+    { url: BASE_URL, lastModified: new Date(), changeFrequency: "monthly", priority: 1 },
+    { url: `${BASE_URL}/tienda`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
+    { url: `${BASE_URL}/blog`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
+    ...blogPages,
+    ...productPages,
+    { url: `${BASE_URL}/comunidad`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
+    { url: `${BASE_URL}/recursos`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
+    { url: `${BASE_URL}/sobre-mi`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
+    { url: `${BASE_URL}/checkout`, lastModified: new Date(), changeFrequency: "never", priority: 0.1 },
   ];
-
-  return [...staticPages, ...blogPages];
 }
