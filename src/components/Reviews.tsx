@@ -3,7 +3,7 @@
 import { useState, useEffect, FormEvent } from "react";
 import { useUser } from "@clerk/nextjs";
 
-type Review = { id: string; productId: string; author: string; rating: number; text: string; createdAt: string };
+type Review = { id: string; productId: string; author: string; rating: number; text: string; createdAt: string; clerkUserId?: string };
 
 function StarRating({ value, onChange, readonly }: { value: number; onChange?: (v: number) => void; readonly?: boolean }) {
   const [hover, setHover] = useState(0);

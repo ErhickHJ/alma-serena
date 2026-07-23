@@ -1,3 +1,5 @@
+export const BASE_URL = "https://almaserenaoficial.com";
+
 export const site = {
   name: "Alma Serena",
   tagline: "Un diario de 90 días",

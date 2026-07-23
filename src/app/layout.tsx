@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { CartProvider } from "@/context/CartContext";
 import { ToastProvider } from "@/context/ToastContext";
 import { LangProvider } from "@/context/LangContext";
+import { WishlistProvider } from "@/context/WishlistContext";
 import { Header } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
 import { AccessibilityToolbar } from "@/components/AccessibilityToolbar";
@@ -85,6 +86,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
           <LangProvider>
           <CartProvider>
+            <WishlistProvider>
             <ToastProvider>
             <Header />
           <main id="main-content" className="flex-1">{children}</main>
@@ -93,6 +95,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <CookieConsent />
           <Analytics />
             </ToastProvider>
+            </WishlistProvider>
           </CartProvider>
           </LangProvider>
         </ClerkProvider>
