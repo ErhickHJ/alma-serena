@@ -31,6 +31,7 @@ export default async function CommunityPage() {
     <>
       <CommunityHero />
       <CommunityFeatures />
+      <MonthlyChallenges />
       <ForumSection posts={posts} offline={offline} />
       <LeadersSection />
       <CommunityCTA />
@@ -53,6 +54,43 @@ function CommunityHero() {
           vivir con más conciencia, gratitud y serenidad. Aquí compartimos, crecemos
           y nos recordamos que no estamos solos.
         </p>
+      </div>
+    </section>
+  );
+}
+
+// ============ RETOS MENSUALES ============
+function MonthlyChallenges() {
+  const challenges = [
+    { icon: "🌅", title: "Reto del amanecer", desc: "Despierta 15 minutos antes y dedica ese tiempo a la gratitud o la meditación.", duration: "7 días", tag: "Mindfulness" },
+    { icon: "📝", title: "Diario de 3 cosas", desc: "Escribe cada noche 3 cosas por las que estés agradecida/o. Nota cómo cambia tu perspectiva.", duration: "21 días", tag: "Gratitud" },
+    { icon: "🧘", title: "Pausa consciente", desc: "Tómate 5 minutos al mediodía para respirar profundamente y volver al centro.", duration: "30 días", tag: "Meditación" },
+  ];
+
+  return (
+    <section className="py-20 bg-sage/5">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-10">
+          <SectionTitle>Retos del mes</SectionTitle>
+          <p className="text-xs text-charcoal/50 mt-2">Elige un reto, comparte tu progreso y crece junto a la comunidad</p>
+          <DecorativeDivider className="my-6" />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {challenges.map((c) => (
+            <div key={c.title} className="p-6 rounded-xl bg-warm-white border border-sage/10 hover:border-sage/30 transition-all flex flex-col">
+              <div className="flex items-center justify-between mb-3 shrink-0">
+                <span className="text-3xl">{c.icon}</span>
+                <span className="text-[10px] uppercase tracking-wider text-sage bg-sage/10 px-2 py-1 rounded-full">{c.tag}</span>
+              </div>
+              <h3 className="font-serif text-lg text-sage-dark mb-2 shrink-0">{c.title}</h3>
+              <p className="text-xs text-charcoal/50 leading-relaxed flex-1">{c.desc}</p>
+              <div className="flex items-center justify-between mt-4 shrink-0">
+                <span className="text-[10px] text-gold font-medium">{c.duration}</span>
+                <span className="text-[10px] text-sage/50">Tag: #AlmaSerena</span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
