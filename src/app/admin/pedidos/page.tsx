@@ -5,6 +5,7 @@ import { prisma } from "@/lib/db";
 import { StatusSelect } from "@/components/StatusSelect";
 import { DeleteButton } from "@/components/DeleteButton";
 import { Pagination } from "@/components/Pagination";
+import ExportCSVButton from "@/components/ExportCSVButton";
 
 const PER_PAGE = 20;
 
@@ -30,7 +31,12 @@ export default async function AdminPedidosPage(props: { searchParams?: Promise<{
     <>
       <div className="flex items-center justify-between mb-8">
         <h1 className="font-serif text-3xl sm:text-4xl text-sage-dark">Pedidos</h1>
-        <span className="text-xs text-charcoal/30">{total} total</span>
+        <div className="flex items-center gap-3">
+          <span className="text-xs text-charcoal/30">{total} total</span>
+          {orders.length > 0 && (
+            <ExportCSVButton data={orders.map(o => ({ cliente: o.name, email: o.email, total: (o.amount / 100).toFixed(2), estado: o.status, fecha: new Date(o.createdAt).toLocaleDateString() }))} filename="pedidos.csv" />
+          )}
+        </div>
       </div>
 
       <form className="mb-6 max-w-xs">

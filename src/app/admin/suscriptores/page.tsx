@@ -4,6 +4,7 @@
 import { prisma } from "@/lib/db";
 import { DeleteButton } from "@/components/DeleteButton";
 import { Pagination } from "@/components/Pagination";
+import ExportCSVButton from "@/components/ExportCSVButton";
 
 const PER_PAGE = 20;
 
@@ -27,7 +28,12 @@ export default async function AdminSuscriptoresPage(props: { searchParams?: Prom
     <>
       <div className="flex items-center justify-between mb-8">
         <h1 className="font-serif text-3xl sm:text-4xl text-sage-dark">Suscriptores</h1>
-        <span className="text-xs text-charcoal/30">{total} total</span>
+        <div className="flex items-center gap-3">
+          <span className="text-xs text-charcoal/30">{total} total</span>
+          {subscribers.length > 0 && (
+            <ExportCSVButton data={subscribers.map(s => ({ email: s.email, name: s.name, fecha: new Date(s.createdAt).toLocaleDateString() }))} filename="suscriptores.csv" />
+          )}
+        </div>
       </div>
 
       <form className="mb-6 max-w-xs">
