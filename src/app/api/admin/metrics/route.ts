@@ -16,7 +16,7 @@ export async function GET() {
   }
 
   try {
-    const [totalOrders, pendingOrders, completedOrders, totalRevenue, totalSubscribers, totalContacts, totalProducts, totalPosts, recentOrders, ordersByStatus] = await Promise.all([
+    const [totalOrders, pendingOrders, completedOrders, totalRevenue, totalSubscribers, totalContacts, totalProducts, totalPosts, recentOrders, ordersByStatus, partnerProductCount, partnerOrderCount, partnerRevenue] = await Promise.all([
       prisma.order.count(),
       prisma.order.count({ where: { status: "pending" } }),
       prisma.order.count({ where: { status: "completed" } }),
@@ -27,6 +27,9 @@ export async function GET() {
       prisma.post.count(),
       prisma.order.findMany({ orderBy: { createdAt: "desc" }, take: 10, select: { id: true, name: true, email: true, product: true, amount: true, status: true, createdAt: true, type: true } }),
       prisma.order.groupBy({ by: ["status"], _count: true }),
+      prisma.partnerProduct.count(),
+      prisma.order.count({ where: { type: "partner" } }),
+      prisma.order.aggregate({ _sum: { amount: true }, where: { type: "partner" } }),
     ]);
 
     return NextResponse.json({
@@ -40,6 +43,9 @@ export async function GET() {
         totalContacts,
         totalProducts,
         totalPosts,
+        partnerProductCount,
+        partnerOrderCount,
+        partnerRevenue: partnerRevenue._sum.amount || 0,
         recentOrders,
         ordersByStatus: ordersByStatus.map(s => ({ status: s.status, count: s._count })),
       },

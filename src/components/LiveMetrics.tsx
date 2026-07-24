@@ -11,6 +11,9 @@ type Metrics = {
   totalContacts: number;
   totalProducts: number;
   totalPosts: number;
+  partnerProductCount: number;
+  partnerOrderCount: number;
+  partnerRevenue: number;
   recentOrders: { id: string; name: string; email: string; product: string; amount: number; status: string; createdAt: string; type: string }[];
   ordersByStatus: { status: string; count: number }[];
 };
@@ -55,6 +58,9 @@ export default function LiveMetrics() {
     { label: "Completados", value: metrics.completedOrders, icon: "✅" },
     { label: "Pendientes", value: metrics.pendingOrders, icon: "⏳" },
     { label: "Productos", value: metrics.totalProducts, icon: "🛍️" },
+    { label: "Productos partners", value: metrics.partnerProductCount, icon: "🤝" },
+    { label: "Ventas partners", value: metrics.partnerOrderCount, icon: "🏪" },
+    { label: "Ingresos partners", value: `$${(metrics.partnerRevenue / 100).toFixed(2)}`, icon: "💵" },
     { label: "Suscriptores", value: metrics.totalSubscribers, icon: "✉️" },
     { label: "Mensajes", value: metrics.totalContacts, icon: "💬" },
     { label: "Posts", value: metrics.totalPosts, icon: "📝" },
