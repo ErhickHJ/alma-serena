@@ -16,7 +16,7 @@ export async function GET() {
   }
 
   try {
-    const [totalOrders, pendingOrders, completedOrders, totalRevenue, totalSubscribers, totalContacts, totalProducts, totalPosts, recentOrders, ordersByStatus, partnerProductCount, partnerOrderCount, partnerRevenue] = await Promise.all([
+    const [totalOrders, pendingOrders, completedOrders, totalRevenue, totalSubscribers, totalContacts, totalProducts, totalPosts, recentOrders, ordersByStatus, partnerProductCount, partnerOrderCount, partnerRevenue, dailyOrders] = await Promise.all([
       prisma.order.count(),
       prisma.order.count({ where: { status: "pending" } }),
       prisma.order.count({ where: { status: "completed" } }),
@@ -30,6 +30,16 @@ export async function GET() {
       prisma.partnerProduct.count(),
       prisma.order.count({ where: { type: "partner" } }),
       prisma.order.aggregate({ _sum: { amount: true }, where: { type: "partner" } }),
+      prisma.$queryRaw<{ date: string; count: number; revenue: number }[]>`
+        SELECT 
+          TO_CHAR("createdAt", 'YYYY-MM-DD') as date,
+          COUNT(*)::int as count,
+          COALESCE(SUM(CASE WHEN "status" IN ('completed','shipped','delivered') THEN "amount" ELSE 0 END), 0)::int as revenue
+        FROM "Order"
+        WHERE "createdAt" >= NOW() - INTERVAL '30 days'
+        GROUP BY TO_CHAR("createdAt", 'YYYY-MM-DD')
+        ORDER BY date ASC
+      `,
     ]);
 
     return NextResponse.json({
@@ -48,6 +58,7 @@ export async function GET() {
         partnerRevenue: partnerRevenue._sum.amount || 0,
         recentOrders,
         ordersByStatus: ordersByStatus.map(s => ({ status: s.status, count: s._count })),
+        dailyOrders,
       },
       timestamp: new Date().toISOString(),
     });

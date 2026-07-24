@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, AreaChart, Area } from "recharts";
 
 type Metrics = {
   totalOrders: number;
@@ -16,6 +17,16 @@ type Metrics = {
   partnerRevenue: number;
   recentOrders: { id: string; name: string; email: string; product: string; amount: number; status: string; createdAt: string; type: string }[];
   ordersByStatus: { status: string; count: number }[];
+  dailyOrders: { date: string; count: number; revenue: number }[];
+};
+
+const STATUS_COLORS: Record<string, string> = {
+  pending: "#eab308",
+  processing: "#3b82f6",
+  completed: "#22c55e",
+  shipped: "#6366f1",
+  delivered: "#14b8a6",
+  cancelled: "#ef4444",
 };
 
 export default function LiveMetrics() {
@@ -66,6 +77,9 @@ export default function LiveMetrics() {
     { label: "Posts", value: metrics.totalPosts, icon: "📝" },
   ];
 
+  const pieData = metrics.ordersByStatus.map(s => ({ name: s.status, value: s.count }));
+  const chartData = metrics.dailyOrders.map(d => ({ date: d.date.slice(5), pedidos: d.count, ingresos: d.revenue / 100 }));
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -90,15 +104,59 @@ export default function LiveMetrics() {
         ))}
       </div>
 
-      {metrics.ordersByStatus.length > 0 && (
-        <div className="mb-8">
-          <h3 className="text-sm font-medium text-charcoal/70 mb-3">Pedidos por estado</h3>
-          <div className="flex gap-3 flex-wrap">
-            {metrics.ordersByStatus.map((s) => (
-              <span key={s.status} className="px-3 py-1.5 rounded-full bg-sage/10 text-xs text-sage-dark font-medium">
-                {s.status}: {s.count}
-              </span>
-            ))}
+      {chartData.length > 0 && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <div className="bg-warm-white rounded-xl border border-sage/10 p-5">
+            <h3 className="text-sm font-medium text-charcoal/70 mb-4">Pedidos por día (últimos 30 días)</h3>
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <XAxis dataKey="date" tick={{ fontSize: 10 }} />
+                <YAxis tick={{ fontSize: 10 }} />
+                <Tooltip />
+                <Bar dataKey="pedidos" fill="#8ba888" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className="bg-warm-white rounded-xl border border-sage/10 p-5">
+            <h3 className="text-sm font-medium text-charcoal/70 mb-4">Ingresos por día (últimos 30 días)</h3>
+            <ResponsiveContainer width="100%" height={250}>
+              <AreaChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <XAxis dataKey="date" tick={{ fontSize: 10 }} />
+                <YAxis tick={{ fontSize: 10 }} />
+                <Tooltip formatter={(v: number) => [`$${v.toFixed(2)}`, "Ingresos"]} />
+                <Area type="monotone" dataKey="ingresos" stroke="#c9a98c" fill="#c9a98c" fillOpacity={0.3} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      )}
+
+      {pieData.length > 0 && (
+        <div className="bg-warm-white rounded-xl border border-sage/10 p-5 mb-8">
+          <h3 className="text-sm font-medium text-charcoal/70 mb-4">Distribución de pedidos por estado</h3>
+          <div className="flex items-center gap-8">
+            <ResponsiveContainer width="50%" height={200}>
+              <PieChart>
+                <Pie data={pieData} cx="50%" cy="50%" innerRadius={50} outerRadius={80} paddingAngle={3} dataKey="value">
+                  {pieData.map((entry) => (
+                    <Cell key={entry.name} fill={STATUS_COLORS[entry.name] || "#94a3b8"} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+            <div className="flex flex-col gap-2">
+              {pieData.map((s) => (
+                <div key={s.name} className="flex items-center gap-2 text-xs">
+                  <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: STATUS_COLORS[s.name] || "#94a3b8" }} />
+                  <span className="text-charcoal/60 capitalize">{s.name}</span>
+                  <span className="font-medium text-charcoal">{s.value}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}
