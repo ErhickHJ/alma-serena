@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useToast } from "@/context/ToastContext";
+import ImageUpload from "@/components/ImageUpload";
 
 type Product = {
   id: string;
@@ -30,6 +31,7 @@ export function ProductForm({ product }: { product?: Product }) {
   const router = useRouter();
   const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState(product?.image || "");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -38,7 +40,7 @@ export function ProductForm({ product }: { product?: Product }) {
     const data: Record<string, unknown> = {
       name: form.get("name"),
       price: parseFloat(form.get("price") as string),
-      image: form.get("image"),
+      image: imageUrl,
       emoji: form.get("emoji"),
       category: form.get("category"),
       desc: form.get("desc"),
@@ -77,18 +79,15 @@ export function ProductForm({ product }: { product?: Product }) {
           <input name="emoji" defaultValue={product?.emoji || ""} maxLength={10} className="w-full px-4 py-2 rounded-lg border border-sage/20 bg-warm-white text-sm focus:outline-none focus:border-sage transition-colors" />
         </div>
       </div>
-      <div>
-        <label className="block text-sm font-medium text-charcoal/70 mb-1">Imagen URL</label>
-        <input name="image" defaultValue={product?.image || ""} className="w-full px-4 py-2 rounded-lg border border-sage/20 bg-warm-white text-sm focus:outline-none focus:border-sage transition-colors" />
-      </div>
+      <ImageUpload value={imageUrl} onChange={setImageUrl} label="Imagen del producto" />
       <div>
         <label className="block text-sm font-medium text-charcoal/70 mb-1">Categoría</label>
         <select name="category" defaultValue={product?.category || ""} className="w-full px-4 py-2 rounded-lg border border-sage/20 bg-warm-white text-sm focus:outline-none focus:border-sage transition-colors">
           <option value="">Seleccionar</option>
-          <option value="libros">Libros</option>
-          <option value="diarios">Diarios</option>
-          <option value="velas">Velas</option>
-          <option value="accesorios">Accesorios</option>
+          <option value="Diarios y Papelería">Diarios y Papelería</option>
+          <option value="Velas y Aromas">Velas y Aromas</option>
+          <option value="Mindfulness y Meditación">Mindfulness y Meditación</option>
+          <option value="Ritual y Bienestar">Ritual y Bienestar</option>
         </select>
       </div>
       <div>
@@ -129,6 +128,7 @@ export function PartnerProductForm({ product }: { product?: PartnerProduct }) {
   const router = useRouter();
   const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState(product?.image || "");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -137,7 +137,7 @@ export function PartnerProductForm({ product }: { product?: PartnerProduct }) {
     const data: Record<string, unknown> = {
       name: form.get("name"),
       price: Math.round(parseFloat(form.get("price") as string) * 100),
-      image: form.get("image"),
+      image: imageUrl,
       description: form.get("description"),
       category: form.get("category"),
       partnerName: form.get("partnerName"),
@@ -179,10 +179,7 @@ export function PartnerProductForm({ product }: { product?: PartnerProduct }) {
           <input name="stock" type="number" defaultValue={product?.stock || 0} required className="w-full px-4 py-2 rounded-lg border border-sage/20 bg-warm-white text-sm focus:outline-none focus:border-sage transition-colors" />
         </div>
       </div>
-      <div>
-        <label className="block text-sm font-medium text-charcoal/70 mb-1">Imagen URL</label>
-        <input name="image" defaultValue={product?.image || ""} className="w-full px-4 py-2 rounded-lg border border-sage/20 bg-warm-white text-sm focus:outline-none focus:border-sage transition-colors" />
-      </div>
+      <ImageUpload value={imageUrl} onChange={setImageUrl} label="Imagen del producto" />
       <div>
         <label className="block text-sm font-medium text-charcoal/70 mb-1">Categoría</label>
         <select name="category" defaultValue={product?.category || ""} className="w-full px-4 py-2 rounded-lg border border-sage/20 bg-warm-white text-sm focus:outline-none focus:border-sage transition-colors">
@@ -232,6 +229,7 @@ export function PostForm({ post }: { post?: Post }) {
   const router = useRouter();
   const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState(post?.imageUrl || "");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -243,7 +241,7 @@ export function PostForm({ post }: { post?: Post }) {
       excerpt: form.get("excerpt"),
       content: form.get("content"),
       author: form.get("author"),
-      imageUrl: form.get("imageUrl"),
+      imageUrl: imageUrl,
       published: form.get("published") === "on",
     };
     if (post) data.id = post.id;
@@ -287,10 +285,7 @@ export function PostForm({ post }: { post?: Post }) {
         <label className="block text-sm font-medium text-charcoal/70 mb-1">Contenido (Markdown)</label>
         <textarea name="content" rows={12} defaultValue={post?.content || ""} required maxLength={50000} className="w-full px-4 py-2 rounded-lg border border-sage/20 bg-warm-white text-sm focus:outline-none focus:border-sage transition-colors font-mono" />
       </div>
-      <div>
-        <label className="block text-sm font-medium text-charcoal/70 mb-1">Imagen URL</label>
-        <input name="imageUrl" defaultValue={post?.imageUrl || ""} className="w-full px-4 py-2 rounded-lg border border-sage/20 bg-warm-white text-sm focus:outline-none focus:border-sage transition-colors" />
-      </div>
+      <ImageUpload value={imageUrl} onChange={setImageUrl} label="Imagen del artículo" />
       <label className="flex items-center gap-2 text-sm text-charcoal/70">
         <input name="published" type="checkbox" defaultChecked={post?.published || false} className="rounded border-sage/20" />
         Publicado
