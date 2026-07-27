@@ -25,6 +25,6 @@ mkdir -p "$BACKUP_DIR"
 DATE=$(date +%Y-%m-%d_%H-%M)
 FILE="$BACKUP_DIR/alma-serena-$DATE.sql"
 
-pg_dump "$DB_URL" --no-owner --no-acl > "$FILE"
+pg_dump "$DATABASE_URL" --no-owner --no-acl > "$FILE"
 gzip "$FILE"
 echo "Backup creado: $FILE.gz"
