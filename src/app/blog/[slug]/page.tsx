@@ -1,6 +1,8 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 import BlogPostContent from "./BlogPostContent";
+import { BASE_URL } from "@/lib/site";
 
 const FALLBACK: Record<string, { title: string; content: string; date: Date; imageUrl: string }> = {
   "poder-de-la-gratitud": {
@@ -178,4 +180,44 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   }
 
   return <BlogPostContent post={post} relatedPosts={relatedPosts} />;
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  let title = "";
+  let description = "";
+  let imageUrl = "";
+
+  try {
+    const dbPost = await prisma.post.findUnique({ where: { slug }, select: { title: true, excerpt: true, imageUrl: true, published: true } });
+    if (dbPost?.published) {
+      title = dbPost.title;
+      description = dbPost.excerpt || title;
+      imageUrl = dbPost.imageUrl || "";
+    }
+  } catch { /* offline */ }
+
+  if (!title) {
+    const fallback = FALLBACK[slug];
+    if (!fallback) return {};
+    title = fallback.title;
+    description = fallback.content.split("\n\n")[0].slice(0, 160);
+    imageUrl = fallback.imageUrl || "";
+  }
+
+  const url = `${BASE_URL}/blog/${slug}`;
+  const ogImage = imageUrl ? (imageUrl.startsWith("http") ? imageUrl : `${BASE_URL}${imageUrl}`) : undefined;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: "article",
+      images: ogImage ? [{ url: ogImage, width: 1200, height: 630 }] : undefined,
+    },
+  };
 }

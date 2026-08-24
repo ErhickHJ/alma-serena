@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import ComunidadContent from "./ComunidadContent";
+
+export const metadata: Metadata = {
+  title: "Comunidad",
+  description: "Únete a la comunidad de Alma Serena. Comparte tu journey de gratitud, meditación y crecimiento personal.",
+  alternates: { canonical: "https://almaserenaoficial.com/comunidad" },
+};
 
 const FALLBACK_POSTS = [
   { id: "1", author: "Camila R.", text: "Hoy cumplí 30 días con Alma Serena y siento que mi relación conmigo misma ha cambiado profundamente. La gratitud ya no es un ejercicio, es una forma de ver la vida.", tag: "30 días", createdAt: new Date("2026-03-15") },
