@@ -39,8 +39,8 @@ export default function CheckoutContent() {
       method: "POST",
       body: JSON.stringify({
         items: items.map((i) => ({
+          id: i.id,
           name: i.name,
-          price: i.price,
           quantity: i.quantity,
           type: i.type,
           partnerName: i.partnerName,

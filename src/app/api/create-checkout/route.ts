@@ -19,14 +19,34 @@ export async function POST(req: Request) {
   const maxItems = 50;
   const safeItems = items.slice(0, maxItems);
 
-  const lineItems = safeItems.map((item: { name: string; price: number; quantity: number }) => ({
-    price_data: {
-      currency: "usd",
-      product_data: { name: String(item.name || "").slice(0, 200) },
-      unit_amount: Math.max(0, Math.round(Number(item.price || 0) * 100)),
-    },
-    quantity: Math.max(1, Math.floor(Number(item.quantity || 1))),
-  }));
+  const storeIds = safeItems.filter((i: { type?: string }) => !i.type || i.type === "store").map((i: { id: string }) => i.id);
+  const partnerIds = safeItems.filter((i: { type?: string }) => i.type === "partner").map((i: { id: string }) => i.id);
+
+  const [storeProducts, partnerProducts] = await Promise.all([
+    storeIds.length ? prisma.product.findMany({ where: { id: { in: storeIds } } }) : [],
+    partnerIds.length ? prisma.partnerProduct.findMany({ where: { id: { in: partnerIds } } }) : [],
+  ]);
+
+  const productMap = new Map(storeProducts.map(p => [p.id, { name: p.name, price: p.price }]));
+  const partnerMap = new Map(partnerProducts.map(p => [p.id, { name: p.name, price: p.price, partnerName: p.partnerName, partnerContact: p.partnerContact, commission: p.commission }]));
+
+  const lineItems = safeItems.map((item: { id: string; name: string; quantity: number; type?: string }) => {
+    const isPartner = item.type === "partner";
+    const dbProduct = isPartner ? partnerMap.get(item.id) : productMap.get(item.id);
+
+    if (!dbProduct) {
+      throw new Error(`Producto no encontrado: ${item.id}`);
+    }
+
+    return {
+      price_data: {
+        currency: "usd",
+        product_data: { name: dbProduct.name.slice(0, 200) },
+        unit_amount: Math.max(0, Math.round(dbProduct.price * 100)),
+      },
+      quantity: Math.max(1, Math.floor(Number(item.quantity || 1))),
+    };
+  });
 
   const stripeSession = await stripe.checkout.sessions.create({
     mode: "payment",
@@ -42,13 +62,19 @@ export async function POST(req: Request) {
   let totalCommission = 0;
 
   if (hasPartnerItems) {
-    const partnerItem = safeItems.find((item: { type?: string }) => item.type === "partner") as { partnerName?: string; partnerContact?: string; commission?: number; quantity?: number } | undefined;
-    if (partnerItem) {
-      partnerName = partnerItem.partnerName || "";
-      partnerContact = partnerItem.partnerContact || "";
+    const firstPartnerItem = safeItems.find((i: { type?: string }) => i.type === "partner") as { id: string } | undefined;
+    if (firstPartnerItem) {
+      const pData = partnerMap.get(firstPartnerItem.id);
+      if (pData) {
+        partnerName = pData.partnerName;
+        partnerContact = pData.partnerContact;
+      }
       totalCommission = safeItems
         .filter((item: { type?: string }) => item.type === "partner")
-        .reduce((sum: number, item: { commission?: number; quantity?: number }) => sum + (item.commission || 0) * (item.quantity || 1), 0);
+        .reduce((sum: number, item: { id: string; quantity?: number }) => {
+          const p = partnerMap.get(item.id);
+          return sum + (p?.commission || 0) * (item.quantity || 1);
+        }, 0);
     }
   }
 

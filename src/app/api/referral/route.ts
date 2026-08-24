@@ -40,24 +40,40 @@ export async function POST(req: Request) {
   if (!rl.allowed) return NextResponse.json({ success: false, error: "Demasiadas solicitudes" }, { status: 429 });
 
   const { ref } = await req.json();
-  if (!ref || ref.length < 4) return NextResponse.json({ success: false, error: "Código de referido inválido" }, { status: 400 });
+  if (!ref || typeof ref !== "string" || ref.length < 4) {
+    return NextResponse.json({ success: false, error: "Código de referido inválido" }, { status: 400 });
+  }
+
+  const ownCode = userId.slice(0, 8);
+  if (ref === ownCode || ref === userId) {
+    return NextResponse.json({ success: false, error: "No puedes referirte a ti mismo" }, { status: 400 });
+  }
 
   try {
     const existing = await prisma.referral.findUnique({ where: { referredUserId: userId } });
     if (existing) return NextResponse.json({ success: false, error: "Ya tienes un referido registrado" }, { status: 400 });
 
-    const leaderRef = await prisma.referral.create({ data: { referrerUserId: ref, referredUserId: userId } });
-    const count = await prisma.referral.count({ where: { referrerUserId: ref } });
+    const { clerkClient } = await import("@clerk/nextjs/server");
+    const client = await clerkClient();
+    const referrerUsers = await client.users.getUserList({ query: ref, limit: 10 });
+    const referrer = referrerUsers.data.find(u => u.id.startsWith(ref) || u.id === ref);
+    if (!referrer) {
+      return NextResponse.json({ success: false, error: "Código de referido no válido" }, { status: 400 });
+    }
+    const referrerUserId = referrer.id;
+
+    await prisma.referral.create({ data: { referrerUserId, referredUserId: userId } });
+    const count = await prisma.referral.count({ where: { referrerUserId } });
     const level = getLevel(count);
 
     await prisma.communityLeader.upsert({
-      where: { clerkUserId: ref },
+      where: { clerkUserId: referrerUserId },
       update: { referralCount: count, level: level.level },
-      create: { clerkUserId: ref, name: "", email: "", referralCount: count, level: level.level },
+      create: { clerkUserId: referrerUserId, name: referrer.fullName || referrer.firstName || "", email: referrer.emailAddresses?.[0]?.emailAddress || "", referralCount: count, level: level.level },
     });
 
     return NextResponse.json({ success: true });
-  } catch (e: any) {
-    return NextResponse.json({ success: false, error: e?.message || "Error al registrar referido" }, { status: 500 });
+  } catch (e: unknown) {
+    return NextResponse.json({ success: false, error: (e as Error)?.message || "Error al registrar referido" }, { status: 500 });
   }
 }
