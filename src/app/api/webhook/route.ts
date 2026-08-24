@@ -19,12 +19,17 @@ export async function POST(req: Request) {
     const name = session.customer_details?.name || "Stripe Customer";
     const amount = session.amount_total || 0;
 
+    const existing = await prisma.order.findFirst({ where: { paymentId: session.id } });
+    const alreadyCompleted = existing?.status === "completed";
+
     await prisma.order.updateMany({
       where: { paymentId: session.id },
       data: { email, name, amount, status: "completed" },
     });
 
-    sendOrderConfirmation(email, name, amount, session.id);
+    if (!alreadyCompleted) {
+      sendOrderConfirmation(email, name, amount, session.id);
+    }
   }
 
   return Response.json({ received: true });
