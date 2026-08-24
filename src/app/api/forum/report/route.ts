@@ -6,7 +6,7 @@ export async function POST(req: Request) {
   const session = await auth();
   if (!session.userId) return NextResponse.json({ success: false, error: "Inicia sesión para reportar" }, { status: 401 });
 
-  const rl = rateLimit(`forum-report:${session.userId}`, { limit: 5, windowMs: 60000 });
+  const rl = await rateLimit(`forum-report:${session.userId}`, { limit: 5, windowMs: 60000 });
   if (!rl.allowed) return NextResponse.json({ success: false, error: "Demasiadas solicitudes" }, { status: 429 });
 
   const { postId } = await req.json();

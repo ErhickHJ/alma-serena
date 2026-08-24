@@ -3,7 +3,7 @@ import { rateLimit } from "@/lib/rate-limit";
 
 export async function POST(req: Request) {
   const ip = req.headers.get("x-forwarded-for") || "unknown";
-  const rl = rateLimit(`partner:${ip}`, { limit: 3, windowMs: 60000 });
+  const rl = await rateLimit(`partner:${ip}`, { limit: 3, windowMs: 60000 });
   if (!rl.allowed) return Response.json({ error: "Demasiadas solicitudes" }, { status: 429 });
 
   const ct = req.headers.get("content-type") || "";

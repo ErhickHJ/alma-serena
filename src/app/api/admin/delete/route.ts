@@ -12,7 +12,7 @@ export async function DELETE(req: Request) {
   const session = await auth();
   if (!session.userId) return Response.json({ error: "No autorizado" }, { status: 401 });
 
-  const rl = rateLimit(`admin:${session.userId}`, { limit: 30, windowMs: 60000 });
+  const rl = await rateLimit(`admin:${session.userId}`, { limit: 30, windowMs: 60000 });
   if (!rl.allowed) return Response.json({ error: "Demasiadas solicitudes" }, { status: 429 });
 
   const user = await (await clerkClient()).users.getUser(session.userId);

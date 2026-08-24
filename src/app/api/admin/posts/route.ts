@@ -22,7 +22,7 @@ export async function GET() {
   const check = await checkAdmin(session);
   if (check.error) return Response.json({ error: check.error }, { status: check.status! });
 
-  const rl = rateLimit(`admin:${session.userId}`, { limit: 30, windowMs: 60000 });
+  const rl = await rateLimit(`admin:${session.userId}`, { limit: 30, windowMs: 60000 });
   if (!rl.allowed) return Response.json({ error: "Demasiadas solicitudes" }, { status: 429 });
 
   const posts = await prisma.post.findMany({ orderBy: { createdAt: "desc" } });
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
   const check = await checkAdmin(session);
   if (check.error) return Response.json({ error: check.error }, { status: check.status! });
 
-  const rl = rateLimit(`admin:${session.userId}`, { limit: 30, windowMs: 60000 });
+  const rl = await rateLimit(`admin:${session.userId}`, { limit: 30, windowMs: 60000 });
   if (!rl.allowed) return Response.json({ error: "Demasiadas solicitudes" }, { status: 429 });
 
   const raw = await req.json();
@@ -51,7 +51,7 @@ export async function PUT(req: Request) {
   const check = await checkAdmin(session);
   if (check.error) return Response.json({ error: check.error }, { status: check.status! });
 
-  const rl = rateLimit(`admin:${session.userId}`, { limit: 30, windowMs: 60000 });
+  const rl = await rateLimit(`admin:${session.userId}`, { limit: 30, windowMs: 60000 });
   if (!rl.allowed) return Response.json({ error: "Demasiadas solicitudes" }, { status: 429 });
 
   const raw = await req.json();

@@ -9,7 +9,7 @@ export async function POST(req: Request) {
   }
 
   const ip = req.headers.get("x-forwarded-for") || "unknown";
-  const rl = rateLimit(`contact:${ip}`, { limit: 3, windowMs: 60000 });
+  const rl = await rateLimit(`contact:${ip}`, { limit: 3, windowMs: 60000 });
   if (!rl.allowed) return Response.json({ error: "Demasiadas solicitudes. Intenta de nuevo en un minuto." }, { status: 429 });
 
   const text = await req.text();

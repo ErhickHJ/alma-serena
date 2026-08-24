@@ -9,7 +9,7 @@ export async function POST(req: Request) {
   }
 
   const ip = req.headers.get("x-forwarded-for") || "unknown";
-  const rl = rateLimit(`subscribe:${ip}`, { limit: 5, windowMs: 60000 });
+  const rl = await rateLimit(`subscribe:${ip}`, { limit: 5, windowMs: 60000 });
   if (!rl.allowed) return Response.json({ error: "Demasiadas solicitudes" }, { status: 429 });
 
   const body = await req.json();
