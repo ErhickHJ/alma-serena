@@ -38,5 +38,5 @@ export async function POST(req: Request) {
 
   notifyNewContact(name, email, subject, message);
 
-  return Response.redirect(new URL("/contacto?sent=true", req.url));
+  return Response.json({ success: true });
 }

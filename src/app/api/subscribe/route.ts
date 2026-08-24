@@ -12,13 +12,18 @@ export async function POST(req: Request) {
   const rl = await rateLimit(`subscribe:${ip}`, { limit: 5, windowMs: 60000 });
   if (!rl.allowed) return Response.json({ error: "Demasiadas solicitudes" }, { status: 429 });
 
-  const body = await req.json();
+  let body: Record<string, unknown>;
+  try {
+    body = await req.json();
+  } catch {
+    return Response.json({ error: "JSON inválido" }, { status: 400 });
+  }
 
   if (!checkHoneypot(body)) {
     return Response.json({ error: "Spam detectado" }, { status: 400 });
   }
 
-  const { email, name } = body;
+  const { email, name } = body as { email?: string; name?: string };
   if (!email) return Response.json({ error: "Email requerido" }, { status: 400 });
 
   if (typeof email !== "string" || email.length > 200) {

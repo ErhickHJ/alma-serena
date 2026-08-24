@@ -19,9 +19,15 @@ export async function POST(req: Request) {
   const rl = await rateLimit(`forum-post:${userId}`, { limit: 10, windowMs: 600000 });
   if (!rl.allowed) return NextResponse.json({ success: false, error: "Demasiadas solicitudes. Intenta de nuevo en unos minutos." }, { status: 429 });
 
-  const { text, tag } = await req.json();
+  let body: { text?: string; tag?: string };
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ success: false, error: "JSON inválido" }, { status: 400 });
+  }
+  const { text, tag } = body;
   if (!text || text.trim().length < 2) return NextResponse.json({ success: false, error: "Escribe un mensaje" }, { status: 400 });
-  if (text.length > 2000) return NextResponse.json({ success: false, error: "El mensaje es demasiado largo (máximo 2000 caracteres)" }, { status: 400 });
+  if (text.trim().length > 2000) return NextResponse.json({ success: false, error: "El mensaje es demasiado largo (máximo 2000 caracteres)" }, { status: 400 });
 
   try {
     const client = await (await import("@clerk/nextjs/server")).clerkClient();
