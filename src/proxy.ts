@@ -21,6 +21,7 @@ export default clerkMiddleware(
     res.headers.set("X-Frame-Options", "DENY");
     res.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
     res.headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+    res.headers.set("Reporting-Endpoints", 'csp-endpoint="/api/csp-report"');
     
     if (pathname.startsWith("/images/") || pathname.endsWith(".svg") || pathname.endsWith(".png") || pathname.endsWith(".jpg") || pathname.endsWith(".webp")) {
       res.headers.set("Cache-Control", "public, max-age=31536000, immutable");
@@ -40,6 +41,8 @@ export default clerkMiddleware(
         "base-uri": ["'self'"],
         "form-action": ["'self'"],
         "upgrade-insecure-requests": [],
+        "report-uri": ["/api/csp-report"],
+        "report-to": ["csp-endpoint"],
       },
     },
   },
