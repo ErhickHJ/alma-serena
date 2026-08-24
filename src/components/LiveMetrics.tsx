@@ -126,7 +126,7 @@ export default function LiveMetrics() {
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                 <XAxis dataKey="date" tick={{ fontSize: 10 }} />
                 <YAxis tick={{ fontSize: 10 }} />
-                <Tooltip formatter={(v: number) => [`$${v.toFixed(2)}`, "Ingresos"]} />
+                <Tooltip formatter={(v) => [`$${Number(v ?? 0).toFixed(2)}`, "Ingresos"]} />
                 <Area type="monotone" dataKey="ingresos" stroke="#c9a98c" fill="#c9a98c" fillOpacity={0.3} />
               </AreaChart>
             </ResponsiveContainer>
