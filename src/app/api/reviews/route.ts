@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
+import { rateLimit } from "@/lib/rate-limit";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -14,14 +15,17 @@ export async function GET(req: Request) {
       take: 50,
     });
     return NextResponse.json({ success: true, reviews });
-  } catch (e: any) {
-    return NextResponse.json({ success: false, error: e?.message }, { status: 500 });
+  } catch (e: unknown) {
+    return NextResponse.json({ success: false, error: (e as Error)?.message }, { status: 500 });
   }
 }
 
 export async function POST(req: Request) {
   const { userId } = await auth();
   if (!userId) return NextResponse.json({ success: false, error: "Inicia sesión para reseñar" }, { status: 401 });
+
+  const rl = await rateLimit(`review:${userId}`, { limit: 5, windowMs: 60000 });
+  if (!rl.allowed) return NextResponse.json({ success: false, error: "Demasiadas solicitudes" }, { status: 429 });
 
   const { productId, rating, text } = await req.json();
   if (!productId || !rating || rating < 1 || rating > 5) {
@@ -37,16 +41,16 @@ export async function POST(req: Request) {
     if (existing) {
       const updated = await prisma.review.update({
         where: { id: existing.id },
-        data: { rating, text: text?.trim() || "" },
+        data: { rating, text: text?.trim().slice(0, 2000) || "" },
       });
       return NextResponse.json({ success: true, review: updated });
     }
 
     const review = await prisma.review.create({
-      data: { productId, clerkUserId: userId, author, rating, text: text?.trim() || "" },
+      data: { productId, clerkUserId: userId, author, rating, text: text?.trim().slice(0, 2000) || "" },
     });
     return NextResponse.json({ success: true, review });
-  } catch (e: any) {
-    return NextResponse.json({ success: false, error: e?.message }, { status: 500 });
+  } catch (e: unknown) {
+    return NextResponse.json({ success: false, error: (e as Error)?.message }, { status: 500 });
   }
 }

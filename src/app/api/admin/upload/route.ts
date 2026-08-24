@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { isAdmin } from "@/lib/admin";
+import { rateLimit } from "@/lib/rate-limit";
 
 export async function POST(req: Request) {
   const session = await auth();
   if (!session.userId) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+
+  const rl = await rateLimit(`upload:${session.userId}`, { limit: 10, windowMs: 60000 });
+  if (!rl.allowed) return NextResponse.json({ error: "Demasiadas solicitudes" }, { status: 429 });
 
   const { clerkClient } = await import("@clerk/nextjs/server");
   const user = await (await clerkClient()).users.getUser(session.userId);

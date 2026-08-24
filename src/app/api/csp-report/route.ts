@@ -1,7 +1,12 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { rateLimit } from "@/lib/rate-limit";
 
 export async function POST(req: Request) {
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  const rl = await rateLimit(`csp:${ip}`, { limit: 20, windowMs: 60000 });
+  if (!rl.allowed) return new NextResponse(null, { status: 429 });
+
   try {
     const body = await req.json();
     const violation = body["csp-report"] || body;
@@ -21,7 +26,7 @@ export async function POST(req: Request) {
         userId: "csp-report",
         action: "csp_violation",
         details,
-        ip: req.headers.get("x-forwarded-for") || "",
+        ip,
       },
     });
   } catch {

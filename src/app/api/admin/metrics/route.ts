@@ -2,12 +2,16 @@ import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
 import { isAdmin } from "@/lib/admin";
+import { rateLimit } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
   const session = await auth();
   if (!session.userId) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+
+  const rl = await rateLimit(`metrics:${session.userId}`, { limit: 30, windowMs: 60000 });
+  if (!rl.allowed) return NextResponse.json({ error: "Demasiadas solicitudes" }, { status: 429 });
 
   const { clerkClient } = await import("@clerk/nextjs/server");
   const user = await (await clerkClient()).users.getUser(session.userId);
