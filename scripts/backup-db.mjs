@@ -21,6 +21,11 @@ async function main() {
     ["posts", () => prisma.post.findMany()],
     ["admin-logs", () => prisma.adminLog.findMany()],
     ["products", () => prisma.product.findMany()],
+    ["forum-posts", () => prisma.forumPost.findMany()],
+    ["referrals", () => prisma.referral.findMany()],
+    ["community-leaders", () => prisma.communityLeader.findMany()],
+    ["partner-products", () => prisma.partnerProduct.findMany()],
+    ["reviews", () => prisma.review.findMany()],
   ] as const;
 
   for (const [name, query] of tables) {
