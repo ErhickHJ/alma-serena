@@ -33,8 +33,11 @@ export async function POST(req: Request) {
   const rl = rateLimit(`admin:${session.userId}`, { limit: 30, windowMs: 60000 });
   if (!rl.allowed) return Response.json({ error: "Demasiadas solicitudes" }, { status: 429 });
 
-  const data = await req.json();
-  const product = await prisma.partnerProduct.create({ data });
+  const raw = await req.json();
+  const { name, price, image, description, category, partnerName, partnerContact, commission, stock, active } = raw;
+  if (!name || !partnerName) return Response.json({ error: "Faltan campos requeridos" }, { status: 400 });
+
+  const product = await prisma.partnerProduct.create({ data: { name, price: price || 0, image: image || "", description: description || "", category: category || "", partnerName, partnerContact: partnerContact || "", commission: commission || 500, stock: stock || 0, active: active !== false } });
   await logAdminAction({ userId: session.userId!, email: check.user!.emailAddresses[0]?.emailAddress || "", action: "partner_product_create", details: product.name });
   return Response.json(product);
 }
@@ -47,9 +50,11 @@ export async function PUT(req: Request) {
   const rl = rateLimit(`admin:${session.userId}`, { limit: 30, windowMs: 60000 });
   if (!rl.allowed) return Response.json({ error: "Demasiadas solicitudes" }, { status: 429 });
 
-  const data = await req.json();
-  const { id, ...rest } = data;
-  const product = await prisma.partnerProduct.update({ where: { id }, data: rest });
+  const raw = await req.json();
+  const { id, name, price, image, description, category, partnerName, partnerContact, commission, stock, active } = raw;
+  if (!id) return Response.json({ error: "id required" }, { status: 400 });
+
+  const product = await prisma.partnerProduct.update({ where: { id }, data: { name, price, image, description, category, partnerName, partnerContact, commission, stock, active } });
   await logAdminAction({ userId: session.userId!, email: check.user!.emailAddresses[0]?.emailAddress || "", action: "partner_product_update", details: product.name });
   return Response.json(product);
 }

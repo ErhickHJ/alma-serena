@@ -37,8 +37,11 @@ export async function POST(req: Request) {
   const rl = rateLimit(`admin:${session.userId}`, { limit: 30, windowMs: 60000 });
   if (!rl.allowed) return Response.json({ error: "Demasiadas solicitudes" }, { status: 429 });
 
-  const data = await req.json();
-  const post = await prisma.post.create({ data });
+  const raw = await req.json();
+  const { title, slug, excerpt, content, author, published, imageUrl } = raw;
+  if (!title || !slug || !content) return Response.json({ error: "Faltan campos requeridos" }, { status: 400 });
+
+  const post = await prisma.post.create({ data: { title, slug, excerpt: excerpt || "", content, author: author || "Alma Serena", published: !!published, imageUrl: imageUrl || "" } });
   await logAdminAction({ userId: session.userId!, email: check.user!.emailAddresses[0]?.emailAddress || "", action: "post_create", details: post.title });
   return Response.json(post);
 }
@@ -51,9 +54,11 @@ export async function PUT(req: Request) {
   const rl = rateLimit(`admin:${session.userId}`, { limit: 30, windowMs: 60000 });
   if (!rl.allowed) return Response.json({ error: "Demasiadas solicitudes" }, { status: 429 });
 
-  const data = await req.json();
-  const { id, ...rest } = data;
-  const post = await prisma.post.update({ where: { id }, data: rest });
+  const raw = await req.json();
+  const { id, title, slug, excerpt, content, author, published, imageUrl } = raw;
+  if (!id) return Response.json({ error: "id required" }, { status: 400 });
+
+  const post = await prisma.post.update({ where: { id }, data: { title, slug, excerpt, content, author, published, imageUrl } });
   await logAdminAction({ userId: session.userId!, email: check.user!.emailAddresses[0]?.emailAddress || "", action: "post_update", details: post.title });
   return Response.json(post);
 }

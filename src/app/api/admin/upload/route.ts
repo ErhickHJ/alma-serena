@@ -30,5 +30,10 @@ export async function POST(req: Request) {
   const base64 = Buffer.from(bytes).toString("base64");
   const dataUrl = `data:${file.type};base64,${base64}`;
 
+  const MAX_RETURN = 10 * 1024 * 1024;
+  if (dataUrl.length > MAX_RETURN) {
+    return NextResponse.json({ error: "El archivo convertido excede el límite. Usa una imagen más pequeña." }, { status: 400 });
+  }
+
   return NextResponse.json({ success: true, url: dataUrl, name: file.name, size: file.size });
 }

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
+import { isAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/db";
 
 const IMG = "/images/portada.jpg";
@@ -40,8 +41,12 @@ async function seed() {
 }
 
 export async function POST() {
-  const { userId } = await auth();
-  if (!userId) return NextResponse.json({ success: false, error: "No autorizado" }, { status: 401 });
+  const session = await auth();
+  if (!session.userId) return NextResponse.json({ success: false, error: "No autorizado" }, { status: 401 });
+  const user = await (await clerkClient()).users.getUser(session.userId);
+  if (!isAdmin(user?.publicMetadata as { role?: unknown } | undefined)) {
+    return NextResponse.json({ success: false, error: "No autorizado" }, { status: 403 });
+  }
   try {
     const created = await seed();
     return NextResponse.json({ success: true, created });
@@ -51,12 +56,5 @@ export async function POST() {
 }
 
 export async function GET() {
-  const { userId } = await auth();
-  if (!userId) return NextResponse.json({ success: false, error: "No autorizado" }, { status: 401 });
-  try {
-    const created = await seed();
-    return NextResponse.json({ success: true, created });
-  } catch (e: any) {
-    return NextResponse.json({ success: false, error: e?.message }, { status: 500 });
-  }
+  return NextResponse.json({ error: "Method not allowed" }, { status: 405 });
 }

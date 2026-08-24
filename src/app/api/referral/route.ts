@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
+import { rateLimit } from "@/lib/rate-limit";
 
 const LEADER_THRESHOLDS = [
   { level: 1, min: 1, title: "Líder Bronce", badge: "🥉" },
@@ -34,6 +35,9 @@ export async function GET() {
 export async function POST(req: Request) {
   const { userId } = await auth();
   if (!userId) return NextResponse.json({ success: false, error: "No autorizado" }, { status: 401 });
+
+  const rl = rateLimit(`referral:${userId}`, { limit: 10, windowMs: 60000 });
+  if (!rl.allowed) return NextResponse.json({ success: false, error: "Demasiadas solicitudes" }, { status: 429 });
 
   const { ref } = await req.json();
   if (!ref || ref.length < 4) return NextResponse.json({ success: false, error: "Código de referido inválido" }, { status: 400 });

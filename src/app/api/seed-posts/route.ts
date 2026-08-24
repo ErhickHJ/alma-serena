@@ -62,7 +62,7 @@ const posts = [
 ];
 
 export async function GET() {
-  return POST();
+  return NextResponse.json({ error: "Method not allowed" }, { status: 405 });
 }
 
 export async function POST() {

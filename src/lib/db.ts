@@ -48,7 +48,7 @@ async function exec(prop: string, method: string, args: unknown[]): Promise<unkn
     return await m[method](...args);
   } catch (e) {
     _dbAvailable = false;
-    console.warn("DB query failed, switching to offline mode:", (e as Error)?.message);
+    console.error("[db] Query failed, switching to offline mode:", (e as Error)?.message);
     if (method === "count") return 0;
     if (method === "aggregate") return { _sum: { amount: 0 }, _count: 0, _avg: {}, _min: {}, _max: {} } as never;
     return [];

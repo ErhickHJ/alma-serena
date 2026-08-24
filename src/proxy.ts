@@ -7,6 +7,7 @@ export default clerkMiddleware(
     const { pathname } = req.nextUrl;
 
     if (pathname.startsWith("/admin")) {
+      await auth.protect();
       const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
         || req.headers.get("x-real-ip")
         || "127.0.0.1";
@@ -32,12 +33,13 @@ export default clerkMiddleware(
       directives: {
         "script-src": ["'self'", "'unsafe-inline'", "https://*.clerk.accounts.dev", "https://js.stripe.com"],
         "style-src": ["'self'", "'unsafe-inline'"],
-        "img-src": ["'self'", "data:", "blob:", "https://img.clerk.com", "https://*.clerk.accounts.dev"],
+        "img-src": ["'self'", "data:", "blob:", "https://img.clerk.com", "https://*.clerk.accounts.dev", "https://images.unsplash.com"],
         "frame-src": ["https://*.clerk.accounts.dev", "https://js.stripe.com"],
         "connect-src": ["'self'", "https://api.stripe.com", "https://*.clerk.accounts.dev", "https://*.clerk.com"],
         "font-src": ["'self'"],
         "base-uri": ["'self'"],
         "form-action": ["'self'"],
+        "upgrade-insecure-requests": [],
       },
     },
   },

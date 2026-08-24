@@ -34,8 +34,11 @@ export async function POST(req: Request) {
   const rl = rateLimit(`admin:${session.userId}`, { limit: 30, windowMs: 60000 });
   if (!rl.allowed) return Response.json({ error: "Demasiadas solicitudes" }, { status: 429 });
 
-  const data = await req.json();
-  const product = await prisma.product.create({ data });
+  const raw = await req.json();
+  const { name, price, image, emoji, category, desc, featured } = raw;
+  if (!name || price === undefined) return Response.json({ error: "Faltan campos requeridos" }, { status: 400 });
+
+  const product = await prisma.product.create({ data: { name, price, image: image || "", emoji: emoji || "", category: category || "", desc: desc || "", featured: !!featured } });
   await logAdminAction({ userId: session.userId!, email: check.user!.emailAddresses[0]?.emailAddress || "", action: "product_create", details: product.name });
   return Response.json(product);
 }
@@ -48,9 +51,11 @@ export async function PUT(req: Request) {
   const rl = rateLimit(`admin:${session.userId}`, { limit: 30, windowMs: 60000 });
   if (!rl.allowed) return Response.json({ error: "Demasiadas solicitudes" }, { status: 429 });
 
-  const data = await req.json();
-  const { id, ...rest } = data;
-  const product = await prisma.product.update({ where: { id }, data: rest });
+  const raw = await req.json();
+  const { id, name, price, image, emoji, category, desc, featured } = raw;
+  if (!id) return Response.json({ error: "id required" }, { status: 400 });
+
+  const product = await prisma.product.update({ where: { id }, data: { name, price, image, emoji, category, desc, featured } });
   await logAdminAction({ userId: session.userId!, email: check.user!.emailAddresses[0]?.emailAddress || "", action: "product_update", details: product.name });
   return Response.json(product);
 }

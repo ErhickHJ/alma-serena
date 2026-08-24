@@ -7,6 +7,15 @@ const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KE
 const from = "Alma Serena <noreply@almaserenaoficial.com>";
 const adminEmail = process.env.ADMIN_EMAIL || "comunidad@almaserenaoficial.com";
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 export async function sendOrderConfirmation(to: string, name: string, amount: number, orderId: string) {
   if (!resend) return;
   await resend.emails.send({
@@ -16,10 +25,10 @@ export async function sendOrderConfirmation(to: string, name: string, amount: nu
     html: `
       <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
         <h1 style="color: #6B8D7A; font-family: serif;">✿ Alma Serena</h1>
-        <p>Hola ${name},</p>
+        <p>Hola ${escapeHtml(name)},</p>
         <p>Gracias por tu pedido. Estamos preparándolo con mucho cariño.</p>
         <p style="font-size: 1.2em; font-weight: bold;">Total: $${(amount / 100).toFixed(2)}</p>
-        <p style="color: #666;">Referencia: ${orderId}</p>
+        <p style="color: #666;">Referencia: ${escapeHtml(orderId)}</p>
         <p>Recibirás un correo cuando tu pedido sea enviado.</p>
         <br/>
         <p style="color: #999; font-size: 0.85em;">✿ Alma Serena — Un diario de 90 días</p>
@@ -37,11 +46,11 @@ export async function notifyNewContact(name: string, email: string, subject: str
     html: `
       <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
         <h2 style="color: #6B8D7A;">Nuevo mensaje de contacto</h2>
-        <p><strong>Nombre:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Asunto:</strong> ${subject}</p>
+        <p><strong>Nombre:</strong> ${escapeHtml(name)}</p>
+        <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+        <p><strong>Asunto:</strong> ${escapeHtml(subject)}</p>
         <p><strong>Mensaje:</strong></p>
-        <p style="background: #f5f5f5; padding: 12px; border-radius: 6px;">${message}</p>
+        <p style="background: #f5f5f5; padding: 12px; border-radius: 6px;">${escapeHtml(message)}</p>
       </div>
     `,
   });
@@ -56,9 +65,9 @@ export async function notifySecurityAlert(type: string, detail: string) {
     html: `
       <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
         <h2 style="color: #B85450;">Alerta de seguridad</h2>
-        <p><strong>Tipo:</strong> ${type}</p>
+        <p><strong>Tipo:</strong> ${escapeHtml(type)}</p>
         <p><strong>Detalle:</strong></p>
-        <p style="background: #f5f5f5; padding: 12px; border-radius: 6px;">${detail}</p>
+        <p style="background: #f5f5f5; padding: 12px; border-radius: 6px;">${escapeHtml(detail)}</p>
         <hr style="border: none; border-top: 1px solid #eee; margin: 16px 0;" />
         <p style="color: #999; font-size: 0.85em;">✿ Alma Serena — Monitoreo de seguridad</p>
       </div>
@@ -75,9 +84,9 @@ export async function sendOrderShipped(to: string, name: string, orderId: string
     html: `
       <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
         <h1 style="color: #6B8D7A; font-family: serif;">✿ Alma Serena</h1>
-        <p>Hola ${name},</p>
+        <p>Hola ${escapeHtml(name)},</p>
         <p>Tu pedido ya está en camino. Pronto lo recibirás en la dirección que nos proporcionaste.</p>
-        <p style="color: #666;">Referencia: ${orderId}</p>
+        <p style="color: #666;">Referencia: ${escapeHtml(orderId)}</p>
         <p>Gracias por ser parte de esta comunidad.</p>
         <br/>
         <p style="color: #999; font-size: 0.85em;">✿ Alma Serena — Un diario de 90 días</p>
@@ -95,7 +104,7 @@ export async function sendWelcomeSubscriber(to: string, name?: string) {
     html: `
       <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
         <h1 style="color: #6B8D7A; font-family: serif;">✿ Alma Serena</h1>
-        <p>${name ? `Hola ${name},` : "Hola,"}</p>
+        <p>${name ? `Hola ${escapeHtml(name)},` : "Hola,"}</p>
         <p>Gracias por suscribirte. Recibirás contenido exclusivo sobre gratitud, bienestar y crecimiento personal.</p>
         <p style="color: #999; font-size: 0.85em;">✿ Alma Serena — Un diario de 90 días</p>
       </div>

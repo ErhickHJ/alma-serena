@@ -27,31 +27,34 @@ export async function DELETE(req: Request) {
   if (!type || !id) return Response.json({ error: "Faltan parámetros" }, { status: 400 });
 
   try {
+    let deleted = false;
     switch (type) {
       case "order":
-        await prisma.order.delete({ where: { id } });
+        deleted = (await prisma.order.delete({ where: { id } })).id !== undefined;
         break;
       case "contact":
-        await prisma.contactMessage.delete({ where: { id } });
+        deleted = (await prisma.contactMessage.delete({ where: { id } })).id !== undefined;
         break;
       case "subscriber":
-        await prisma.subscriber.delete({ where: { id } });
+        deleted = (await prisma.subscriber.delete({ where: { id } })).id !== undefined;
         break;
       case "post":
-        await prisma.post.delete({ where: { id } });
+        deleted = (await prisma.post.delete({ where: { id } })).id !== undefined;
         break;
       case "product":
-        await prisma.product.delete({ where: { id } });
+        deleted = (await prisma.product.delete({ where: { id } })).id !== undefined;
         break;
       case "partnerProduct":
-        await prisma.partnerProduct.delete({ where: { id } });
+        deleted = (await prisma.partnerProduct.delete({ where: { id } })).id !== undefined;
         break;
       default:
         return Response.json({ error: "Tipo inválido" }, { status: 400 });
     }
+    if (!deleted) return Response.json({ error: "Registro no encontrado" }, { status: 404 });
     await logAdminAction({ userId: session.userId, email: user.emailAddresses[0]?.emailAddress || "", action: `delete_${type}`, details: id, ip: req.headers.get("x-forwarded-for") || "" });
     return Response.json({ success: true });
-  } catch (e) {
+  } catch (e: any) {
+    if (e?.code === "P2025") return Response.json({ error: "Registro no encontrado" }, { status: 404 });
     return Response.json({ error: "Error al eliminar" }, { status: 500 });
   }
 }

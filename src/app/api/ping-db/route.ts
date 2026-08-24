@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
 
 export async function GET() {
-  const results: string[] = [];
+  const session = await auth();
+  if (!session.userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
   const dbUrl = process.env.DATABASE_URL;
 
   if (!dbUrl) {

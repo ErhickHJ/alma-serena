@@ -1,6 +1,11 @@
+import { auth } from "@clerk/nextjs/server";
+
 export const runtime = "nodejs";
 
 export async function GET() {
+  const session = await auth();
+  if (!session.userId) return Response.json({ error: "Unauthorized" }, { status: 401 });
+
   const required = ["DATABASE_URL", "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY", "CLERK_SECRET_KEY"];
   const missing = required.filter((k) => !process.env[k]);
 
@@ -10,7 +15,7 @@ export async function GET() {
     {
       status: healthy ? "healthy" : "degraded",
       timestamp: new Date().toISOString(),
-      checks: { env: missing.length === 0 ? "ok" : `missing: ${missing.join(", ")}` },
+      checks: { env: missing.length === 0 ? "ok" : "missing" },
     },
     { status: healthy ? 200 : 503 }
   );
