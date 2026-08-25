@@ -9,15 +9,12 @@ import { ForumForm } from "./ForumForm";
 import { LeadersSection } from "./LeadersSection";
 import { AdminDeleteButton } from "@/components/AdminDeleteButton";
 
-const CHALLENGE_ICONS: Record<string, string> = {
-  sunrise: "🌅",
-  diary: "📝",
-  pause: "🧘",
-};
+type ForumPost = { id: string; author: string; text: string; tag?: string; createdAt: Date | string };
 
-const FEATURE_ICONS = ["☽", "✦", "✿"];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type T = Record<string, any>;
 
-export default function ComunidadContent({ posts, offline }: { posts: any[]; offline: boolean }) {
+export default function ComunidadContent({ posts, offline }: { posts: ForumPost[]; offline: boolean }) {
   const { lang } = useLang();
   const t = translations[lang].communityPage;
 
@@ -34,7 +31,7 @@ export default function ComunidadContent({ posts, offline }: { posts: any[]; off
 }
 
 // ============ HERO COMUNIDAD ============
-function CommunityHero({ t }: { t: any }) {
+function CommunityHero({ t }: { t: T }) {
   return (
     <section className="py-20 bg-gradient-to-b from-sage/5 to-warm-white text-center">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
@@ -52,7 +49,7 @@ function CommunityHero({ t }: { t: any }) {
 }
 
 // ============ RETOS MENSUALES ============
-function MonthlyChallenges({ t }: { t: any }) {
+function MonthlyChallenges({ t }: { t: T }) {
   const challenges = [
     { icon: "🌅", ...t.challenges.sunrise, tag: "Mindfulness" },
     { icon: "📝", ...t.challenges.diary, tag: "Gratitud" },
@@ -68,7 +65,7 @@ function MonthlyChallenges({ t }: { t: any }) {
           <DecorativeDivider className="my-6" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {challenges.map((c: any) => (
+          {challenges.map((c) => (
             <div key={c.title} className="p-6 rounded-xl bg-warm-white border border-sage/10 hover:border-sage/30 transition-all flex flex-col">
               <div className="flex items-center justify-between mb-3 shrink-0">
                 <span className="text-3xl">{c.icon}</span>
@@ -89,7 +86,7 @@ function MonthlyChallenges({ t }: { t: any }) {
 }
 
 // ============ CARACTERÍSTICAS COMUNIDAD ============
-function CommunityFeatures({ t }: { t: any }) {
+function CommunityFeatures({ t }: { t: T }) {
   const features = [
     { icon: "☽", ...t.features.forum },
     { icon: "✦", ...t.features.challenges },
@@ -100,7 +97,7 @@ function CommunityFeatures({ t }: { t: any }) {
     <section className="py-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {features.map((f: any) => (
+          {features.map((f) => (
             <div key={f.title} className="p-8 rounded-xl bg-cream/40 border border-sage/10 text-center hover:border-sage/30 transition-colors flex flex-col">
               <div className="text-4xl mb-4 shrink-0">{f.icon}</div>
               <h3 className="font-serif text-xl text-sage-dark mb-3 shrink-0">{f.title}</h3>
@@ -114,7 +111,7 @@ function CommunityFeatures({ t }: { t: any }) {
 }
 
 // ============ FORO COMUNIDAD ============
-function ForumSection({ t, posts, offline }: { t: any; posts: any[]; offline: boolean }) {
+function ForumSection({ t, posts, offline }: { t: T; posts: ForumPost[]; offline: boolean }) {
   return (
     <section className="py-20 bg-cream/50">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -155,7 +152,7 @@ function ForumSection({ t, posts, offline }: { t: any; posts: any[]; offline: bo
   );
 }
 
-function ReportButton({ t, postId }: { t: any; postId: string }) {
+function ReportButton({ t, postId }: { t: T; postId: string }) {
   return (
     <button
       onClick={async () => {
@@ -171,7 +168,7 @@ function ReportButton({ t, postId }: { t: any; postId: string }) {
 }
 
 // ============ CTA COMUNIDAD ============
-function CommunityCTA({ t }: { t: any }) {
+function CommunityCTA({ t }: { t: T }) {
   return (
     <section className="py-20 text-center">
       <div className="max-w-2xl mx-auto px-4 sm:px-6">

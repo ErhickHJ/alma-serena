@@ -91,15 +91,15 @@ export default function BlogContent({ posts, total, totalPages, page, q, offline
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
           <div className="p-4">
             <p className="text-2xl mb-2">✿</p>
-            <p className="text-xs text-charcoal/50 italic">"La gratitud convierte lo que tenemos en suficiente."</p>
+            <p className="text-xs text-charcoal/50 italic">&ldquo;La gratitud convierte lo que tenemos en suficiente.&rdquo;</p>
           </div>
           <div className="p-4">
             <p className="text-2xl mb-2">☽</p>
-            <p className="text-xs text-charcoal/50 italic">"En medio del movimiento, encuentra tu calma."</p>
+            <p className="text-xs text-charcoal/50 italic">&ldquo;En medio del movimiento, encuentra tu calma.&rdquo;</p>
           </div>
           <div className="p-4">
             <p className="text-2xl mb-2">✦</p>
-            <p className="text-xs text-charcoal/50 italic">"Pequeñas pausas, grandes transformaciones."</p>
+            <p className="text-xs text-charcoal/50 italic">&ldquo;Pequeñas pausas, grandes transformaciones.&rdquo;</p>
           </div>
         </div>
       </div>

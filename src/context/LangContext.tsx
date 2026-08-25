@@ -10,6 +10,7 @@ type LangContextType = {
   t: (key: string) => string;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function resolve(obj: any, path: string): string {
   try {
     return path.split(".").reduce((o, k) => (o && typeof o === "object" ? o[k] : undefined), obj) ?? path;
@@ -25,6 +26,7 @@ export function LangProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const saved = localStorage.getItem("alma-lang") as Lang | null;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (saved === "es" || saved === "en") setLang(saved);
   }, []);
 

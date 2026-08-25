@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import AddToCartButton from "@/components/AddToCartButton";
@@ -55,7 +56,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     <div className="min-h-screen bg-gradient-to-b from-cream/30 to-warm-white">
       <ProductSchema product={{ name: product.name, price: product.price, image: product.image, desc: product.desc, id: product.id, category: product.category }} />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <a href="/tienda" className="text-sm text-sage-dark hover:text-sage transition-colors mb-6 inline-block">&larr; Volver a la tienda</a>
+        <Link href="/tienda" className="text-sm text-sage-dark hover:text-sage transition-colors mb-6 inline-block">&larr; Volver a la tienda</Link>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
           <div className="relative aspect-square rounded-2xl overflow-hidden bg-sage/5 border border-sage/10">
             <Image src={product.image} alt={product.name} fill className="object-contain p-4" />

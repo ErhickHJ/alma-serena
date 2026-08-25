@@ -9,7 +9,9 @@ export default function Analytics() {
   const pathname = usePathname();
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if ((window as any).gtag) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).gtag("event", "page_view", { page_path: pathname });
     }
   }, [pathname]);

@@ -16,7 +16,7 @@ async function checkAdmin(session: { userId: string | null }) {
   return { user, error: null };
 }
 
-export async function GET(req: Request) {
+export async function GET() {
   const session = await auth();
   const check = await checkAdmin(session);
   if (check.error) return Response.json({ error: check.error }, { status: check.status! });

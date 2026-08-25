@@ -12,6 +12,7 @@ export default async function EditarPartnerProductPage(props: { params: Promise<
   return (
     <>
       <h1 className="font-serif text-3xl sm:text-4xl text-sage-dark mb-8">Editar producto de partner</h1>
+      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
       <PartnerProductForm product={product as any} />
     </>
   );

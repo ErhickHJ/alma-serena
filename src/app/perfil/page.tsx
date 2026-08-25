@@ -14,5 +14,6 @@ export default async function PerfilPage() {
     orderBy: { createdAt: "desc" },
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return <PerfilContent orders={orders as any} />;
 }

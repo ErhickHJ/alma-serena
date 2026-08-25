@@ -25,6 +25,7 @@ export default function LibroContent() {
 }
 
 // ============ HERO LIBRO ============
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function BookHero({ t }: { t: any }) {
   return (
     <section className="py-20 bg-gradient-to-b from-sage/5 to-warm-white">
@@ -67,6 +68,7 @@ function BookHero({ t }: { t: any }) {
 }
 
 // ============ CONTENIDO DEL DIARIO ============
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function BookContent({ t }: { t: any }) {
   const weeks = [
     { title: "Semana 1", subtitle: "Presencia y Reconexión", desc: "Establece las bases de tu práctica diaria de gratitud y presencia." },
@@ -109,6 +111,7 @@ function BookContent({ t }: { t: any }) {
 }
 
 // ============ QUÉ INCLUYE ============
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function BookFeatures({ t }: { t: any }) {
   return (
     <section className="py-20 bg-cream/50">
@@ -139,6 +142,7 @@ function BookFeatures({ t }: { t: any }) {
 }
 
 // ============ CTA COMPRAR ============
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function BookCTA({ t }: { t: any }) {
   return (
     <section id="comprar" className="py-20 bg-gradient-to-b from-sage/5 to-warm-white">
@@ -174,6 +178,7 @@ function BookCTA({ t }: { t: any }) {
 }
 
 // ============ CTA COMUNIDAD (LIBRO) ============
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function BookCommunityCTA({ t }: { t: any }) {
   return (
     <section className="py-20 bg-lavender/10 text-center">

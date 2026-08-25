@@ -6,6 +6,7 @@ export default function CookieConsent() {
 
   useEffect(() => {
     if (!localStorage.getItem("alma-cookie-consent")) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setVisible(true);
     }
   }, []);

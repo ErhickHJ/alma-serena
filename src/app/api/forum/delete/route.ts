@@ -24,7 +24,7 @@ export async function POST(req: Request) {
       details: `Deleted forum post by ${post.author}: "${post.text.slice(0, 80)}"`,
     });
     return NextResponse.json({ success: true });
-  } catch (e: any) {
-    return NextResponse.json({ error: e?.message }, { status: 500 });
+  } catch (e: unknown) {
+    return NextResponse.json({ error: e instanceof Error ? e.message : "Error" }, { status: 500 });
   }
 }

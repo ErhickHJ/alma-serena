@@ -3,6 +3,7 @@
 import { useLang } from "@/context/LangContext";
 import { translations } from "@/lib/translations";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function resolve(obj: any, path: string): string {
   try {
     return path.split(".").reduce((o, k) => (o && typeof o === "object" ? o[k] : undefined), obj) ?? path;

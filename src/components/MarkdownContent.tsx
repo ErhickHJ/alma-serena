@@ -3,7 +3,7 @@ import type { ReactElement } from "react";
 type Props = { content: string; className?: string };
 
 function renderLine(line: string) {
-  let html = line
+  const html = line
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
     .replace(/\*(.+?)\*/g, "<em>$1</em>");
   return html;
@@ -12,7 +12,6 @@ function renderLine(line: string) {
 export default function MarkdownContent({ content, className = "" }: Props) {
   const lines = content.split("\n");
   const elements: ReactElement[] = [];
-  let inList = false;
   let listItems: string[] = [];
 
   function flushList() {
@@ -25,7 +24,6 @@ export default function MarkdownContent({ content, className = "" }: Props) {
         </ul>
       );
       listItems = [];
-      inList = false;
     }
   }
 
@@ -39,7 +37,6 @@ export default function MarkdownContent({ content, className = "" }: Props) {
     }
 
     if (trimmed.startsWith("- ")) {
-      inList = true;
       listItems.push(trimmed);
       continue;
     }

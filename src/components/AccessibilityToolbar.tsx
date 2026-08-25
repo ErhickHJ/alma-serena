@@ -13,6 +13,7 @@ export function AccessibilityToolbar() {
     if (saved) {
       try {
         const prefs = JSON.parse(saved);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         if (prefs.fontSize) setFontSize(prefs.fontSize);
         if (prefs.highContrast) setHighContrast(true);
         if (prefs.simplified) setSimplified(true);

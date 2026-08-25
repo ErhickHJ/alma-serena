@@ -15,6 +15,7 @@ export default function FaqContent() {
         <SectionTitle>{t.title}</SectionTitle>
         <DecorativeDivider className="my-8" />
         <div className="space-y-4">
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           {t.items.map((faq: any, i: number) => (
             <details key={i} className="group bg-warm-white rounded-xl border border-sage/10 shadow-sm overflow-hidden">
               <summary className="list-none cursor-pointer p-5 flex items-center justify-between gap-4 hover:bg-sage/5 transition-colors">

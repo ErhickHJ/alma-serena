@@ -53,8 +53,8 @@ export async function DELETE(req: Request) {
     if (!deleted) return Response.json({ error: "Registro no encontrado" }, { status: 404 });
     await logAdminAction({ userId: session.userId, email: user.emailAddresses[0]?.emailAddress || "", action: `delete_${type}`, details: id, ip: req.headers.get("x-forwarded-for") || "" });
     return Response.json({ success: true });
-  } catch (e: any) {
-    if (e?.code === "P2025") return Response.json({ error: "Registro no encontrado" }, { status: 404 });
+  } catch (e: unknown) {
+    if (e && typeof e === "object" && "code" in e && (e as { code: string }).code === "P2025") return Response.json({ error: "Registro no encontrado" }, { status: 404 });
     return Response.json({ error: "Error al eliminar" }, { status: 500 });
   }
 }

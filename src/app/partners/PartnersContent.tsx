@@ -41,7 +41,6 @@ const partners = [
 
 export default function PartnersContent() {
   const { lang } = useLang();
-  const tPage = translations[lang].partnersPage;
   const tPartners = translations[lang].partners;
 
   return (
@@ -55,6 +54,7 @@ export default function PartnersContent() {
 }
 
 // ============ HERO PARTNERS ============
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function PartnersHero({ t }: { t: any }) {
   return (
     <section className="py-20 bg-gradient-to-b from-lavender/10 to-warm-white text-center">
@@ -92,6 +92,7 @@ function PartnersList() {
 }
 
 // ============ CONVÉRTETE EN PARTNER ============
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function BecomePartner({ t }: { t: any }) {
   return (
     <section className="py-20 bg-cream/50 text-center">
@@ -109,6 +110,7 @@ function BecomePartner({ t }: { t: any }) {
 }
 
 // ============ CTA COMUNIDAD (PARTNERS) ============
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function PartnersCommunityCTA({ t }: { t: any }) {
   return (
     <section className="py-20 bg-lavender/10 text-center">

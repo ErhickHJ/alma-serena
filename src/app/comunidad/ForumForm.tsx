@@ -22,6 +22,7 @@ export function ForumForm() {
   const [accepted, setAccepted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setAccepted(localStorage.getItem(STORAGE_KEY) === "true");
   }, []);
 

@@ -18,7 +18,7 @@ export async function GET() {
       posts: posts.map(p => ({ id: p.id, title: p.title, slug: p.slug, published: p.published })),
       dbAvailable: true,
     });
-  } catch (e: any) {
-    return Response.json({ error: e?.message || "Error", dbAvailable: false });
+  } catch (e: unknown) {
+    return Response.json({ error: e instanceof Error ? e.message : "Error", dbAvailable: false });
   }
 }

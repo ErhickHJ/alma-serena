@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import SectionTitle from "@/components/SectionTitle";
 import DecorativeDivider from "@/components/DecorativeDivider";
 import { images } from "@/lib/images";
-import AddToCartButton from "@/components/AddToCartButton";
 import Carousel from "@/components/Carousel";
 import { useLang } from "@/context/LangContext";
 import { translations } from "@/lib/translations";
@@ -27,8 +27,8 @@ export default function HomeContent({ products }: { products: { id: string; name
           <DecorativeDivider className="my-6 text-gold-light/40" />
           <p className="text-lg sm:text-xl text-cream/70 max-w-2xl mx-auto leading-relaxed mb-10">{t.hero.body}</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="/libro" className="inline-flex items-center px-8 py-3.5 bg-sage text-white rounded-full font-medium text-sm tracking-wide hover:bg-sage-dark transition-colors shadow-sm">{t.hero.ctaDiary}</a>
-            <a href="/login?mode=signup" className="inline-flex items-center px-8 py-3.5 border border-cream/40 text-cream rounded-full font-medium text-sm tracking-wide hover:bg-white/10 transition-colors">{t.hero.ctaJoin}</a>
+            <Link href="/libro" className="inline-flex items-center px-8 py-3.5 bg-sage text-white rounded-full font-medium text-sm tracking-wide hover:bg-sage-dark transition-colors shadow-sm">{t.hero.ctaDiary}</Link>
+            <Link href="/login?mode=signup" className="inline-flex items-center px-8 py-3.5 border border-cream/40 text-cream rounded-full font-medium text-sm tracking-wide hover:bg-white/10 transition-colors">{t.hero.ctaJoin}</Link>
           </div>
         </div>
       </section>
@@ -43,7 +43,7 @@ export default function HomeContent({ products }: { products: { id: string; name
               <DecorativeDivider className="my-6 justify-start" />
               <p className="text-charcoal/60 leading-relaxed mb-4">{t.aboutBook.p1}</p>
               <p className="text-charcoal/60 leading-relaxed mb-6">{t.aboutBook.p2}</p>
-              <a href="/libro" className="inline-flex items-center text-sage-dark font-medium text-sm hover:text-sage transition-colors">{t.aboutBook.cta} &rarr;</a>
+              <Link href="/libro" className="inline-flex items-center text-sage-dark font-medium text-sm hover:text-sage transition-colors">{t.aboutBook.cta} &rarr;</Link>
             </div>
             <div className="order-1 lg:order-2 flex justify-center">
               <div className="relative w-64 h-80 sm:w-72 sm:h-[28rem] rounded-2xl overflow-hidden shadow-md">
@@ -75,7 +75,7 @@ export default function HomeContent({ products }: { products: { id: string; name
             ))}
           </div>
           <div className="mt-10 text-center">
-            <a href="/login?mode=signup" className="inline-flex items-center px-6 py-3 bg-sage text-white rounded-full text-sm font-medium hover:bg-sage-dark transition-colors shadow-sm">{t.homeCommunity.joinBtn}</a>
+            <Link href="/login?mode=signup" className="inline-flex items-center px-6 py-3 bg-sage text-white rounded-full text-sm font-medium hover:bg-sage-dark transition-colors shadow-sm">{t.homeCommunity.joinBtn}</Link>
           </div>
         </div>
       </section>
@@ -91,7 +91,7 @@ export default function HomeContent({ products }: { products: { id: string; name
           </div>
           <div className="max-w-sm mx-auto sm:max-w-none"><Carousel items={products} /></div>
           <div className="text-center mt-10">
-            <a href="/tienda" className="inline-flex items-center text-sage-dark font-medium text-sm hover:text-sage transition-colors">{t.homeShop.viewAll} &rarr;</a>
+            <Link href="/tienda" className="inline-flex items-center text-sage-dark font-medium text-sm hover:text-sage transition-colors">{t.homeShop.viewAll} &rarr;</Link>
           </div>
         </div>
       </section>
@@ -103,7 +103,7 @@ export default function HomeContent({ products }: { products: { id: string; name
           <h2 className="font-serif text-3xl sm:text-4xl text-sage-dark mb-4">{t.homeCta.title}</h2>
           <DecorativeDivider className="my-6" />
           <p className="text-charcoal/60 leading-relaxed mb-8">{t.homeCta.desc}</p>
-          <a href="/login?mode=signup" className="inline-flex items-center px-6 py-3 bg-sage text-white rounded-full text-sm font-medium hover:bg-sage-dark transition-colors shadow-sm">{t.homeCta.btn}</a>
+          <Link href="/login?mode=signup" className="inline-flex items-center px-6 py-3 bg-sage text-white rounded-full text-sm font-medium hover:bg-sage-dark transition-colors shadow-sm">{t.homeCta.btn}</Link>
         </div>
       </section>
 
@@ -120,7 +120,7 @@ export default function HomeContent({ products }: { products: { id: string; name
             ))}
           </div>
           <div className="mt-10">
-            <a href="/partners" className="inline-flex items-center text-sage-dark font-medium text-sm hover:text-sage transition-colors">{t.homePartners.cta} &rarr;</a>
+            <Link href="/partners" className="inline-flex items-center text-sage-dark font-medium text-sm hover:text-sage transition-colors">{t.homePartners.cta} &rarr;</Link>
           </div>
         </div>
       </section>
@@ -131,6 +131,7 @@ export default function HomeContent({ products }: { products: { id: string; name
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function Testimonials({ t, lang }: { t: any; lang: string }) {
   const testimonials = [
     { text: lang === "es" ? "Alma Serena llegó en un momento de mucho ruido mental. Me ha ayudado a reconectar conmigo y a encontrar paz en los pequeños momentos." : "Alma Serena arrived at a time of a lot of mental noise. It helped me reconnect with myself and find peace in small moments.", author: "María G.", location: "México" },

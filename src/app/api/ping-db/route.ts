@@ -23,7 +23,7 @@ export async function GET() {
     client.release();
     await pool.end();
     return NextResponse.json({ success: true, ok: res.rows[0].ok, ts: new Date().toISOString() });
-  } catch (e: any) {
-    return NextResponse.json({ success: false, error: e?.message || "Unknown" }, { status: 503 });
+  } catch (e: unknown) {
+    return NextResponse.json({ success: false, error: e instanceof Error ? e.message : "Unknown" }, { status: 503 });
   }
 }

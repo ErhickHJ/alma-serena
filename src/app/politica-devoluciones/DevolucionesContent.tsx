@@ -3,11 +3,9 @@
 import SectionTitle from "@/components/SectionTitle";
 import DecorativeDivider from "@/components/DecorativeDivider";
 import { useLang } from "@/context/LangContext";
-import { translations } from "@/lib/translations";
 
 export default function DevolucionesContent() {
   const { lang } = useLang();
-  const t = translations[lang].legal;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-cream/30 to-warm-white">

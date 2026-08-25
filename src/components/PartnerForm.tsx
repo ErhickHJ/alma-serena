@@ -25,7 +25,7 @@ export default function PartnerForm() {
       setError("");
       try {
         const form = e.currentTarget;
-        const data = new URLSearchParams(new FormData(form) as any);
+        const data = new URLSearchParams(new FormData(form) as unknown as Record<string, string>);
         const res = await fetch("/api/partners", { method: "POST", body: data, headers: { "Content-Type": "application/x-www-form-urlencoded" } });
         if (!res.ok) throw new Error("Error al enviar");
         setSent(true);

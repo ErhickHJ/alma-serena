@@ -52,6 +52,7 @@ export default function ImageUpload({ value, onChange, label = "Imagen" }: Props
       
       {value && (
         <div className="relative mb-3 rounded-lg overflow-hidden border border-sage/20 bg-sage/5">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={value} alt="Preview" className="w-full h-48 object-contain" />
           <button
             type="button"

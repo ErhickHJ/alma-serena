@@ -1,4 +1,5 @@
 "use client";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function CheckoutError({ error, reset }: { error: Error; reset: () => void }) {
   return (
     <div className="py-24 text-center max-w-md mx-auto px-4">

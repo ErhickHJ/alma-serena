@@ -22,6 +22,7 @@ export default function ContactoContent() {
 }
 
 // ============ HERO CONTACTO ============
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function ContactHero({ t }: { t: any }) {
   return (
     <section className="py-20 bg-gradient-to-b from-sage/5 to-warm-white text-center">
@@ -40,6 +41,7 @@ function ContactHero({ t }: { t: any }) {
 }
 
 // ============ FORMULARIO CONTACTO ============
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function ContactFormSection({ t }: { t: any }) {
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -71,6 +73,7 @@ function ContactFormSection({ t }: { t: any }) {
               setError("");
               try {
                 const form = e.currentTarget;
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const data = new URLSearchParams(new FormData(form) as any);
                 const res = await fetch("/api/contact", { method: "POST", body: data, headers: { "Content-Type": "application/x-www-form-urlencoded" } });
                 if (!res.ok) throw new Error("Error al enviar");
@@ -190,6 +193,7 @@ function ContactFormSection({ t }: { t: any }) {
 }
 
 // ============ CTA COMUNIDAD (CONTACTO) ============
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function ContactCommunityCTA({ t }: { t: any }) {
   return (
     <section className="py-20 bg-lavender/10 text-center">

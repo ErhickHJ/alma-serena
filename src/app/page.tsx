@@ -1,4 +1,3 @@
-import Image from "next/image";
 import NewsletterForm from "@/components/NewsletterForm";
 import { prisma } from "@/lib/db";
 import HomeContent from "./HomeContent";

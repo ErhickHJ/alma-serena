@@ -89,7 +89,7 @@ export async function POST() {
     }
     await logAdminAction({ userId: session.userId, email: user.emailAddresses[0]?.emailAddress || "", action: "seed_posts", details: `${created} creados, ${skipped} omitidos` });
     return NextResponse.json({ success: true, created, skipped });
-  } catch (e: any) {
-    return NextResponse.json({ success: false, error: e?.message }, { status: 500 });
+  } catch (e: unknown) {
+    return NextResponse.json({ success: false, error: e instanceof Error ? e.message : "Error" }, { status: 500 });
   }
 }

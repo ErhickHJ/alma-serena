@@ -18,7 +18,7 @@ export default function PrivacidadContent() {
         <SectionTitle>{t.aviso}</SectionTitle>
         <DecorativeDivider className="my-8" />
         <div className="text-sm text-charcoal/60 leading-relaxed space-y-4">
-          <p><strong>Alma Serena</strong> (en adelante, "el responsable") se compromete a proteger la privacidad de los datos personales de sus usuarios.</p>
+          <p><strong>Alma Serena</strong> (en adelante, &ldquo;el responsable&rdquo;) se compromete a proteger la privacidad de los datos personales de sus usuarios.</p>
           <h2 className="font-serif text-lg text-sage-dark pt-4">Datos que recopilamos</h2>
           <p>Recopilamos nombre, correo electrónico y otra información que el usuario proporciona voluntariamente a través de formularios de contacto, suscripción al boletín y proceso de compra.</p>
           <h2 className="font-serif text-lg text-sage-dark pt-4">Uso de la información</h2>

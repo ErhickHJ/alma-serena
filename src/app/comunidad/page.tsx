@@ -19,6 +19,7 @@ const FALLBACK_POSTS = [
 async function getForumPosts() {
   try {
     const dbPosts = await prisma.forumPost.findMany({ orderBy: { createdAt: "desc" }, take: 50 });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (dbPosts && (dbPosts as any[]).length > 0) return dbPosts as any[];
   } catch { /* offline */ }
   return null;

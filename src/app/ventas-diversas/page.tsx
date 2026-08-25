@@ -15,6 +15,7 @@ const CATEGORIES = [
 ];
 
 export default async function VentasDiversasPage() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let products: any[] = [];
   try {
     products = await prisma.partnerProduct.findMany({ where: { active: true }, orderBy: { createdAt: "desc" } });

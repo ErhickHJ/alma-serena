@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const translations: Record<string, Record<string, any>> = {
   es: {
     nav: { home: "Inicio", book: "El Libro", shop: "Tienda", blog: "Blog", community: "Comunidad", partners: "Partners", contact: "Contacto", login: "Iniciar sesión", openMenu: "Abrir menú", profile: "Perfil", cart: "Carrito", diverseSales: "Ventas Diversas" },

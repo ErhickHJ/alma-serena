@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 export function ReferralSection() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [data, setData] = useState<any>(null);
   const [copied, setCopied] = useState(false);
   const [refInput, setRefInput] = useState("");

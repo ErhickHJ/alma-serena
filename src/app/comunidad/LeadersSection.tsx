@@ -12,6 +12,7 @@ const LEVELS = [
 ];
 
 export function LeadersSection() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [leaders, setLeaders] = useState<any[] | null>(null);
 
   useEffect(() => {

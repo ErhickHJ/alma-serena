@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
@@ -24,6 +25,7 @@ export default function CheckoutContent() {
     const params = new URLSearchParams(window.location.search);
     if (params.get("success") === "true") {
       clearCart();
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setDone(true);
     }
   }, [clearCart]);
@@ -69,12 +71,12 @@ export default function CheckoutContent() {
           <p className="text-charcoal/60 leading-relaxed mb-8">
             {t.successDesc}
           </p>
-          <a
+          <Link
             href="/"
             className="inline-flex items-center px-6 py-3 bg-sage text-white rounded-full text-sm font-medium hover:bg-sage-dark transition-colors shadow-sm"
           >
             {t.backHome}
-          </a>
+          </Link>
         </div>
       </section>
     );

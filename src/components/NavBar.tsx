@@ -1,6 +1,7 @@
 "use client";
 
 import { Show, SignInButton, UserButton } from "@clerk/nextjs";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLang } from "@/context/LangContext";
 import { translations } from "@/lib/translations";
@@ -33,9 +34,9 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 bg-warm-white/95 backdrop-blur-sm border-b border-sage-light/30">
       <nav className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <a href="/" className="font-serif text-2xl text-sage-dark hover:text-sage transition-colors">
+        <Link href="/" className="font-serif text-2xl text-sage-dark hover:text-sage transition-colors">
           ✿ Alma Serena
-        </a>
+        </Link>
         <div className="hidden sm:flex items-center gap-8 text-sm font-medium text-charcoal/70">
           {NAV_LINKS.map(({ href, key }) => (
             <a key={href} href={href} className="hover:text-sage-dark transition-colors" aria-current={isActive(href) ? "page" : undefined}>{t.nav[key]}</a>

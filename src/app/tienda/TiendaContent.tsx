@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import SectionTitle from "@/components/SectionTitle";
 import DecorativeDivider from "@/components/DecorativeDivider";
 import AddToCartButton from "@/components/AddToCartButton";
@@ -11,11 +12,12 @@ const CATEGORY_KEYS = ["Diarios y Papelería", "Velas y Aromas", "Mindfulness y 
 
 type Product = { id: string; name: string; price: number; image?: string; emoji?: string; category?: string; desc?: string };
 
-export default function TiendaContent({ products, q, cat, sort }: { products: Product[]; q: string; cat: string; sort: string }) {
+export default function TiendaContent({ products: initialProducts, q, cat, sort }: { products: Product[]; q: string; cat: string; sort: string }) {
   const { lang } = useLang();
   const t = translations[lang].tienda;
   const cats = t.categories;
 
+  let products = initialProducts;
   if (q) products = products.filter(p => p.name.toLowerCase().includes(q.toLowerCase()) || (p.desc && p.desc.toLowerCase().includes(q.toLowerCase())));
   if (cat) products = products.filter(p => p.category === cat);
   if (sort === "price-asc") products = [...products].sort((a, b) => a.price - b.price);
@@ -50,7 +52,7 @@ export default function TiendaContent({ products, q, cat, sort }: { products: Pr
             <option value="name">{t.nameAZ}</option>
           </select>
           <button type="submit" className="px-6 py-2.5 bg-sage text-white rounded-lg text-sm font-medium hover:bg-sage-dark transition-colors">{t.searchBtn}</button>
-          {(q || cat || sort) && <a href="/tienda" className="px-4 py-2.5 text-sm text-charcoal/50 hover:text-sage-dark transition-colors">{t.clear}</a>}
+          {(q || cat || sort) && <Link href="/tienda" className="px-4 py-2.5 text-sm text-charcoal/50 hover:text-sage-dark transition-colors">{t.clear}</Link>}
         </form>
       </div>
 
@@ -91,7 +93,7 @@ export default function TiendaContent({ products, q, cat, sort }: { products: Pr
           <SectionTitle>{t.communityTitle}</SectionTitle>
           <DecorativeDivider className="my-6" />
           <p className="text-charcoal/60 leading-relaxed mb-8">{t.communityDesc}</p>
-          <a href="/comunidad" className="inline-flex items-center px-6 py-3 bg-sage text-white rounded-full text-sm font-medium hover:bg-sage-dark transition-colors shadow-sm">{t.communityBtn}</a>
+          <Link href="/comunidad" className="inline-flex items-center px-6 py-3 bg-sage text-white rounded-full text-sm font-medium hover:bg-sage-dark transition-colors shadow-sm">{t.communityBtn}</Link>
         </div>
       </section>
     </>
@@ -101,13 +103,13 @@ export default function TiendaContent({ products, q, cat, sort }: { products: Pr
 function ProductCard({ item }: { item: Product }) {
   return (
     <div className="group p-5 rounded-xl bg-warm-white border border-sage/10 hover:border-sage/30 transition-all hover:shadow-sm flex flex-col">
-      <a href={`/tienda/${encodeURIComponent(item.id)}`} className="block">
+      <Link href={`/tienda/${encodeURIComponent(item.id)}`} className="block">
         <div className="relative w-full aspect-square rounded-lg overflow-hidden mb-4 bg-sage/5 shrink-0">
           <Image src={item.image || "/images/portada.jpg"} alt={item.name} fill className="object-contain p-2 group-hover:scale-105 transition-transform duration-500" />
         </div>
         <h3 className="font-serif text-lg text-sage-dark mb-1 shrink-0">{item.emoji || ""} {item.name}</h3>
         <p className="text-xs text-charcoal/50 mb-3 leading-relaxed flex-1">{item.desc}</p>
-      </a>
+      </Link>
       <div className="flex items-center justify-between shrink-0">
         <span className="text-sm text-gold font-medium">${item.price.toFixed(2)}</span>
       </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCart } from "@/context/CartContext";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import SectionTitle from "@/components/SectionTitle";
 import DecorativeDivider from "@/components/DecorativeDivider";
@@ -24,12 +25,12 @@ export default function CarritoContent() {
           <p className="text-charcoal/60 leading-relaxed mb-8">
             {t.emptyDesc}
           </p>
-          <a
+          <Link
             href="/tienda"
             className="inline-flex items-center px-6 py-3 bg-sage text-white rounded-full text-sm font-medium hover:bg-sage-dark transition-colors"
           >
             {t.goToShop}
-          </a>
+          </Link>
         </div>
       </section>
     );

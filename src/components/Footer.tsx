@@ -25,8 +25,8 @@ export function Footer() {
             <h4 className="font-medium text-charcoal mb-3 text-sm">Enlaces</h4>
             <div className="flex flex-col gap-2 text-sm text-charcoal/60">
               <a href="/libro" className="hover:text-sage-dark transition-colors">{t.nav.libro}</a>
-              <a href="/tienda" className="hover:text-sage-dark transition-colors">{t.nav.tienda}</a>
-              <a href="/blog" className="hover:text-sage-dark transition-colors">{t.nav.blog}</a>
+              <Link href="/tienda" className="hover:text-sage-dark transition-colors">{t.nav.tienda}</Link>
+              <Link href="/blog" className="hover:text-sage-dark transition-colors">{t.nav.blog}</Link>
               <a href="/comunidad" className="hover:text-sage-dark transition-colors">{t.nav.comunidad}</a>
               <a href="/partners" className="hover:text-sage-dark transition-colors">{t.nav.partners}</a>
               <a href="/contacto" className="hover:text-sage-dark transition-colors">{t.nav.contacto}</a>
