@@ -4,6 +4,8 @@
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
 
+> **REGLA OBLIGATORIA:** Antes de completar cualquier fase, ejecutar la auditoría completa documentada en `../AGENTS.md`. No se avanza con checks pendientes.
+
 # Alma Serena — Web App Completa
 
 ## Objective
