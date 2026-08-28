@@ -25,9 +25,12 @@ export const metadata: Metadata = {
   keywords: ["alma serena", "diario", "gratitud", "crecimiento personal", "bienestar", "meditación", "autocuidado"],
   metadataBase: new URL("https://almaserenaoficial.com"),
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
     shortcut: "/favicon.ico",
-    apple: "/favicon.ico",
+    apple: [{ url: "/apple-icon.png", type: "image/png", sizes: "180x180" }],
   },
   openGraph: {
     title: "Alma Serena — Diario de 90 días de gratitud y transformación",
