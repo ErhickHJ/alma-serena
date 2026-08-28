@@ -18,17 +18,35 @@ export default function TerminosContent() {
         <SectionTitle>{t.terminos} y condiciones</SectionTitle>
         <DecorativeDivider className="my-8" />
         <div className="text-sm text-charcoal/60 leading-relaxed space-y-4">
-          <p>Al acceder y utilizar este sitio web, aceptas los siguientes términos y condiciones.</p>
-          <h2 className="font-serif text-lg text-sage-dark pt-4">Uso del sitio</h2>
-          <p>Este sitio web ofrece un diario de gratitud digital y físico. El contenido es solo para fines informativos y personales.</p>
-          <h2 className="font-serif text-lg text-sage-dark pt-4">Productos y precios</h2>
-          <p>Los precios están expresados en USD. Nos reservamos el derecho de modificar precios en cualquier momento. Los pedidos están sujetos a disponibilidad.</p>
-          <h2 className="font-serif text-lg text-sage-dark pt-4">Envíos y devoluciones</h2>
-          <p>Los envíos se realizan dentro de los 5-10 días hábiles posteriores a la compra. Para devoluciones, contáctanos dentro de los 14 días posteriores a la recepción.</p>
-          <h2 className="font-serif text-lg text-sage-dark pt-4">Propiedad intelectual</h2>
-          <p>Todo el contenido del sitio, incluyendo texto, gráficos y logotipos, es propiedad de Alma Serena y está protegido por leyes de derechos de autor.</p>
-          <h2 className="font-serif text-lg text-sage-dark pt-4">Contacto</h2>
+          <p>Al acceder y utilizar este sitio web, aceptas los siguientes términos y condiciones. Si no estás de acuerdo con ellos, por favor no utilices nuestros servicios.</p>
+
+          <h2 className="font-serif text-lg text-sage-dark pt-4">1. Uso del sitio</h2>
+          <p>Este sitio web ofrece un diario de gratitud digital y físico, así como productos y contenido relacionados con el bienestar y el crecimiento personal. El contenido es solo para fines informativos, educativos y personales. Te comprometes a utilizar el sitio de forma lícita y a no realizar actividades que puedan dañar, sobrecargar o interferir con el funcionamiento de la plataforma.</p>
+
+          <h2 className="font-serif text-lg text-sage-dark pt-4">2. Productos y precios</h2>
+          <p>Los precios están expresados en dólares estadounidenses (USD). Nos reservamos el derecho de modificar los precios en cualquier momento. Los pedidos están sujetos a disponibilidad y a la confirmación del pago. Nos reservamos el derecho de rechazar o cancelar pedidos en caso de errores de precios, disponibilidad o fraude.</p>
+
+          <h2 className="font-serif text-lg text-sage-dark pt-4">3. Pedidos y pagos</h2>
+          <p>Al realizar un pedido, confirmas que la información proporcionada es correcta y que estás autorizado a utilizar el método de pago seleccionado. Los pagos se procesan de forma segura a través de nuestro proveedor (Stripe). No almacenamos datos de tarjeta en nuestros servidores.</p>
+
+          <h2 className="font-serif text-lg text-sage-dark pt-4">4. Envíos y devoluciones</h2>
+          <p>Los envíos se realizan según lo descrito en nuestra <a href="/politica-envio" className="text-sage-dark hover:text-sage underline">Política de envío</a>. Para devoluciones, consulta nuestra <a href="/politica-devoluciones" className="text-sage-dark hover:text-sage underline">Política de devoluciones</a>, que ofrece hasta 30 días posteriores a la recepción para productos elegibles.</p>
+
+          <h2 className="font-serif text-lg text-sage-dark pt-4">5. Propiedad intelectual</h2>
+          <p>Todo el contenido del sitio, incluyendo textos, gráficos, logotipos, diseños e ilustraciones, es propiedad de Alma Serena y está protegido por las leyes de derechos de autor y propiedad intelectual aplicables. Queda prohibida su reproducción, distribución o modificación sin autorización expresa por escrito.</p>
+
+          <h2 className="font-serif text-lg text-sage-dark pt-4">6. Sustitutos o daños</h2>
+          <p>Alma Serena no será responsable por daños directos, indirectos, incidentales, especiales o consecuentes derivados del uso o la imposibilidad de uso de nuestros productos o servicios, incluso si se nos hubiera informado de la posibilidad de dichos daños. La responsabilidad máxima de Alma Serena por cualquier reclamo no excederá el importe pagado por el producto o servicio en cuestión.</p>
+
+          <h2 className="font-serif text-lg text-sage-dark pt-4">7. Ley aplicable</h2>
+          <p>Estos términos y condiciones se rigen por las leyes de los Estados Unidos de América y del estado de Nueva York, sin perjuicio de sus normas de conflicto de leyes. Para cualquier controversia derivada de estos términos, las partes se someten a la jurisdicción de los tribunales competentes del estado de Nueva York.</p>
+
+          <h2 className="font-serif text-lg text-sage-dark pt-4">8. Modificaciones</h2>
+          <p>Nos reservamos el derecho de modificar estos términos y condiciones en cualquier momento. Los cambios serán publicados en esta página y entrarán en vigor desde su publicación. El uso continuado del sitio tras los cambios constituye la aceptación de los nuevos términos.</p>
+
+          <h2 className="font-serif text-lg text-sage-dark pt-4">9. Contacto</h2>
           <p>Para preguntas sobre estos términos, escribe a <strong>comunidad@almaserenaoficial.com</strong>.</p>
+          <p className="text-xs text-charcoal/40 pt-2">Última actualización: 28 de agosto de 2026</p>
 
           <DecorativeDivider className="my-8" />
 

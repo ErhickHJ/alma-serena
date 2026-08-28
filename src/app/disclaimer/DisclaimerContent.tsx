@@ -18,6 +18,13 @@ export default function DisclaimerContent() {
         <SectionTitle>{t.legal} y disclaimer</SectionTitle>
         <DecorativeDivider className="my-8" />
         <div className="text-sm text-charcoal/60 leading-relaxed space-y-4">
+          <p className="text-xs text-charcoal/40">Última actualización: 28 de agosto de 2026</p>
+
+          <h2 className="font-serif text-lg text-sage-dark pt-4">Datos del responsable</h2>
+          <p>
+            <strong>Alma Serena</strong> es una marca dedicada al bienestar, la gratitud y el crecimiento personal, establecida en los Estados Unidos de América (Nueva York). Para cualquier asunto relacionado con este sitio web o nuestros servicios, puedes contactarnos en <strong>comunidad@almaserenaoficial.com</strong> o por WhatsApp al <strong>+1 (347) 510-9619</strong>.
+          </p>
+
           <h2 className="font-serif text-lg text-sage-dark pt-4">Naturaleza del servicio</h2>
           <p>
             Alma Serena es un diario de gratitud y bienestar personal. Los productos, contenidos y
@@ -50,8 +57,9 @@ export default function DisclaimerContent() {
           </p>
           <p>
             Los reembolsos por suscripciones se manejan caso por caso dentro de los primeros 14 días
-            posteriores al cargo. Los productos físicos tienen una política de devolución de 14 días
-            a partir de la recepción, siempre que estén en su estado original.
+            posteriores al cargo. Los productos físicos tienen una política de devolución de 30 días
+            a partir de la recepción, siempre que estén en su estado original (ver nuestra{' '}
+            <a href="/politica-devoluciones" className="text-sage-dark hover:text-sage underline">Política de devoluciones</a>).
           </p>
 
           <h2 className="font-serif text-lg text-sage-dark pt-4">Propiedad intelectual</h2>
@@ -72,7 +80,12 @@ export default function DisclaimerContent() {
             Alma Serena no será responsable por daños directos, indirectos, incidentales o
             consecuentes derivados del uso o la imposibilidad de uso de nuestros productos o
             servicios. El usuario asume toda responsabilidad por el uso que dé al contenido y
-            productos adquiridos.
+            productos adquiridos. La responsabilidad máxima de Alma Serena por cualquier reclamo no excederá el importe pagado por el producto o servicio en cuestión.
+          </p>
+
+          <h2 className="font-serif text-lg text-sage-dark pt-4">Ley aplicable</h2>
+          <p>
+            Este aviso legal se rige por las leyes de los Estados Unidos de América y del estado de Nueva York. Para cualquier controversia, las partes se someten a la jurisdicción de los tribunales competentes del estado de Nueva York.
           </p>
 
           <h2 className="font-serif text-lg text-sage-dark pt-4">Contacto</h2>
